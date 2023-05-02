@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>My Database</title>
+    </head>
+
+    <body>
+        <h1>My Database</h1>
+        <div id="data" sandbox="allow-scripts allow-same-origin"></div>
+        <script type="text/JavaScript">
+            const fetchData = async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/reflet-d-acide');
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.text();
+                    document.getElementById('data').textContent = data;
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+            fetchData();
+        </script>
+    </body>
+
+</html>
