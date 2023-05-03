@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS todo (
     created_at  DATETIME DEFAULT NOW(),
     due_time DATETIME NOT NULL,
     status VARCHAR(11) NOT NULL,
-    user_id INT NOT NULL,
+    user_id UNSIGNED INT NOT NULL,
     CONSTRAINT other_key_id
         FOREIGN KEY (user_id)
         REFERENCES user(id),
