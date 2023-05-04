@@ -38,3 +38,4 @@
 172.27.0.1 - - [02/May/2023:08:03:23 +0000] "GET /favicon.ico HTTP/1.1" 404 281 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0" "-"
 172.27.0.1 - - [02/May/2023:08:19:25 +0000] "GET / HTTP/1.1" 200 558 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0" "-"
 172.27.0.1 - - [02/May/2023:08:19:25 +0000] "GET /favicon.ico HTTP/1.1" 404 281 "https://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0" "-"
+172.27.0.1 - - [04/May/2023:14:08:25 +0000] "GET / HTTP/1.1" 200 558 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0" "-"

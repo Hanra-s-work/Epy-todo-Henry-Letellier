@@ -1,1 +1,9 @@
 .vscode/**
+bonus/files/data/current_state/mysql/**
+bonus/files/data/current_state/performance_schema/**
+bonus/files/data/current_state/sys/**
+bonus/files/data/current_state/my_database/**
+bonus/files/data/current_state/my_epy_todo/**
+bonus/files/data/current_state/mariadb_location/**
+bonus/files/data/current_state/aria_log.*
+bonus/files/data/current_state/**

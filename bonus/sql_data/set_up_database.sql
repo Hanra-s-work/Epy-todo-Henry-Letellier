@@ -1,12 +1,14 @@
 DROP DATABASE IF EXISTS epytodo;
 CREATE DATABASE epytodo;
+SELECT "" "Created database epytodo";
 
 USE epytodo;
 
--- ALTER TABLE IF EXISTS todo
--- DROP FOREIGN KEY IF EXISTS other_key_id;
+ALTER TABLE IF EXISTS todo
+DROP FOREIGN KEY IF EXISTS other_key_id;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS todo;
+SELECT "" "Removed tables user and todo if they existed in epytodo";
 
 CREATE TABLE IF NOT EXISTS user (
     id INT NOT NULL AUTO_INCREMENT,
@@ -17,6 +19,7 @@ CREATE TABLE IF NOT EXISTS user (
     created_at DATETIME DEFAULT NOW(),
     PRIMARY KEY (id)
 );
+SELECT "" "Created table user in epytodo";
 
 CREATE TABLE IF NOT EXISTS todo (
     id INT NOT NULL AUTO_INCREMENT,
@@ -31,6 +34,8 @@ CREATE TABLE IF NOT EXISTS todo (
         REFERENCES user(id),
     PRIMARY KEY (id)
 );
+SELECT "" "Created table todo in epytodo";
 
 ALTER TABLE user ENGINE = InnoDB;
 ALTER TABLE todo ENGINE = InnoDB;
+SELECT "" "Changed the table engines to InnoDB";
