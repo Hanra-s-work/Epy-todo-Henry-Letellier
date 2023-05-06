@@ -33,247 +33,247 @@ VALUES (
         "Miles",
         "Tails Prower",
         "tails@example.com",
-        "123456"
+        "@123456"
     ),
     (
         "Amy",
         "Rose",
         "amy@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Silver",
         "the Hedgehog",
         "silver@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Blaze",
         "the Cat",
         "blaze@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Alex",
         "Kidd",
         "alex@example.com",
-        "123456"
+        "456789"
     ),
     (
         "ToeJam",
         "<unknown>",
         "toe@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Earl",
         "Bobby",
         "earl@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Ristar",
         "Bobby",
         "ristar@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Kid",
         "Chameleon",
         "kid@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Vectorman",
         "<unknown>",
         "vectorman@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Bubsy",
         "<unknown>",
         "bubsy@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Earthworm",
         "Jim",
         "jim@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Gilius",
         "Thunderhead",
         "giliue@example.com",
-        "123456"
+        "456789"
     ),
     (
         "Knuckles",
         "the Echidna",
         "knuckles3@example.com",
-        "123456"
+        "P@ssword3"
     ),
     (
         "Amy",
         "Rose",
         "amy4@example.com",
-        "123456"
+        "P@ssword4"
     ),
     (
         "Shadow",
         "the Hedgehog",
         "shadow5@example.com",
-        "123456"
+        "P@ssword5"
     ),
     (
         "Rouge",
         "the Bat",
         "rouge6@example.com",
-        "123456"
+        "P@ssword6"
     ),
     (
         "Cream",
         "the Rabbit",
         "cream7@example.com",
-        "123456"
+        "P@ssword7"
     ),
     (
         "Cheese",
         "the Chao",
         "cheese8@example.com",
-        "123456"
+        "P@ssword8"
     ),
     (
         "Big",
         "the Cat",
         "big9@example.com",
-        "123456"
+        "P@ssword9"
     ),
     (
         "Froggy",
         "the Frog",
         "froggy10@example.com",
-        "123456"
+        "P@ssword10"
     ),
     (
         "Espio",
         "the Chameleon",
         "espio11@example.com",
-        "123456"
+        "P@ssword11"
     ),
     (
         "Charmy",
         "Bee",
         "charmy12@example.com",
-        "123456"
+        "P@ssword12"
     ),
     (
         "Vector",
         "the Crocodile",
         "vector13@example.com",
-        "123456"
+        "P@ssword13"
     ),
     (
         "Silver",
         "the Hedgehog",
         "silver14@example.com",
-        "123456"
+        "P@ssword14"
     ),
     (
         "Blaze",
         "the Cat",
         "blaze15@example.com",
-        "123456"
+        "P@ssword15"
     ),
     (
         "Marine",
         "the Raccoon",
         "marine16@example.com",
-        "123456"
+        "P@ssword16"
     ),
     (
         "Jet",
         "the Hawk",
         "jet17@example.com",
-        "123456"
+        "P@ssword17"
     ),
     (
         "Wave",
         "the Swallow",
         "wave18@example.com",
-        "123456"
+        "P@ssword18"
     ),
     (
         "Storm",
         "the Albatross",
         "storm19@example.com",
-        "123456"
+        "P@ssword19"
     ),
     (
         "E-123",
         "Omega",
         "omega20@example.com",
-        "123456"
+        "P@ssword20"
     ),
     (
         "Metal",
         "Sonic",
         "metalsonic21@example.com",
-        "123456"
+        "P@ssword21"
     ),
     (
         "Mighty",
         "the Armadillo",
         "mighty22@example.com",
-        "123456"
+        "P@ssword22"
     ),
     (
         "Ray",
         "the Flying Squirrel",
         "ray23@example.com",
-        "123456"
+        "P@ssword23"
     ),
     (
         "Chaos",
         "The energy monster",
         "chaos24@example.com",
-        "123456"
+        "P@ssword24"
     ),
     (
         "Tikal",
         "the Echidna",
         "tikal25@example.com",
-        "123456"
+        "P@ssword25"
     ),
     (
         "Dr. Ivo",
         "Eggman",
         "eggman26@example.com",
-        "123456"
+        "P@ssword26"
     ),
     (
         "Orbot",
         "<unknown>",
         "orbot27@example.com",
-        "123456"
+        "P@ssword27"
     ),
     (
         "Cubot",
         "<unknown>",
         "cubot28@example.com",
-        "123456"
+        "P@ssword28"
     ),
     (
         "Zavok",
         "<unknown>",
         "zavok29@example.com",
-        "123456"
+        "P@ssword29"
     ),
     (
         "Zazz",
         "<unknown>",
         "zazz30@example.com",
-        "123456"
+        "P@ssword30"
     ),
     (
         "Zomom",
@@ -459,37 +459,37 @@ VALUES (
         "Orbot",
         "<unknown>",
         "orbot2@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Cubot",
         "<unknown>",
         "cubot@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Zavok",
         "<unknown>",
         "zavok@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Zazz",
         "<unknown>",
         "zazz2@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Zeena",
         "<unknown>",
         "zeena@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Zor",
         "<unknown>",
         "zor2@example.com",
-        "123456"
+        "pass1234"
     ),
     (
         "Shade",
@@ -671,3 +671,4 @@ VALUES (
         "lumine@example.com",
         "123456"
     );
+SELECT "" "Inserted the values into the table user";
