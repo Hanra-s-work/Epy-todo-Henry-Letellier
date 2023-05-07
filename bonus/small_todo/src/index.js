@@ -4,7 +4,7 @@ const app = express();
 const jsonwebtoken = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const bodyParser = require('body-parser');
-const db = require("./sql.js");
+const db = require("./config/db.js");
 require('dotenv').config();
 
 const port = process.env.PORT || 3015;
@@ -12,11 +12,6 @@ var is_logged_in = false;
 
 console.log("Hello World\n");
 
-async function exampleUsage() {
-    const result = await db.execute_query('SELECT * FROM user');
-    console.log(result);
-    res.send(result);
-}
 
 app.post('/register', (req, res) => {
     res.send('Welcome to registrations\n');
@@ -28,99 +23,88 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/user', (req, res) => {
-    res.send('Welcome to user\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to user\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.get('/user/todos', (req, res) => {
-    res.send('Welcome to user/todos\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to user/todos\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.get('/users/:id', (req, res) => {
-    res.send('Welcome to users/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to users/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.get('/users/:email', (req, res) => {
-    res.send('Welcome to users/:email\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to users/:email\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.put('/users/:id', (req, res) => {
-    res.send('Welcome to users/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to users/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.delete('/users/:id', (req, res) => {
-    res.send('Welcome to users/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to users/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.get('/todos', (req, res) => {
-    res.send('Welcome to todos\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to todos\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.get('/todos/:id', (req, res) => {
-    res.send('Welcome to todos/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to todos/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.post('/todos', (req, res) => {
-    res.send('Welcome to todos\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send("Welcome to todos\nHello World\n");
     } else {
-        res.send('You are not logged in\n');
+        res.send('Welcome to todos\nYou are not logged in\n');
     }
 });
 
 app.put('/todos/:id', (req, res) => {
-    res.send('Welcome to todos/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to todos/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
 });
 
 app.delete('/todos/:id', (req, res) => {
-    res.send('Welcome to todos/:id\n');
     if (is_logged_in === true) {
-        res.send("Hello World\n");
+        res.send('Welcome to todos/:id\n');
     } else {
         res.send('You are not logged in\n');
     }
@@ -128,11 +112,12 @@ app.delete('/todos/:id', (req, res) => {
 
 // bonus
 app.get('/reflet-d-acide', async (req, res) => {
-    res.send('Welcome to reflet-d-acide\n');
+    var title = 'Welcome to reflet-d-acide\n';
     if (is_logged_in === true) {
-        exampleUsage()
+        var response = db.sql_exampleUsage()
+        res.send(`${title}${response}`)
     } else {
-        res.send('You are not logged in\n');
+        res.send(`${title}You are not logged in\n`);
     }
 });
 
@@ -150,6 +135,14 @@ app.get('/stop', (req, res) => {
     process.exit(0);
 });
 
+app.use((err, req, res, next) => {
+    if (err instanceof Error && err.code === 'ERR_HTTP_HEADERS_SENT') {
+        console.error(err.stack);
+        res.status(500).send('Headers already sent');
+    } else {
+        next(err);
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}\n`);

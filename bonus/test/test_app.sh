@@ -732,6 +732,10 @@ function create_folder {
 }
 
 ## launch (launch commands)
+function launch_stop_server {
+    curl "${URL}:${PORT}/stop" 1>/dev/null 2>/dev/null
+}
+
 function launch_app {
     create_folder $SERVER_LOG_DIR
     $LAUNCH_COMAND 1>$SERVER_LOG_FILE 2>$SERVER_ERROR_LOG_FILE &
@@ -797,6 +801,7 @@ function main {
     check_required_variables
     display_locations
     create_folder $LOG_DIR
+    launch_stop_server
     launch_app
     test_main
 }
