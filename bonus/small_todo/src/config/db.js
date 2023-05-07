@@ -13,21 +13,19 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 });
 
-
 async function execute_query(sql_query, params) {
     return new Promise(async (resolve, reject) => {
         try {
             const connection = await pool.getConnection();
             try {
                 const [rows, fields] = await connection.execute(sql_query, params);
-                console.log('Results:', rows);
                 resolve(rows);
             } catch (err) {
                 console.error('Error executing query:', err);
                 reject(err);
             } finally {
                 connection.release();
-                pool.end();
+                // pool.end();
             }
         } catch (err) {
             console.error('Error getting connection from pool:', err);
@@ -66,7 +64,6 @@ async function update_record(table_name, record, where_clause) {
     return execute_query(sql_query, values);
 }
 
-
 async function delete_record(table_name, where_clause) {
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
     const is_table_name = await injection.check_if_sql_injection(table_name);
@@ -79,7 +76,6 @@ async function delete_record(table_name, where_clause) {
 
 async function sql_exampleUsage() {
     const result = await execute_query('SELECT * FROM user');
-    console.log(result);
     return result;
 }
 

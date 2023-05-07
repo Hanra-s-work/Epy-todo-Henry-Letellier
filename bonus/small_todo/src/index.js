@@ -10,6 +10,16 @@ require('dotenv').config();
 const port = process.env.PORT || 3015;
 var is_logged_in = false;
 
+app.get('/override', (req, res) => {
+    var title = 'Welcome to override\n';
+    is_logged_in = true;
+    if (is_logged_in === true) {
+        res.send(`${title}You are logged in\n`);
+    } else {
+        res.send(`${title}You are not logged in\n`);
+    }
+})
+
 console.log("Hello World\n");
 
 
@@ -114,8 +124,10 @@ app.delete('/todos/:id', (req, res) => {
 app.get('/reflet-d-acide', async (req, res) => {
     var title = 'Welcome to reflet-d-acide\n';
     if (is_logged_in === true) {
-        var response = db.sql_exampleUsage()
-        res.send(`${title}${response}`)
+        var response = await db.sql_exampleUsage()
+        console.log(response);
+        var json_strings = JSON.stringify(response);
+        res.send(`${title}\n${json_strings}`)
     } else {
         res.send(`${title}You are not logged in\n`);
     }
