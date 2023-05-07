@@ -148,7 +148,7 @@ app.get('/', (req, res) => {
 app.get('/stop', (req, res) => {
     res.send('Stopping server...\n');
     process.exit(0);
-})
+});
 
 
 app.listen(port, () => {
