@@ -34,21 +34,24 @@ async function execute_query(sql_query, params) {
 }
 
 async function insert_records(table_name, fields, values) {
-    const placeholders = values.map(() => '(' + Array(fields.length).fill('?').join(',') + ')').join(',');
-    const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${placeholders}`;
+    if (!Array.isArray(values)) {
+        return 'Error: values is not an array.';
+    }
+    const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
+    const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
 
-    const is_table = await injection.check_if_sql_injection(table_name);
-    const is_fields = await injection.check_if_sql_injection(fields);
-    const is_values = await injection.check_if_sql_injection(values);
-    const is_placeholders = await injection.check_if_sql_injection(placeholders);
+    console.log(`(ir) sql_query = '${sql_query}'`);
 
-    if (is_table === true || is_fields === true || is_values === true || is_placeholders === true) {
+    const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
+    if (has_injection === true) {
         return injection.injection_message;
     }
 
     const flattened_values = values.flat(); // flatten the array of arrays
     return execute_query(sql_query, flattened_values);
 }
+
+
 
 async function update_record(table_name, record, where_clause) {
     const fields = Object.keys(record).map((key) => `${key}=?`).join(',');

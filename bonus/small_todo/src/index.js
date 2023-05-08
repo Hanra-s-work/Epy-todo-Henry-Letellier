@@ -46,7 +46,8 @@ app.post('/register', async (req, res) => {
         } else {
             console.log("(r) The user does not exist");
             const secured_password = await assets.secure_the_password(password);
-            const response = db.insert_records('user', ['email', 'password', 'firstname', 'name'], [email, secured_password, firstname, name]);
+            console.log(`(r) secured_password  = '${secured_password}'`);
+            const response = await db.insert_records('user', ['email', 'password', 'firstname', 'name'], [[email, secured_password, firstname, name]]);
             console.log("(r) Appended user to the table");
             if (response === injection.injection_message) {
                 res.send(response);
