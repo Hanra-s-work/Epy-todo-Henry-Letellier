@@ -13,6 +13,7 @@ require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
 var is_logged_in = false;
+var user_email = null;
 var logged_in_user_key = null;
 
 app.use(bodyParser.json());
@@ -54,6 +55,7 @@ app.post('/register', async (req, res) => {
                 } else {
                     res.send(`${title}User created\n${logged_in_user_key}\n`);
                     is_logged_in = true;
+                    user_email = email;
                 }
             }
         }
@@ -63,7 +65,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     var title = 'Welcome to login\n';
     const body_content = req.body;
-    const response = assets.check_if_login_data_present(body_content);
+    const response = await assets.check_if_login_data_present(body_content);
     if (response === false) {
         res.send(`${title}You must provide email and password\n`);
     } else {
@@ -80,8 +82,9 @@ app.post('/login', async (req, res) => {
             } else if (logged_in_user_key === "unknown_user") {
                 res.send(`${title}Unknown user\n`);
             } else {
-                res.send(`${title}Welcome ${user_node.firstname}\n`);
+                res.send(`Welcome ${user_node.firstname}\n`);
                 is_logged_in = true;
+                user_email = user_node.email;
             }
         }
     }
@@ -192,6 +195,8 @@ app.get('/logout', (req, res) => {
     var title = 'Welcome to logout\n';
     if (is_logged_in === true) {
         is_logged_in = false;
+        user_email = null;
+        logged_in_user_key = null;
         res.send(`${title}You are logged out\n`);
     } else {
         res.send(`${title}You are not logged in\n`);

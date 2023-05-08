@@ -22,32 +22,35 @@ async function get_body_content(req) {
 }
 
 async function check_if_register_data_present(body) {
+    if (("email" in body) === false || ("password" in body) === false || ("firstname" in body) === false || ("name" in body) === false) {
+        return false;
+    }
     if (body.email === undefined || body.password === undefined || body.firstname === undefined || body.name === undefined) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 async function check_if_login_data_present(body) {
+    if (('email' in body) === false || ('password' in body) === false) {
+        return false;
+    }
     if (body.email === undefined || body.password === undefined) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
+
 
 async function secure_the_password(password) {
     const salt = await bcrypt.genSalt(10);
     const hashed_password = await bcrypt.hash(password, salt);
-    console.log(`password = '${password}', hashed_password = '${hashed_password}`)
     return hashed_password;
 }
 
 async function sign_user_in(email, password) {
     const response = await db.sql_get_user('user', user_name = '', user_firstname = '', user_email = email, user_id = 0);
     if (response.length > 0) {
-        console.log(`password = '${response[0].password} == secured_password = '${password}'`);
         if (await bcrypt.compare(password, response[0].password) === true) {
             const token = await jsonwebtoken.sign({ id: response[0].id }, process.env.SECRET);
             return token;
