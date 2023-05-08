@@ -28,7 +28,7 @@ async function authenticate_user(body_content, res) {
     }
     is_logged_in = true;
     user_email = user_node.email;
-    return [is_logged_in, user_email, logged_in_user_key, `Welcome ${user_node.firstname}\n`];
+    return [is_logged_in, user_email, logged_in_user_key, `Welcome ${user_node.firstname}\n${logged_in_user_key}`];
 }
 
 

@@ -114,6 +114,35 @@ async function sql_get_user_node(email) {
     }
 }
 
+async function sql_get_all_todos() {
+    const sql_query = `SELECT * FROM todo`;
+    const result = await execute_query(sql_query, []);
+    return result;
+}
+
+async function sql_get_all_user_todos(user_id) {
+    const sql_query = `SELECT * FROM todo WHERE user_id="${user_id}"`;
+    const is_injection = await injection.check_if_sql_injection(user_id);
+    if (is_injection === true) {
+        return injection.injection_message;
+    }
+    const result = await execute_query(sql_query, [user_id]);
+    return result;
+}
+
+async function connect_to_database() {
+    const connection = await pool.getConnection();
+    return connection;
+}
+
+function display_connection_id(connection) {
+    console.log(`connected as id ${connection.threadId}`);
+}
+
+async function disconnect_from_database() {
+    pool.end();
+}
+
 module.exports = {
     execute_query,
     insert_records,
@@ -121,5 +150,10 @@ module.exports = {
     delete_record,
     sql_exampleUsage,
     sql_get_user,
-    sql_get_user_node
+    sql_get_user_node,
+    display_connection_id,
+    connect_to_database,
+    disconnect_from_database,
+    sql_get_all_todos,
+    sql_get_all_user_todos
 };
