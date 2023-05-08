@@ -40,8 +40,6 @@ async function insert_records(table_name, fields, values) {
     const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
     const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
 
-    console.log(`(ir) sql_query = '${sql_query}'`);
-
     const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
     if (has_injection === true) {
         return injection.injection_message;
@@ -50,8 +48,6 @@ async function insert_records(table_name, fields, values) {
     const flattened_values = values.flat(); // flatten the array of arrays
     return execute_query(sql_query, flattened_values);
 }
-
-
 
 async function update_record(table_name, record, where_clause) {
     const fields = Object.keys(record).map((key) => `${key}=?`).join(',');
@@ -104,11 +100,26 @@ async function sql_get_user(table_name, user_name = "", user_firstname = "", use
     return await execute_query(sql_query, [user_name, user_firstname, user_email, user_id]);
 }
 
+async function sql_get_user_node(email) {
+    const sql_query = `SELECT * FROM user WHERE email="${email}"`;
+    const is_injection = await injection.check_if_sql_injection(email);
+    if (is_injection === true) {
+        return injection.injection_message;
+    }
+    const result = await execute_query(sql_query, [email]);
+    if (result.length > 0) {
+        return result[0];
+    } else {
+        return { 'msg': "No user found" };
+    }
+}
+
 module.exports = {
     execute_query,
     insert_records,
     update_record,
     delete_record,
     sql_exampleUsage,
-    sql_get_user
+    sql_get_user,
+    sql_get_user_node
 };
