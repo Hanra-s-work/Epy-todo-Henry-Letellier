@@ -1,8 +1,7 @@
 const mysql = require('mysql2/promise');
 const injection = require('./check_if_sql_injection.js');
-require('dotenv').config()
+require('dotenv').config({ encoding: 'utf-8' })
 
-const injection_message = { 'msg': "Injection attempt detected" };
 const DB_PORT = 3306;
 
 const pool = mysql.createPool({
@@ -34,21 +33,22 @@ async function execute_query(sql_query, params) {
     });
 }
 
+async function insert_records(table_name, fields, values) {
+    const placeholders = values.map(() => '(' + Array(fields.length).fill('?').join(',') + ')').join(',');
+    const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${placeholders}`;
 
-async function insert_record(table_name, record) {
-    const fields = Object.keys(record).join(',');
-    const values = Object.values(record);
-    const placeholders = Array(values.length).fill('?').join(',');
-    const sql_query = `INSERT INTO ${table_name} (${fields}) VALUES (${placeholders})`;
     const is_table = await injection.check_if_sql_injection(table_name);
+    const is_fields = await injection.check_if_sql_injection(fields);
     const is_values = await injection.check_if_sql_injection(values);
-    const is_placeholder = await injection.check_if_sql_injection(placeholders);
-    if (is_table === true || is_values === true || is_placeholder === true) {
-        return injection_message;
-    }
-    return execute_query(sql_query, values);
-}
+    const is_placeholders = await injection.check_if_sql_injection(placeholders);
 
+    if (is_table === true || is_fields === true || is_values === true || is_placeholders === true) {
+        return injection.injection_message;
+    }
+
+    const flattened_values = values.flat(); // flatten the array of arrays
+    return execute_query(sql_query, flattened_values);
+}
 
 async function update_record(table_name, record, where_clause) {
     const fields = Object.keys(record).map((key) => `${key}=?`).join(',');
@@ -59,7 +59,7 @@ async function update_record(table_name, record, where_clause) {
     const is_fields = await injection.check_if_sql_injection(fields);
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
     if (is_table === true || is_values === true || is_fields === true || is_where === true) {
-        return injection_message;
+        return injection.injection_message;
     }
     return execute_query(sql_query, values);
 }
@@ -68,7 +68,7 @@ async function delete_record(table_name, where_clause) {
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
     const is_table_name = await injection.check_if_sql_injection(table_name);
     if (is_where === true || is_table_name === true) {
-        return injection_message;
+        return injection.injection_message;
     }
     const sql_query = `DELETE FROM ${table_name} WHERE ${where_clause}`;
     return execute_query(sql_query, []);
@@ -83,7 +83,7 @@ async function sql_get_user(table_name, user_name = "", user_firstname = "", use
     var sql_query = "";
     const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
     if (is_injection === true) {
-        return injection_message;
+        return injection.injection_message;
     }
     if (user_name.length > 0 && user_firstname.length > 0) {
         sql_query = `SELECT * FROM ${table_name} WHERE name="${user_name} AND firstname="${user_firstname}"`;
@@ -98,12 +98,12 @@ async function sql_get_user(table_name, user_name = "", user_firstname = "", use
     } else {
         return { 'msg': "No search criteria" };
     }
-    return execute_query(sql_query, [user_name, user_firstname, user_email, user_id]);
+    return await execute_query(sql_query, [user_name, user_firstname, user_email, user_id]);
 }
 
 module.exports = {
     execute_query,
-    insert_record,
+    insert_records,
     update_record,
     delete_record,
     sql_exampleUsage,

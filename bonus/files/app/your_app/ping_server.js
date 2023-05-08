@@ -1,6 +1,6 @@
 const http = require('http');
 const mysql = require('mysql2/promise');
-require('dotenv').config();
+require('dotenv').config({ encoding: 'utf-8' });
 
 const server = http.createServer(async (req, res) => {
     try {

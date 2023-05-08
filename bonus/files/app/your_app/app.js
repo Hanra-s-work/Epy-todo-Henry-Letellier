@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const app = express();
-require('dotenv').config();
+require('dotenv').config({ encoding: 'utf-8' });
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,

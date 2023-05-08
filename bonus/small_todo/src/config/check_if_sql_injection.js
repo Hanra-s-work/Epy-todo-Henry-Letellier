@@ -5,6 +5,8 @@
 ** check_for_injection.js
 */
 
+const injection_message = { 'msg': "Injection attempt detected" };
+
 async function check_if_symbol_sql_injection(string) {
     const sqlKeywords = [';', '--', '/*', '*/'];
 
@@ -102,5 +104,6 @@ module.exports = {
     check_if_symbol_and_command_injection,
     check_if_symbol_and_logic_gate_injection,
     check_if_command_and_logic_gate_injection,
-    check_if_injections_in_strings
+    check_if_injections_in_strings,
+    injection_message
 }
