@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/override', (req, res) => {
     var title = 'Welcome to override\n';
     is_logged_in = true;
-    email = "lumine@example.com";
+    user_email = "lumine@example.com";
     if (is_logged_in === true) {
-        res.send({ 'msg': `${title}You are logged in as '${email}'\n` });
+        res.send({ 'title': title, 'msg': `You are logged in as '${email}'\n` });
     }
 })
 
@@ -178,7 +178,7 @@ app.get('/reflet-d-acide', async (req, res) => {
         var response = await db.sql_exampleUsage()
         var json_strings = JSON.stringify(response);
         res.setHeader('Content-Type', 'application/json');
-        res.send({ 'msg': json_strings })
+        res.send({ 'msg': response })
     } else {
         res.send({ 'msg': `${title}You are not logged in\n` });
     }

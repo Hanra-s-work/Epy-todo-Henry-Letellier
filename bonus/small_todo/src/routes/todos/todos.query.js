@@ -17,11 +17,14 @@ async function show_all_todos() {
 }
 
 async function show_all_user_todos(user_email) {
+    if (user_email === null) {
+        return ["internal server error"];
+    }
     const user_node = await db.sql_get_user_node(user_email);
     if (user_node === injection.injection_message) {
         return [response];
     }
-    const response = await db.sql_get_all_user_todos(user_node.id);
+    const response = await db.sql_get_all_user_todos(`${user_node.id}`);
     if (response === injection.injection_message) {
         return [response];
     }
