@@ -1,4 +1,5 @@
 .env
+my_probe.sql
 package-lock.json
 .vscode/**
 *.session.*
