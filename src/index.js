@@ -5,11 +5,18 @@ const db = require("./config/db");
 
 const port = 3000;
 var connected = false;
+var connection = null;
 
 app.use(express.raw());
 app.use(express.json());
 app.use(bodyparser.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/connection', async (req, res) => {
+    const tmp = await db.query(connection, "SHOW DATABASES", []);
+    console.log(`${JSON.stringify(tmp)}`);
+    res.send(tmp);
+})
 
 app.post('/login', async (req, res) => {
     const content = req.body;
@@ -35,4 +42,5 @@ app.get('/', (req, res) => {
 
 app.listen(port, async () => {
     console.log(`Server running on port ${port} at http://localhost:${port}`);
+    connection = await db.connect_database();
 });
