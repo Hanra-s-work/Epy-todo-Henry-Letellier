@@ -12,28 +12,19 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 });
 
-async function execute_query(sql_query, params) {
+async function execute_query(connection, sql_query, params) {
     return new Promise(async (resolve, reject) => {
         try {
-            const connection = await pool.getConnection();
-            try {
-                const [rows, fields] = await connection.execute(sql_query, params);
-                resolve(rows);
-            } catch (err) {
-                console.error('Error executing query:', err);
-                reject(err);
-            } finally {
-                connection.release();
-                // pool.end();
-            }
+            const [rows, fields] = await connection.execute(sql_query, params);
+            resolve(rows);
         } catch (err) {
-            console.error('Error getting connection from pool:', err);
+            console.error('Error executing query:', err);
             reject(err);
         }
     });
 }
 
-async function insert_records(table_name, fields, values) {
+async function insert_records(connection, table_name, fields, values) {
     if (!Array.isArray(values)) {
         return 'Error: values is not an array.';
     }
@@ -46,10 +37,10 @@ async function insert_records(table_name, fields, values) {
     }
 
     const flattened_values = values.flat(); // flatten the array of arrays
-    return execute_query(sql_query, flattened_values);
+    return execute_query(connection, sql_query, flattened_values);
 }
 
-async function update_record(table_name, record, where_clause) {
+async function update_record(connection, table_name, record, where_clause) {
     const fields = Object.keys(record).map((key) => `${key}=?`).join(',');
     const values = Object.values(record);
     const sql_query = `UPDATE ${table_name} SET ${fields} WHERE ${where_clause}`;
@@ -60,25 +51,25 @@ async function update_record(table_name, record, where_clause) {
     if (is_table === true || is_values === true || is_fields === true || is_where === true) {
         return injection.injection_message;
     }
-    return execute_query(sql_query, values);
+    return execute_query(connection, sql_query, values);
 }
 
-async function delete_record(table_name, where_clause) {
+async function delete_record(connection, table_name, where_clause) {
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
     const is_table_name = await injection.check_if_sql_injection(table_name);
     if (is_where === true || is_table_name === true) {
         return injection.injection_message;
     }
     const sql_query = `DELETE FROM ${table_name} WHERE ${where_clause}`;
-    return execute_query(sql_query, []);
+    return execute_query(connection, sql_query, []);
 }
 
-async function sql_exampleUsage() {
-    const result = await execute_query('SELECT * FROM user');
+async function sql_exampleUsage(connection) {
+    const result = await execute_query(connection, 'SELECT * FROM user');
     return result;
 }
 
-async function sql_get_user(table_name, user_name = "", user_firstname = "", user_email = "", user_id = 0) {
+async function sql_get_user(connection, table_name, user_name = "", user_firstname = "", user_email = "", user_id = 0) {
     var sql_query = "";
     const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
     if (is_injection === true) {
@@ -97,16 +88,16 @@ async function sql_get_user(table_name, user_name = "", user_firstname = "", use
     } else {
         return { 'msg': "No search criteria" };
     }
-    return await execute_query(sql_query, [user_name, user_firstname, user_email, user_id]);
+    return await execute_query(connection, sql_query, [user_name, user_firstname, user_email, user_id]);
 }
 
-async function sql_get_user_node(email) {
+async function sql_get_user_node(connection, email) {
     const sql_query = `SELECT * FROM user WHERE email="${email}"`;
     const is_injection = await injection.check_if_sql_injection(email);
     if (is_injection === true) {
         return injection.injection_message;
     }
-    const result = await execute_query(sql_query, [email]);
+    const result = await execute_query(connection, sql_query, [email]);
     if (result.length > 0) {
         return result[0];
     } else {
@@ -114,19 +105,19 @@ async function sql_get_user_node(email) {
     }
 }
 
-async function sql_get_all_todos() {
+async function sql_get_all_todos(connection) {
     const sql_query = `SELECT * FROM todo`;
-    const result = await execute_query(sql_query, []);
+    const result = await execute_query(connection, sql_query, []);
     return result;
 }
 
-async function sql_get_all_user_todos(user_id) {
+async function sql_get_all_user_todos(connection, user_id) {
     const sql_query = `SELECT * FROM todo WHERE user_id="${user_id}"`;
     const is_injection = await injection.check_if_sql_injection(user_id);
     if (is_injection === true) {
         return injection.injection_message;
     }
-    const result = await execute_query(sql_query, [user_id]);
+    const result = await execute_query(connection, sql_query, [user_id]);
     return result;
 }
 
@@ -139,11 +130,13 @@ function display_connection_id(connection) {
     console.log(`connected as id ${connection.threadId}`);
 }
 
-async function disconnect_from_database() {
+async function disconnect_from_database(connection) {
+    connection.release();
     pool.end();
 }
 
 module.exports = {
+    pool,
     execute_query,
     insert_records,
     update_record,

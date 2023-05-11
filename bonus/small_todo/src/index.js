@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-const { all } = require('express/lib/application');
-const { json } = require('express/lib/response');
 const bodyParser = require('body-parser');
 const db = require("./config/db.js");
 const auth = require("./routes/auth/auth.js");
@@ -11,8 +9,9 @@ const injection = require("./config/check_if_sql_injection.js");
 require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
-var is_logged_in = false;
+var connection = null;
 var user_email = null;
+var is_logged_in = false;
 var logged_in_user_key = null;
 
 app.use(express.raw());
@@ -42,7 +41,7 @@ app.post('/register', async (req, res) => {
     const check = await auth.register_user(body_content, res);
     if (check.length == 2 && (check[0] === "Creation success" || check[0] === "User exists")) {
         usr_msgs.push(check[1])
-        const response = await auth.authenticate_user(body_content, res);
+        const response = await auth.authenticate_user(connection, body_content, res);
         if (response.length > 1) {
             is_logged_in = response[0];
             user_email = response[1];
@@ -64,7 +63,7 @@ app.post('/login', async (req, res) => {
         res.send({ 'title': title, 'msg': `You must provide email and password\n`, 'token': '' });
         return [""];
     }
-    const response = await auth.authenticate_user(body_content, res);
+    const response = await auth.authenticate_user(connection, body_content, res);
     if (response.length > 1) {
         is_logged_in = response[0];
         user_email = response[1];
@@ -77,7 +76,7 @@ app.post('/login', async (req, res) => {
 app.get('/user', async (req, res) => {
     var title = 'Welcome to user\n';
     if (is_logged_in === true) {
-        const user_node = await db.sql_get_user_node(user_email);
+        const user_node = await db.sql_get_user_node(connection, user_email);
         if (user_node === injection.injection_message) {
             res.send(injection.injection_message);
         } else if (user_node === { 'msg': "No user found" }) {
@@ -93,7 +92,7 @@ app.get('/user', async (req, res) => {
 app.get('/user/todos', async (req, res) => {
     var title = "Welcome to user/todos\n";
     if (is_logged_in === true) {
-        const response = await todo_query.show_all_user_todos(user_email);
+        const response = await todo_query.show_all_user_todos(connection, user_email);
         res.send({ 'title': title, 'msg': response });
     } else {
         res.send({ 'title': title, 'msg': 'You are not logged in\n' });
@@ -139,7 +138,7 @@ app.delete('/users/:id', async (req, res) => {
 app.get('/todos', async (req, res) => {
     var title = "Welcome to todos\n";
     if (is_logged_in === true) {
-        const response = await todo_query.show_all_todos();
+        const response = await todo_query.show_all_todos(connection);
         res.send({ 'title': title, 'msg': response });
     } else {
         res.send({ 'title': title, 'msg': 'You are not logged in\n' });
@@ -158,6 +157,7 @@ app.get('/todos/:id', async (req, res) => {
 app.post('/todos', async (req, res) => {
     var title = 'Welcome to todos\n';
     if (is_logged_in === true) {
+
         res.send({ 'title': title, 'msg': "Hello World\n" });
     } else {
         res.send({ 'title': title, 'msg': 'You are not logged in\n' });
@@ -186,8 +186,7 @@ app.delete('/todos/:id', async (req, res) => {
 app.get('/reflet-d-acide', async (req, res) => {
     var title = 'Welcome to reflet-d-acide\n';
     if (is_logged_in === true) {
-        var response = await db.sql_exampleUsage()
-        var json_strings = JSON.stringify(response);
+        var response = await db.sql_exampleUsage(connection)
         res.setHeader('Content-Type', 'application/json');
         res.send({ 'title': title, 'msg': response })
     } else {
@@ -210,7 +209,7 @@ app.get('/logout', (req, res) => {
 app.get('/stop', async (req, res) => {
     var title = 'Welcome to stop\n';
     res.send({ 'title': title, 'msg': 'Stopping server...\n' });
-    await db.disconnect_from_database();
+    await db.disconnect_from_database(connection);
     process.exit(0);
 });
 
@@ -221,6 +220,6 @@ app.get('/', (req, res) => {
 
 app.listen(port, async () => {
     console.log(`Server running on port ${port} at http://localhost:${port}`);
-    const connection = await db.connect_to_database();
+    connection = await db.connect_to_database();
     db.display_connection_id(connection);
 });
