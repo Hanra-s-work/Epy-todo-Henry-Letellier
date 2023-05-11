@@ -21,31 +21,12 @@ async function get_body_content(req) {
     return body_content;
 }
 
-async function check_if_register_data_present(body) {
-    if (("email" in body) === false || ("password" in body) === false || ("firstname" in body) === false || ("name" in body) === false) {
-        return false;
-    }
-    if (body.email === undefined || body.password === undefined || body.firstname === undefined || body.name === undefined) {
-        return false;
-    }
-    return true;
-}
-
-async function check_if_login_data_present(body) {
-    if (('email' in body) === false || ('password' in body) === false) {
-        return false;
-    }
-    if (body.email === undefined || body.password === undefined) {
-        return false;
-    }
-    return true;
-}
-
 async function check_if_vars_in_body(body, vars) {
     var i = 0;
-    if (Array.isArray(vars) === false || Array.isArray(body) === false) {
+    if (Array.isArray(vars) === false || body.length === 0) {
         console.error("body and vars have to be of type array.");
-        throw new Error("body and vars have to be of type array.");
+        // throw new Error("body and vars have to be of type array.");
+        return "body and vars have to be of type array.";
     };
     for (; i < vars.length; i++) {
         if ((vars[i] in body) === false) {
@@ -79,8 +60,6 @@ async function sign_user_in(connection, email, password) {
 
 module.exports = {
     check_if_user_exists,
-    check_if_register_data_present,
-    check_if_login_data_present,
     get_body_content,
     secure_the_password,
     sign_user_in,

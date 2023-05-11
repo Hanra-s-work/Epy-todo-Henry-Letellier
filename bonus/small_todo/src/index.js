@@ -6,6 +6,7 @@ const auth = require("./routes/auth/auth.js");
 const assets = require("./assets.js");
 const todo_query = require("./routes/todos/todos.query.js");
 const injection = require("./config/check_if_sql_injection.js");
+const status_output = require("./config/speak_on_correct_status.js");
 require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
@@ -24,18 +25,23 @@ app.get('/override', (req, res) => {
     is_logged_in = true;
     user_email = "lumine@example.com";
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': `You are logged in as '${user_email}'\n` });
+        status_output.success(res, { 'title': title, 'msg': `You are logged in as '${user_email}'\n` });
     }
 })
 
 app.post('/register', async (req, res) => {
     var usr_msgs = Array();
     var title = 'Welcome to register\n';
+    const error_message = "You must provide email, password, firstname and name\n";
     var token = "";
     const body_content = req.body;
-    const is_register_data_present = await assets.check_if_register_data_present(body_content);
+    const is_register_data_present = await assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
+    if (typeof is_register_data_present === 'string') {
+        res.send({ 'title': title, 'msg': error_message, 'token': '' });
+        return [""];
+    }
     if (is_register_data_present === false) {
-        res.send({ 'title': title, 'msg': `You must provide email, password, firstname and name\n`, 'token': '' });
+        res.send({ 'title': title, 'msg': error_message, 'token': '' });
         return [""];
     }
     const check = await auth.register_user(body_content, res);
@@ -56,11 +62,16 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     var token = '';
+    const error_message = "You must provide email and password\n";
     var title = 'Welcome to login\n';
     const body_content = req.body;
-    const check = await assets.check_if_login_data_present(body_content);
+    const check = await assets.check_if_vars_in_body(body_content, ["email", "password"]);
+    if (typeof check === 'string') {
+        res.send({ 'title': title, 'msg': error_message, 'token': '' });
+        return [""];
+    }
     if (check === false) {
-        res.send({ 'title': title, 'msg': `You must provide email and password\n`, 'token': '' });
+        res.send({ 'title': title, 'msg': error_message, 'token': '' });
         return [""];
     }
     const response = await auth.authenticate_user(connection, body_content, res);
