@@ -1,0 +1,32 @@
+{
+  "name": "epytodo",
+  "version": "1.0.0",
+  "description": "app todo list",
+  "main": "node ./src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpitechPromo2027/B-WEB-200-PAR-2-1-epytodo-henry.letellier.git"
+  },
+  "keywords": [
+    "todo",
+    "node"
+  ],
+  "author": "Henry, Harleen",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/EpitechPromo2027/B-WEB-200-PAR-2-1-epytodo-henry.letellier/issues"
+  },
+  "homepage": "https://github.com/EpitechPromo2027/B-WEB-200-PAR-2-1-epytodo-henry.letellier#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.3.0"
+  }
+}
