@@ -1,6 +1,6 @@
 .env
 my_probe.sql
-package-lock.json
+# package-lock.json
 .vscode/**
 *.session.*
 node_modules/**
