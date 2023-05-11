@@ -1,9 +1,11 @@
 const sql = require("mysql2/promise");
 require('dotenv').config();
 
+const port = 3306;
+
 const pool = sql.createPool({
     host : process.env.MYSQL_HOST,
-    port : 3306,
+    port : port,
     user : process.env.MYSQL_USER,
     password : process.env.MYSQL_ROOT_PASSWORD,
     database : process.env.MYSQL_DATABASE
@@ -11,10 +13,11 @@ const pool = sql.createPool({
 
 async function connect_database() {
     try {
-        const connection = await connect.getConnection();
+        const connection = await pool.getConnection();
+        return connection;
     } catch (error) {
         console.error(`error : ${error}`);
-        reject(error);
+        return `error : ${error}`;
     }
 }
 
@@ -22,8 +25,19 @@ async function disconnect_database(connection) {
     connection.release();
 }
 
+async function query(connection, command, params) {
+    try {
+        const [rows, fields] = await connection.execute(command, params);
+        return {'msg': rows};
+    } catch (error) {
+        console.error(`Error executing query: ${error}`);
+        return {'msg':`Error executing query: ${error}`};
+    }
+}
+
 module.exports = {
     pool,
     connect_database,
-    disconnect_database
+    disconnect_database,
+    query
 };
