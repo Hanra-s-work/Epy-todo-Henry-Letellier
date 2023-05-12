@@ -10,21 +10,20 @@ const assets = require('../../assets');
 const injection = require('../../config/check_if_sql_injection');
 
 async function authenticate_user(connection, body_content, res) {
-    var title = 'Welcome to login\n';
     const { email, password } = body_content;
     const user_node = await db.sql_get_user_node(connection, email);
     if (user_node === injection.injection_message) {
         return [JSON.stringify(injection.injection_message)];
     }
     if (user_node === { 'msg': "No user found" }) {
-        return [`${title}User not found`];
+        return [`User not found`];
     }
     const logged_in_user_key = await assets.sign_user_in(connection, email, password);
     if (logged_in_user_key === "wrong_password") {
-        return [`${title}Wrong password`];
+        return [`Wrong password`];
     }
     if (logged_in_user_key === "unknown_user") {
-        return [`${title}Unknown user`];
+        return [`Unknown user`];
     }
     is_logged_in = true;
     user_email = user_node.email;

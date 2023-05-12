@@ -7,6 +7,7 @@ const assets = require("./assets.js");
 const todo_query = require("./routes/todos/todos.query.js");
 const injection = require("./config/check_if_sql_injection.js");
 const status_output = require("./config/speak_on_correct_status.js");
+const short_or_detailed = require("./config/short_or_detailed_message.js");
 require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
@@ -36,12 +37,8 @@ app.post('/register', async (req, res) => {
     var token = "";
     const body_content = req.body;
     const is_register_data_present = await assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
-    if (typeof is_register_data_present === 'string') {
-        res.send({ 'title': title, 'msg': error_message, 'token': '' });
-        return [""];
-    }
-    if (is_register_data_present === false) {
-        res.send({ 'title': title, 'msg': error_message, 'token': '' });
+    if (typeof is_register_data_present === 'string' || is_register_data_present === false) {
+        short_or_detailed.error_body_message(res, title, error_message, '');
         return [""];
     }
     const check = await auth.register_user(body_content, res);
@@ -57,31 +54,28 @@ app.post('/register', async (req, res) => {
     } else {
         usr_msgs.push(check[0]);
     }
-    res.send({ 'title': title, 'msg': `${usr_msgs.join('\n')}`, 'token': token });
+    short_or_detailed.success_connection_message(res, title, `${usr_msgs.join('\n')}`, token);
 });
 
 app.post('/login', async (req, res) => {
     var token = '';
     const error_message = "You must provide email and password\n";
     var title = 'Welcome to login\n';
-    const body_content = req.body;
-    const check = await assets.check_if_vars_in_body(body_content, ["email", "password"]);
-    if (typeof check === 'string') {
-        res.send({ 'title': title, 'msg': error_message, 'token': '' });
-        return [""];
+    const check = await assets.check_if_vars_in_body(req.body, ["email", "password"]);
+    if (typeof check === 'string' || check === false) {
+        return short_or_detailed.error_body_message(res, title, error_message, '');
     }
-    if (check === false) {
-        res.send({ 'title': title, 'msg': error_message, 'token': '' });
-        return [""];
-    }
-    const response = await auth.authenticate_user(connection, body_content, res);
+    const response = await auth.authenticate_user(connection, req.body, res);
     if (response.length > 1) {
         is_logged_in = response[0];
         user_email = response[1];
         logged_in_user_key = response[2];
         token = response[3];
     }
-    res.send({ 'title': title, 'msg': `${response.join('\n')}`, 'token': token });
+    if (is_logged_in === false) {
+        return short_or_detailed.login_error_messages(res, title, response.join('\n'), token)
+    }
+    short_or_detailed.success_connection_message(res, title, response.join('\n'), token);
 });
 
 app.get('/user', async (req, res) => {
@@ -89,8 +83,9 @@ app.get('/user', async (req, res) => {
     if (is_logged_in === true) {
         const user_node = await db.sql_get_user_node(connection, user_email);
         if (user_node === injection.injection_message) {
-            res.send(injection.injection_message);
+            short_or_detailed.injection_message(res, title, injection.injection_message, '');
         } else if (user_node === { 'msg': "No user found" }) {
+
             res.send({ 'title': title, 'msg': `User not found\n` });
         } else {
             res.send({ 'title': title, 'msg': user_node });
