@@ -31,7 +31,7 @@ async function authenticate_user(connection, body_content) {
 }
 
 
-async function register_user(connection, body_content, res) {
+async function register_user(connection, body_content) {
     const { email, password, firstname, name } = body_content;
     const user_exists = await assets.check_if_user_exists(connection, email);
     if (user_exists === true) {

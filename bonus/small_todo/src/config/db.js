@@ -24,7 +24,7 @@ async function execute_query(connection, sql_query, params) {
     });
 }
 
-async function insert_records(connection, table_name, fields, values) {
+async function insert_records(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"]]) {
     if (!Array.isArray(values)) {
         return 'Error: values is not an array.';
     }

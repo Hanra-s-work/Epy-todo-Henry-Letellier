@@ -3,11 +3,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const db = require("./config/db.js");
 const auth = require("./routes/auth/auth.js");
+const todo = require("./routes/todos/todos.js");
 const assets = require("./assets.js");
 const todo_query = require("./routes/todos/todos.query.js");
 const injection = require("./config/check_if_sql_injection.js");
 const status_output = require("./config/speak_on_correct_status.js");
 const short_or_detailed = require("./config/short_or_detailed_message.js");
+const { add_todo } = require('./routes/todos/todos.js');
 require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
@@ -25,6 +27,7 @@ app.get('/override', (req, res) => {
     var title = 'Welcome to override\n';
     is_logged_in = true;
     user_email = "lumine@example.com";
+    global_logged_in_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE";
     if (is_logged_in === true) {
         status_output.success(res, { 'title': title, 'msg': `You are logged in as '${user_email}'\n` });
     }
@@ -39,7 +42,7 @@ app.post('/register', async (req, res) => {
         short_or_detailed.error_body_message(res, title, error_message, '');
         return [""];
     }
-    const check = await auth.register_user(connection, body_content, res);
+    const check = await auth.register_user(connection, body_content);
     if (check[0] === "Creation success") {
         is_logged_in = check[3];
         user_email = body_content.email;
@@ -49,7 +52,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const error_message = "You must provide email and password\n";
+    const error_message = "You must provide an email and a password\n";
     var title = 'Welcome to login\n';
     const check = await assets.check_if_vars_in_body(req.body, ["email", "password"]);
     if (typeof check === 'string' || check === false) {
@@ -86,9 +89,13 @@ app.get('/user/todos', async (req, res) => {
     var title = "Welcome to user/todos\n";
     if (is_logged_in === true) {
         const response = await todo_query.show_all_user_todos(connection, user_email);
-        res.send({ 'title': title, 'msg': response });
+        if (response === injection.injection_message) {
+            short_or_detailed.injection_message(res, title, global_logged_in_token);
+        } else {
+            short_or_detailed.display_user_todos(res, title, response, global_logged_in_token);
+        }
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -97,7 +104,7 @@ app.get('/users/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -106,7 +113,7 @@ app.get('/users/:email', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to users/:email\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -115,7 +122,7 @@ app.put('/users/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -124,7 +131,7 @@ app.delete('/users/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -132,9 +139,13 @@ app.get('/todos', async (req, res) => {
     var title = "Welcome to todos\n";
     if (is_logged_in === true) {
         const response = await todo_query.show_all_todos(connection);
-        res.send({ 'title': title, 'msg': response });
+        if (response === injection.injection_message) {
+            short_or_detailed.injection_message(res, title, global_logged_in_token);
+        } else {
+            short_or_detailed.display_all_todos(res, title, response, global_logged_in_token);
+        }
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -143,17 +154,27 @@ app.get('/todos/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to todos/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
 app.post('/todos', async (req, res) => {
-    var title = 'Welcome to todos\n';
+    var title = 'Welcome to todos';
     if (is_logged_in === true) {
-
-        res.send({ 'title': title, 'msg': "Hello World\n" });
+        const is_input_correct = await assets.check_if_vars_in_body(req.body, ["title", "description", "due_time", "status"]);
+        if (typeof is_input_correct === 'string' || is_input_correct === false) {
+            short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a status and (optional) the user_id", global_logged_in_token);
+            return [""];
+        }
+        const response = await todo.add_todo(connection, req.body, user_email);
+        if (response === "Creation success") {
+            const todo = await todo_query.show_all_todos(connection);
+            short_or_detailed.display_all_todos(res, title, todo, global_logged_in_token);
+        } else {
+            short_or_detailed.display_post_todo_errors(res, title, response, global_logged_in_token);
+        }
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -162,7 +183,7 @@ app.put('/todos/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to todos/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -171,7 +192,7 @@ app.delete('/todos/:id', async (req, res) => {
     if (is_logged_in === true) {
         res.send({ 'title': title, 'msg': 'Welcome to todos/:id\n' });
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 })
 
@@ -183,7 +204,7 @@ app.get('/reflet-d-acide', async (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send({ 'title': title, 'msg': response })
     } else {
-        res.send({ 'title': title, 'msg': `You are not logged in\n` });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
@@ -195,20 +216,24 @@ app.get('/logout', (req, res) => {
         global_logged_in_token = null;
         res.send({ 'title': title, 'msg': `You are logged out\n` });
     } else {
-        res.send({ 'title': title, 'msg': `You are not logged in\n` });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 
 app.get('/stop', async (req, res) => {
     var title = 'Welcome to stop\n';
-    res.send({ 'title': title, 'msg': 'Stopping server...\n' });
-    await db.disconnect_from_database(connection);
-    process.exit(0);
+    if (is_logged_in === true) {
+        short_or_detailed.success_connection_message(res, title, 'Stopping server...\n', global_logged_in_token);
+        await db.disconnect_from_database(connection);
+        process.exit(0);
+    } else {
+        short_or_detailed.user_not_logged_in(res, title);
+    }
 });
 
 app.get('/', (req, res) => {
     var title = 'Welcome to /\n';
-    res.send({ 'title': title, 'msg': 'Hello World\n' });
+    short_or_detailed.success_connection_message(res, title, 'Hello World\n', global_logged_in_token);
 });
 
 app.listen(port, async () => {

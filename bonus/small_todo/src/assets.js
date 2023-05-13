@@ -4,6 +4,14 @@ const injection = require("./config/check_if_sql_injection");
 const jsonwebtoken = require('jsonwebtoken');
 require('dotenv').config({ encoding: 'utf-8' });
 
+async function user_id_exists(connection, user_id = "1") {
+    const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = '', user_id = user_id);
+    if (response.length > 0) {
+        return true;
+    }
+    return false;
+}
+
 async function check_if_user_exists(connection, user_email) {
     const is_user_email = injection.check_if_sql_injection(user_email);
     if (is_user_email === true) {
@@ -25,7 +33,6 @@ async function check_if_vars_in_body(body, vars) {
     var i = 0;
     if (Array.isArray(vars) === false || body.length === 0) {
         console.error("body and vars have to be of type array.");
-        // throw new Error("body and vars have to be of type array.");
         return "body and vars have to be of type array.";
     };
     for (; i < vars.length; i++) {
@@ -59,6 +66,7 @@ async function sign_user_in(connection, email, password) {
 }
 
 module.exports = {
+    user_id_exists,
     check_if_user_exists,
     get_body_content,
     secure_the_password,

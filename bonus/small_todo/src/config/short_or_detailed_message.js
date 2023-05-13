@@ -113,6 +113,39 @@ function display_user_info(res, title = "", user_data = {}, token = "") {
     return [""];
 }
 
+function display_user_todos(res, title = "", user_data = {}, token = "") {
+    if (custom_message === false) {
+        status_output.success(res, user_data);
+    } else {
+        status_output.success(res, { 'title': title, 'msg': user_data, 'token': token });
+    }
+    return [""];
+}
+
+function display_all_todos(res, title = "", user_data = {}, token = "") {
+    if (custom_message === false) {
+        status_output.success(res, user_data);
+    } else {
+        status_output.success(res, { 'title': title, 'msg': user_data, 'token': token });
+    }
+    return [""];
+}
+
+function display_post_todo_errors(res, title = "", msg = "", token = "") {
+    if (msg === injection.injection_message) {
+        injection_message(res, title, token);
+    } else if (msg === "No user found") {
+        pre_coded.not_found(res);
+    } else {
+        if (custom_message === false) {
+            pre_coded.internal_server_error(res);
+        } else {
+            status_output.internal_server_error(res, { 'title': title, 'msg': msg, 'token': token });
+        }
+    }
+    return [""];
+}
+
 module.exports = {
     custom_or_bland_success,
     error_body_message,
@@ -121,5 +154,8 @@ module.exports = {
     injection_message,
     login_error_messages,
     register_message,
-    display_user_info
+    display_user_info,
+    display_user_todos,
+    display_all_todos,
+    display_post_todo_errors
 }
