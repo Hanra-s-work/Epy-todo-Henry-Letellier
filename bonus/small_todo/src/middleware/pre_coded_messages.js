@@ -5,7 +5,8 @@
 ** pre-coded-messages.js
 */
 
-const status_output = request("../config/speak_on_correct_status.js");
+const status_output = require("../config/speak_on_correct_status.js");
+const injection = require("../config/check_if_sql_injection.js");
 
 function user_not_logged_in(res) {
     status_output.unauthorized(res, { 'msg': "User not logged in" });
@@ -36,6 +37,18 @@ function not_found(res) {
     status_output.not_found(res, { 'msg': "Not found" });
 }
 
+function user_exists(res) {
+    status_output.conflict(res, { 'msg': "User already exists" });
+}
+
+function injection_message(res, custom_message = false, title="", token="") {
+    if (custom_message === false) {
+        status_output.bad_request(res, { 'msg': injection.injection_message });
+    } else {
+        status_output.bad_request(res, { 'title': title, 'msg': injection.injection_message, 'token': token });
+    }
+}
+
 module.exports = {
     user_not_logged_in,
     invalid_user_token,
@@ -43,5 +56,7 @@ module.exports = {
     bad_parameters,
     internal_server_error,
     not_enough_args,
-    not_found
+    not_found,
+    user_exists,
+    injection_message
 }

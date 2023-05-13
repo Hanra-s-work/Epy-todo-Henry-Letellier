@@ -31,51 +31,41 @@ app.get('/override', (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-    var usr_msgs = Array();
     var title = 'Welcome to register\n';
     const error_message = "You must provide email, password, firstname and name\n";
-    var token = "";
     const body_content = req.body;
     const is_register_data_present = await assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
     if (typeof is_register_data_present === 'string' || is_register_data_present === false) {
         short_or_detailed.error_body_message(res, title, error_message, '');
         return [""];
     }
-    const check = await auth.register_user(body_content, res);
-    if (check.length == 2 && (check[0] === "Creation success" || check[0] === "User exists")) {
-        usr_msgs.push(check[1])
-        const response = await auth.authenticate_user(connection, body_content, res);
-        if (response.length > 1) {
-            is_logged_in = response[0];
-            user_email = response[1];
-            logged_in_user_key = response[2];
-            token = response[3];
-        }
-    } else {
-        usr_msgs.push(check[0]);
+    const check = await auth.register_user(connection, body_content, res);
+    if (check[0] === "Creation success") {
+        is_logged_in = check[3];
+        user_email = body_content.email;
+        logged_in_user_key = check[2];
     }
-    short_or_detailed.success_connection_message(res, title, `${usr_msgs.join('\n')}`, token);
+    short_or_detailed.register_message(res, title, check[1], logged_in_user_key);
 });
 
 app.post('/login', async (req, res) => {
-    var token = '';
     const error_message = "You must provide email and password\n";
     var title = 'Welcome to login\n';
     const check = await assets.check_if_vars_in_body(req.body, ["email", "password"]);
     if (typeof check === 'string' || check === false) {
         return short_or_detailed.error_body_message(res, title, error_message, '');
     }
-    const response = await auth.authenticate_user(connection, req.body, res);
+    const response = await auth.authenticate_user(connection, req.body);
     if (response.length > 1) {
         is_logged_in = response[0];
         user_email = response[1];
         logged_in_user_key = response[2];
-        token = response[3];
+        console.log(`is_logged_in = ${is_logged_in}\nuser_email = ${user_email}\nlogged_in_user_key = ${logged_in_user_key}\nmessage = ${response[3]}`);
     }
     if (is_logged_in === false) {
-        return short_or_detailed.login_error_messages(res, title, response.join('\n'), token)
+        return short_or_detailed.login_error_messages(res, title, response[3], logged_in_user_key)
     }
-    short_or_detailed.success_connection_message(res, title, response.join('\n'), token);
+    short_or_detailed.success_connection_message(res, title, response[3], logged_in_user_key);
 });
 
 app.get('/user', async (req, res) => {
@@ -83,15 +73,12 @@ app.get('/user', async (req, res) => {
     if (is_logged_in === true) {
         const user_node = await db.sql_get_user_node(connection, user_email);
         if (user_node === injection.injection_message) {
-            short_or_detailed.injection_message(res, title, injection.injection_message, '');
-        } else if (user_node === { 'msg': "No user found" }) {
-
-            res.send({ 'title': title, 'msg': `User not found\n` });
+            short_or_detailed.injection_message(res, title, '');
         } else {
-            res.send({ 'title': title, 'msg': user_node });
+            short_or_detailed.display_user_info(res, title, user_node[0], token);
         }
     } else {
-        res.send({ 'title': title, 'msg': 'You are not logged in\n' });
+        short_or_detailed.user_not_logged_in(res, title);
     }
 });
 

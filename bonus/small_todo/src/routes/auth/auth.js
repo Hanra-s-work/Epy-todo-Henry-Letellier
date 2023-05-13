@@ -9,7 +9,7 @@ const db = require('../../config/db');
 const assets = require('../../assets');
 const injection = require('../../config/check_if_sql_injection');
 
-async function authenticate_user(connection, body_content, res) {
+async function authenticate_user(connection, body_content) {
     const { email, password } = body_content;
     const user_node = await db.sql_get_user_node(connection, email);
     if (user_node === injection.injection_message) {
@@ -27,12 +27,11 @@ async function authenticate_user(connection, body_content, res) {
     }
     is_logged_in = true;
     user_email = user_node.email;
-    return [is_logged_in, user_email, logged_in_user_key, `Welcome ${user_node.firstname}\n${logged_in_user_key}`];
+    return [is_logged_in, user_email, logged_in_user_key, `Welcome ${user_node.firstname}\n`];
 }
 
 
 async function register_user(connection, body_content, res) {
-    var title = 'Welcome to registrations\n';
     const { email, password, firstname, name } = body_content;
     const user_exists = await assets.check_if_user_exists(connection, email);
     if (user_exists === true) {
@@ -43,7 +42,9 @@ async function register_user(connection, body_content, res) {
     if (response === injection.injection_message) {
         return [response];
     }
-    return ["Creation success", `${title}User created\n${logged_in_user_key}`];
+    const logged_in_user_key = await assets.sign_user_in(connection, email, password);
+    const connected = true;
+    return ["Creation success", "User created", logged_in_user_key, connected];
 }
 
 
