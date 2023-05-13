@@ -14,7 +14,7 @@ const port = process.env.PORT || 3015;
 var connection = null;
 var user_email = null;
 var is_logged_in = false;
-var logged_in_user_key = null;
+var global_logged_in_token = null;
 
 app.use(express.raw());
 app.use(express.json());
@@ -43,9 +43,9 @@ app.post('/register', async (req, res) => {
     if (check[0] === "Creation success") {
         is_logged_in = check[3];
         user_email = body_content.email;
-        logged_in_user_key = check[2];
+        global_logged_in_token = check[2];
     }
-    short_or_detailed.register_message(res, title, check[1], logged_in_user_key);
+    short_or_detailed.register_message(res, title, check[1], global_logged_in_token);
 });
 
 app.post('/login', async (req, res) => {
@@ -59,13 +59,13 @@ app.post('/login', async (req, res) => {
     if (response.length > 1) {
         is_logged_in = response[0];
         user_email = response[1];
-        logged_in_user_key = response[2];
-        console.log(`is_logged_in = ${is_logged_in}\nuser_email = ${user_email}\nlogged_in_user_key = ${logged_in_user_key}\nmessage = ${response[3]}`);
+        global_logged_in_token = response[2];
+        console.log(`is_logged_in = ${is_logged_in}\nuser_email = ${user_email}\nlogged_in_user_key = ${global_logged_in_token}\nmessage = ${response[3]}`);
     }
     if (is_logged_in === false) {
-        return short_or_detailed.login_error_messages(res, title, response[3], logged_in_user_key)
+        return short_or_detailed.login_error_messages(res, title, response[3], global_logged_in_token)
     }
-    short_or_detailed.success_connection_message(res, title, response[3], logged_in_user_key);
+    short_or_detailed.success_connection_message(res, title, response[3], global_logged_in_token);
 });
 
 app.get('/user', async (req, res) => {
@@ -75,7 +75,7 @@ app.get('/user', async (req, res) => {
         if (user_node === injection.injection_message) {
             short_or_detailed.injection_message(res, title, '');
         } else {
-            short_or_detailed.display_user_info(res, title, user_node[0], token);
+            short_or_detailed.display_user_info(res, title, user_node, global_logged_in_token);
         }
     } else {
         short_or_detailed.user_not_logged_in(res, title);
@@ -192,7 +192,7 @@ app.get('/logout', (req, res) => {
     if (is_logged_in === true) {
         is_logged_in = false;
         user_email = null;
-        logged_in_user_key = null;
+        global_logged_in_token = null;
         res.send({ 'title': title, 'msg': `You are logged out\n` });
     } else {
         res.send({ 'title': title, 'msg': `You are not logged in\n` });

@@ -49,12 +49,11 @@ function injection_message(res, title = "", token = "") {
     return [""];
 }
 
-function user_not_logged_in(res, title="")
-{
+function user_not_logged_in(res, title = "") {
     if (custom_message === false) {
         pre_coded.user_not_logged_in(res);
     } else {
-        status_output.unauthorized(res, { 'title': title, 'msg': "User not logged in", "token":""});
+        status_output.unauthorized(res, { 'title': title, 'msg': "User not logged in", "token": "" });
     }
     return [""];
 }
@@ -80,7 +79,7 @@ function login_error_messages(res, title = "", msg = "", token = "") {
     return [""];
 }
 
-function register_message(res, title="", msg="", token="") {
+function register_message(res, title = "", msg = "", token = "") {
     if (msg === "User created") {
         if (custom_message === false) {
             status_output.success(res, { 'token': token });
@@ -105,12 +104,11 @@ function register_message(res, title="", msg="", token="") {
     return [""];
 }
 
-function display_user_info(res, title="", msg="", token="", user_data={})
-{
+function display_user_info(res, title = "", user_data = {}, token = "") {
     if (custom_message === false) {
         status_output.success(res, user_data);
     } else {
-        status_output.success(res, { 'title': title, 'msg': user_data,'token': token });
+        status_output.success(res, { 'title': title, 'msg': user_data, 'token': token });
     }
     return [""];
 }
@@ -121,7 +119,7 @@ module.exports = {
     user_not_logged_in,
     success_connection_message,
     injection_message,
-    login_error_messages, 
+    login_error_messages,
     register_message,
     display_user_info
 }

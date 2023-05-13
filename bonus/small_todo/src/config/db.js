@@ -70,21 +70,21 @@ async function sql_exampleUsage(connection) {
 }
 
 async function sql_get_user(connection, table_name, user_name = "", user_firstname = "", user_email = "", user_id = 0) {
-    var sql_query = "";
+    var sql_query_oder = "id,email,password,created_at,firstname,name";
     const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
     if (is_injection === true) {
         return injection.injection_message;
     }
     if (user_name.length > 0 && user_firstname.length > 0) {
-        sql_query = `SELECT * FROM ${table_name} WHERE name="${user_name} AND firstname="${user_firstname}"`;
+        sql_query = `SELECT ${sql_query_oder} FROM ${table_name} WHERE name="${user_name} AND firstname="${user_firstname}"`;
     } else if (user_name.length > 0) {
-        sql_query = `SELECT * FROM ${table_name} WHERE name="${user_name}"`;
+        sql_query = `SELECT ${sql_query_oder} FROM ${table_name} WHERE name="${user_name}"`;
     } else if (user_firstname.length > 0) {
-        sql_query = `SELECT * FROM ${table_name} WHERE firstname="${user_firstname}"`;
+        sql_query = `SELECT ${sql_query_oder} FROM ${table_name} WHERE firstname="${user_firstname}"`;
     } else if (user_email.length > 0) {
-        sql_query = `SELECT * FROM ${table_name} WHERE email="${user_email}"`;
+        sql_query = `SELECT ${sql_query_oder} FROM ${table_name} WHERE email="${user_email}"`;
     } else if (user_id > 0) {
-        sql_query = `SELECT * FROM ${table_name} WHERE id="${user_id}"`;
+        sql_query = `SELECT ${sql_query_oder} FROM ${table_name} WHERE id="${user_id}"`;
     } else {
         return { 'msg': "No search criteria" };
     }

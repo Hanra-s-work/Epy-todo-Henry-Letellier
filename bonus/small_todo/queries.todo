@@ -1,8 +1,8 @@
 # Routes:
     [x] /register     POST   no  register a new user
     [!] /login        POST   no  connect a user
-    [o] /user         GET    yes view all user information
-    [ ] /user/todos   GET    yes view all user tasks
+    [x] /user         GET    yes view all user information
+    [o] /user/todos   GET    yes view all user tasks
     [ ] /users/:id    GET    yes view user information
     [ ] /users/:email GET    yes view user information
     [ ] /users/:id    PUT    yes update user information
