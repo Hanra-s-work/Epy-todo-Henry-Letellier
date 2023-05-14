@@ -6,7 +6,7 @@
     [x] /users/:id    GET    yes view user information
     [x] /users/:email GET    yes view user information
     [ ] /users/:id    PUT    yes update user information
-    [ ] /users/:id    DELETE yes delete user
+    [x] /users/:id    DELETE yes delete user
     [x] /todos        GET    yes view all the todos
     [ ] /todos/:id    GET    yes view the todo
     [x] /todos        POST   yes create a todo

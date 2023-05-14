@@ -174,6 +174,24 @@ function users_id_messages(res, title = "", msg = "", token = "") {
     }
 }
 
+function delete_users_id_messages(res, title = "", msg = "", token = "") {
+    if (assets.isJSON(msg) === true) {
+        custom_or_bland_success(res, title, `Successfully deleted record number: ${msg.id}`, token, custom_message);
+    } else if (msg === "No user found") {
+        pre_coded.not_found(res);
+    } else if (msg === "Unknown input") {
+        pre_coded.bad_parameters(res);
+    } else if (msg === injection.injection_message) {
+        injection_message(res, title, token);
+    } else {
+        if (custom_message === false) {
+            pre_coded.internal_server_error(res);
+        } else {
+            status_output.internal_server_error(res, { 'title': title, 'msg': msg, 'token': token });
+        }
+    }
+}
+
 module.exports = {
     custom_or_bland_success,
     error_body_message,
@@ -187,5 +205,6 @@ module.exports = {
     display_all_todos,
     display_post_todo_errors,
     error_url_message,
-    users_id_messages
+    users_id_messages,
+    delete_users_id_messages
 }

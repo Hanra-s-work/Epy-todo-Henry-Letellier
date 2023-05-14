@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const db = require("./config/db.js");
 const auth = require("./routes/auth/auth.js");
+const user = require("./routes/user/user.js");
 const todo = require("./routes/todos/todos.js");
 const assets = require("./assets.js");
 const user_query = require("./routes/user/user.query.js");
@@ -140,7 +141,12 @@ app.put('/users/:id', async (req, res) => {
 app.delete('/users/:id', async (req, res) => {
     var title = 'Welcome to users/:id\n';
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
+        const is_id_in = await assets.check_if_var_in_url(req, "id");
+        if (is_id_in === false) {
+            return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        }
+        const response = await user.forget_user(connection, req.params.id);
+        short_or_detailed.delete_users_id_messages(res, title, response, global_logged_in_token);
     } else {
         short_or_detailed.user_not_logged_in(res, title);
     }

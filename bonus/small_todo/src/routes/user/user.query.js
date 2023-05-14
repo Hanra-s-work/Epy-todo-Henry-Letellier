@@ -8,7 +8,7 @@
 const db = require("../../config/db");
 const assets = require("../../assets");
 
-async function get_other_usr_info(connection, node_to_search = "1") {
+async function get_other_usr_info(connection, node_to_search = "-1") {
     const is_email = assets.check_if_input_is_email(node_to_search);
     const is_id = assets.check_if_input_is_id(node_to_search);
     if (is_email === true) {

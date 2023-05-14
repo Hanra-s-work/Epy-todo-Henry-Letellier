@@ -35,6 +35,19 @@ async function add_todo(connection, body_content, email) {
     return "Creation success";
 }
 
+async function delete_all_user_todos(connection, node_to_search = "-1") {
+    try {
+        const response = await db.delete_record(connection, 'todo', `user_id="${node_to_search}"`);
+        if (response === injection.injection_message) {
+            return injection.injection_message;
+        }
+        return response;
+    } catch (err) {
+        return { "err": err };
+    }
+}
+
 module.exports = {
-    add_todo
+    add_todo,
+    delete_all_user_todos
 }
