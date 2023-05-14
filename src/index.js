@@ -45,6 +45,7 @@ app.post('/register', async (req, res) => {
         res.send({"msg":"user exists"});
         return "";
     } else {
+        const hashedPassword = bcrypt.hashSync(content.password, 10);
         var add = await db.query(connection, `INSERT INTO user (name, firstname, email, password) VALUES ("${content.name}", "${content.firstname}","${content.email}", "${content.password}")`, []);
         console.log(add);
         res.send({"msg":"user created"});
