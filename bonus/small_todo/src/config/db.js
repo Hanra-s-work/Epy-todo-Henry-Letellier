@@ -69,8 +69,8 @@ async function sql_exampleUsage(connection) {
     return result;
 }
 
-async function sql_get_user(connection, table_name, user_name = "", user_firstname = "", user_email = "", user_id = 0) {
-    var sql_query_oder = "id,email,password,created_at,firstname,name";
+async function sql_get_user(connection, table_name = "user", user_name = "", user_firstname = "", user_email = "", user_id = 0) {
+    var sql_query_oder = "*";
     const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
     if (is_injection === true) {
         return injection.injection_message;

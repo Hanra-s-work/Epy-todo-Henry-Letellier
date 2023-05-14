@@ -47,7 +47,31 @@ async function delete_all_user_todos(connection, node_to_search = "-1") {
     }
 }
 
+async function forget_todo(connect, node_to_search = "-1") {
+    const is_id = assets.check_if_input_is_id(node_to_search);
+    if (is_id === false) {
+        return "Unknown input";
+    }
+    const is_injection = injection.check_if_sql_injection(node_to_search);
+    if (is_injection === true) {
+        return injection.injection_message;
+    }
+    const todo_node = await db.sql_get_user(connect, 'todo', '', '', '', node_to_search);
+    if (todo_node.length === 0) {
+        return "No todo found";
+    }
+    const deleted_todo = await db.delete_record(connect, 'todo', `id="${node_to_search}"`)
+    if ("fieldCount" in deleted_todo) {
+        return { "id": node_to_search, "msg": "success" };
+    }
+    if (deleted_todo === injection.injection_message) {
+        return injection.injection_message;
+    }
+    return deleted_todo;
+}
+
 module.exports = {
     add_todo,
-    delete_all_user_todos
+    delete_all_user_todos,
+    forget_todo
 }
