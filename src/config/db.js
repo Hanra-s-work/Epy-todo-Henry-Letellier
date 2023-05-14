@@ -28,16 +28,29 @@ async function disconnect_database(connection) {
 async function query(connection, command, params) {
     try {
         const [rows, fields] = await connection.execute(command, params);
-        return {'msg': rows};
+        return rows;
     } catch (error) {
         console.error(`Error executing query: ${error}`);
         return {'msg':`Error executing query: ${error}`};
     }
 }
 
+async function is_in(connection, email) {
+    if (email.length === 0) {
+        return {'msg': "no email provided"};
+    }
+    var data = await query(connection, `SELECT * FROM user WHERE email = "${email}"`, []);
+    console.log(data);
+    if (data.length != 0) {
+        return true;
+    }
+    return false;
+}
+
 module.exports = {
     pool,
     connect_database,
     disconnect_database,
-    query
+    query,
+    is_in
 };
