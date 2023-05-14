@@ -2,6 +2,9 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const app = express();
 const db = require("./config/db");
+const jsonwebtoken = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+require("dotenv").config({encoding:'utf-8'});
 
 
 const port = 3000;
@@ -33,9 +36,19 @@ app.post('/login', async (req, res) => {
 
 app.post('/register', async (req, res) => {
     const content = req.body;
-    console.log(JSON.stringify(content));
-    var check_mail = await db.is_it(connection, `SELECT * FROM user WHERE email = "${content.email}"`);
-    if ()
+    if ("email" in content === false || "password" in content === false || "name" in content === false || "firstname" in content === false) {
+        res.send({"msg":"please send your email, password, name and firstname"});
+        return "";
+    }
+    var user_exists = await db.is_in(connection, content.email);
+    if (user_exists === true) {
+        res.send({"msg":"user exists"});
+        return "";
+    } else {
+        var add = await db.query(connection, `INSERT INTO user (name, firstname, email, password) VALUES ("${content.name}", "${content.firstname}","${content.email}", "${content.password}")`, []);
+        console.log(add);
+        res.send({"msg":"user created"});
+    }
 })
 
 // bonus
