@@ -5,10 +5,10 @@
 ** short_or_detailed_message.js
 */
 
-
-const status_output = require("./speak_on_correct_status.js");
-const pre_coded = require("../middleware/pre_coded_messages.js");
+const assets = require("../assets");
 const injection = require("./check_if_sql_injection.js");
+const pre_coded = require("../middleware/pre_coded_messages.js");
+const status_output = require("./speak_on_correct_status.js");
 
 var custom_message = false;
 
@@ -105,6 +105,9 @@ function register_message(res, title = "", msg = "", token = "") {
 }
 
 function display_user_info(res, title = "", user_data = {}, token = "") {
+    if (Array.isArray(user_data) === true && user_data.length == 1) {
+        user_data = user_data[0];
+    }
     if (custom_message === false) {
         status_output.success(res, user_data);
     } else {
@@ -146,6 +149,31 @@ function display_post_todo_errors(res, title = "", msg = "", token = "") {
     return [""];
 }
 
+function error_url_message(res, title = "", msg = "", token = "") {
+    if (custom_message === false) {
+        pre_coded.not_found(res);
+    } else {
+        status_output.not_found(res, { 'title': title, 'msg': msg, 'token': token });
+    }
+    return [""];
+}
+
+function users_id_messages(res, title = "", msg = "", token = "") {
+    if (assets.isJSON(msg) === true) {
+        display_user_info(res, title, msg, token);
+    } else if (msg === "No user found") {
+        pre_coded.not_found(res);
+    } else if (msg === "Unknown input") {
+        pre_coded.bad_parameters(res);
+    } else {
+        if (custom_message === false) {
+            pre_coded.internal_server_error(res);
+        } else {
+            status_output.internal_server_error(res, { 'title': title, 'msg': msg, 'token': token });
+        }
+    }
+}
+
 module.exports = {
     custom_or_bland_success,
     error_body_message,
@@ -157,5 +185,7 @@ module.exports = {
     display_user_info,
     display_user_todos,
     display_all_todos,
-    display_post_todo_errors
+    display_post_todo_errors,
+    error_url_message,
+    users_id_messages
 }

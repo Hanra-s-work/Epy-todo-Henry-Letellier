@@ -23,7 +23,7 @@ async function add_todo(connection, body_content, email) {
         user_id = usr_node.id;
     } else {
         user_id = body_content.user_id;
-        var response = await assets.user_id_exists(connection, user_id);
+        var response = await assets.check_if_user_id_exists(connection, user_id);
         if (response === false) {
             return "No user found";
         }

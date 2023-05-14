@@ -1,15 +1,16 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+
 const db = require("./config/db.js");
 const auth = require("./routes/auth/auth.js");
 const todo = require("./routes/todos/todos.js");
 const assets = require("./assets.js");
+const user_query = require("./routes/user/user.query.js");
 const todo_query = require("./routes/todos/todos.query.js");
 const injection = require("./config/check_if_sql_injection.js");
 const status_output = require("./config/speak_on_correct_status.js");
 const short_or_detailed = require("./config/short_or_detailed_message.js");
-const { add_todo } = require('./routes/todos/todos.js');
 require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3015;
@@ -102,7 +103,12 @@ app.get('/user/todos', async (req, res) => {
 app.get('/users/:id', async (req, res) => {
     var title = 'Welcome to users/:id\n';
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
+        const is_id_in = await assets.check_if_var_in_url(req, "id");
+        if (is_id_in === false) {
+            return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        }
+        const response = await user_query.get_other_usr_info(connection, req.params.id);
+        short_or_detailed.users_id_messages(res, title, response, global_logged_in_token);
     } else {
         short_or_detailed.user_not_logged_in(res, title);
     }
@@ -111,7 +117,12 @@ app.get('/users/:id', async (req, res) => {
 app.get('/users/:email', async (req, res) => {
     var title = 'Welcome to users/:email\n';
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': 'Welcome to users/:email\n' });
+        const is_id_in = await assets.check_if_var_in_url(req, "id");
+        if (is_id_in === false) {
+            return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        }
+        const response = await user_query.get_other_usr_info(connection, req.params.email);
+        short_or_detailed.users_id_messages(res, title, response, global_logged_in_token);
     } else {
         short_or_detailed.user_not_logged_in(res, title);
     }
