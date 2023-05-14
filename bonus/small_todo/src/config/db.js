@@ -40,18 +40,20 @@ async function insert_records(connection, table_name = "user", fields = ["name",
     return execute_query(connection, sql_query, flattened_values);
 }
 
-async function update_record(connection, table_name, record, where_clause) {
-    const fields = Object.keys(record).map((key) => `${key}=?`).join(',');
-    const values = Object.values(record);
-    const sql_query = `UPDATE ${table_name} SET ${fields} WHERE ${where_clause}`;
-    const is_table = await injection.check_if_sql_injection(table_name);
-    const is_values = await injection.check_if_sql_injection(values);
-    const is_fields = await injection.check_if_sql_injection(fields);
-    const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
-    if (is_table === true || is_values === true || is_fields === true || is_where === true) {
+async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"]], where_clause = "") {
+    if (!Array.isArray(values)) {
+        return 'Error: values is not an array.';
+    }
+    const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
+    const sql_query = `UPDATE ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
+
+    const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
+    if (has_injection === true) {
         return injection.injection_message;
     }
-    return execute_query(connection, sql_query, values);
+
+    const flattened_values = values.flat(); // flatten the array of arrays
+    return execute_query(connection, sql_query, flattened_values);
 }
 
 async function delete_record(connection, table_name, where_clause) {
@@ -69,9 +71,9 @@ async function sql_exampleUsage(connection) {
     return result;
 }
 
-async function sql_get_user(connection, table_name = "user", user_name = "", user_firstname = "", user_email = "", user_id = 0) {
+async function sql_get_user(connection, table_name = "user", user_name = "", user_firstname = "", user_email = "", user_id = '0') {
     var sql_query_oder = "*";
-    const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
+    const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email, user_id]);
     if (is_injection === true) {
         return injection.injection_message;
     }

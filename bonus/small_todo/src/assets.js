@@ -96,6 +96,18 @@ function isJSON(str) {
     }
 }
 
+function fill_string_if_empty(raw_object, sql_node) {
+    if (typeof raw_object != "object" || typeof sql_node != "object") {
+        console.error("raw_object and sql_node have to be of type object.");
+        return "raw_object and sql_node have to be of type object.";
+    }
+    for (let key in raw_object) {
+        if (key in sql_node && raw_object[key].length === 0) {
+            raw_object[key] = sql_node[key];
+        }
+    }
+    return raw_object;
+}
 
 module.exports = {
     sign_user_in,
@@ -107,5 +119,6 @@ module.exports = {
     check_if_vars_in_body,
     check_if_input_is_email,
     check_if_user_id_exists,
-    isJSON
+    isJSON,
+    fill_string_if_empty
 }

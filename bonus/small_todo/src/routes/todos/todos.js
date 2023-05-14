@@ -70,8 +70,24 @@ async function forget_todo(connect, node_to_search = "-1") {
     return deleted_todo;
 }
 
+async function update_todo(connection, body_content, node_to_search = '-1') {
+    const { title, description, due_time, user_id, status } = body_content;
+    var data = { 'title': title, 'description': description, 'due_time': due_time, 'user_id': user_id, "status": status };
+    const is_id = await assets.check_if_input_is_id(node_to_search);
+    if (is_id === false) {
+        return "Unknown input";
+    }
+    const todo_node = await db.sql_get_user(connection, 'todo', '', '', '', node_to_search);
+    if (todo_node.length === 0) {
+        return "No todo found";
+    }
+    raw_object = assets.fill_string_if_empty(raw_object, todo_node[0]);
+    const result = await db.update_record(connection, 'todo', data, `id="${node_to_search}"`);
+}
+
 module.exports = {
     add_todo,
     delete_all_user_todos,
-    forget_todo
+    forget_todo,
+    update_todo
 }

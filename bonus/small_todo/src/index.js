@@ -198,7 +198,16 @@ app.post('/todos', async (req, res) => {
 app.put('/todos/:id', async (req, res) => {
     var title = 'Welcome to todos/:id\n';
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': 'Welcome to todos/:id\n' });
+        const is_id_in = await assets.check_if_var_in_url(req, "id");
+        if (is_id_in === false) {
+            return short_or_detailed.error_url_message(res, title, "You must provide an id\n", global_logged_in_token);
+        }
+        const is_input_correct = await assets.check_if_vars_in_body(req.body, ['title', 'description', 'due_time', 'user_id', 'status']);
+        if (is_input_correct === false) {
+            return short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a user_id and a status\n", global_logged_in_token);
+        }
+        const response = await todo.update_todo(connection, req.body, req.params.id);
+        short_or_detailed.display_put_todos(res, title, response, global_logged_in_token);
     } else {
         short_or_detailed.user_not_logged_in(res, title);
     }
@@ -209,7 +218,7 @@ app.delete('/todos/:id', async (req, res) => {
     if (is_logged_in === true) {
         const is_id_in = await assets.check_if_var_in_url(req, "id");
         if (is_id_in === false) {
-            return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+            return short_or_detailed.error_url_message(res, title, "You must provide an id\n", global_logged_in_token);
         }
         const response = await todo.forget_todo(connection, req.params.id);
         short_or_detailed.delete_todos_id_messages(res, title, response, global_logged_in_token);
