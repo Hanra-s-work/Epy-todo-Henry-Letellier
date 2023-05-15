@@ -132,7 +132,16 @@ app.get('/users/:email', async (req, res) => {
 app.put('/users/:id', async (req, res) => {
     var title = 'Welcome to users/:id\n';
     if (is_logged_in === true) {
-        res.send({ 'title': title, 'msg': 'Welcome to users/:id\n' });
+        const is_id_in = assets.check_if_input_is_id(req.params.id);
+        if (is_id_in === false) {
+            short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
+        }
+        const in_body = assets.check_if_vars_in_body(req.body, ["email", "firstname", "name", "password"]);
+        if (in_body === false) {
+            short_or_detailed.error_body_message(res, title, "You must provide: email, firstname, name, password", global_logged_in_token);
+        }
+        const update = await user.update_user(connection, req.body, req.params.id);
+        short_or_detailed.put_user_id(res, title, update, global_logged_in_token);
     } else {
         short_or_detailed.user_not_logged_in(res, title);
     }
@@ -272,8 +281,13 @@ app.get('/', (req, res) => {
     short_or_detailed.success_connection_message(res, title, 'Hello World\n', global_logged_in_token);
 });
 
+async function test_update(connection) {
+
+}
+
 app.listen(port, async () => {
     console.log(`Server running on port ${port} at http://localhost:${port}`);
     connection = await db.connect_to_database();
     db.display_connection_id(connection);
+    test_update(connection);
 });
