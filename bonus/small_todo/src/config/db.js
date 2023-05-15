@@ -40,21 +40,31 @@ async function insert_records(connection, table_name = "user", fields = ["name",
     return execute_query(connection, sql_query, flattened_values);
 }
 
+async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"], ["exemple", "exemple", "exemple@exemple.com", "exemple"]], where_clause = "") {
+    if (!Array.isArray(values)) {
+        return 'Error: values is not an array.';
+    }
+    const set_values = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
+    const sql_query = `UPDATE ${table_name} SET ${set_fields} WHERE ${where_clause}`;
+    const flattened_values = values.flat(); // flatten the array of arrays
+    return execute_query(connection, sql_query, flattened_values);
+}
+
 async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"]], where_clause = "") {
     if (!Array.isArray(values)) {
         return 'Error: values is not an array.';
     }
-    const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
-    const sql_query = `UPDATE ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
 
-    const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
-    if (has_injection === true) {
-        return injection.injection_message;
-    }
-
-    const flattened_values = values.flat(); // flatten the array of arrays
-    return execute_query(connection, sql_query, flattened_values);
+    const set_fields = fields.map((field, index) => `${field} = "${values[0][index]}"`).join(', ');
+    const sql_query = `UPDATE ${table_name} SET ${set_fields} WHERE ${where_clause}`;
+    return execute_query(connection, sql_query);
 }
+
+
+
+
+
+
 
 async function delete_record(connection, table_name, where_clause) {
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
