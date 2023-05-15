@@ -40,24 +40,18 @@ async function insert_records(connection, table_name = "user", fields = ["name",
     return execute_query(connection, sql_query, flattened_values);
 }
 
-async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"], ["exemple", "exemple", "exemple@exemple.com", "exemple"]], where_clause = "") {
+async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = ["example", "example", "example@example.com", "example"], where_clause = "") {
     if (!Array.isArray(values)) {
         return 'Error: values is not an array.';
     }
-    const set_values = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
-    const sql_query = `UPDATE ${table_name} SET ${set_fields} WHERE ${where_clause}`;
-    const flattened_values = values.flat(); // flatten the array of arrays
-    return execute_query(connection, sql_query, flattened_values);
-}
+    var items = [];
 
-async function update_record(connection, table_name = "user", fields = ["name", "firstname", "email", "password"], values = [["example", "example", "example@example.com", "example"]], where_clause = "") {
-    if (!Array.isArray(values)) {
-        return 'Error: values is not an array.';
+    for (var i = 0; i < fields.length; i++) {
+        items.push(`${fields[i]}="${values[i]}"`);
     }
-
-    const set_fields = fields.map((field, index) => `${field} = "${values[0][index]}"`).join(', ');
-    const sql_query = `UPDATE ${table_name} SET ${set_fields} WHERE ${where_clause}`;
-    return execute_query(connection, sql_query);
+    var update_query = `UPDATE ${table_name} SET ${items.join(', ')} WHERE ${where_clause}`;
+    console.log(update_query);
+    return execute_query(connection, update_query, []);
 }
 
 async function delete_record(connection, table_name, where_clause) {
