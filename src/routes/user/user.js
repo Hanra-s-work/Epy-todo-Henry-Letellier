@@ -38,6 +38,26 @@ async function forget_user(connection, node_to_search = "-1") {
     return deleted_user;
 }
 
+async function update_user(connection, body_content, node_to_search = '-1')
+{
+    const check_id = assets.check_if_input_is_id(node_to_search);
+    if (check_id === false) {
+        return "Unknown input";
+    }
+    const user_node = db.sql_get_user(connection, 'user', "", "", "", node_to_search);
+    if (user_node === injection.injection_message) {
+        return injection.injection_message;
+    }
+    if (user_node.length === 0) {
+        return "No user found";
+    }
+    const { name, firstname, email, password } = body_content;
+    console.log(${})
+    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, password], `id="${node_to_search}`);
+    return update;
+}
+
 module.exports = {
     forget_user,
+    update_user
 }
