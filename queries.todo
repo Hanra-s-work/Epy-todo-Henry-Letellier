@@ -8,7 +8,7 @@
     [ ] /users/:id    PUT    yes update user information
     [x] /users/:id    DELETE yes delete user
     [x] /todos        GET    yes view all the todos
-    [ ] /todos/:id    GET    yes view the todo
+    [x] /todos/:id    GET    yes view the todo
     [x] /todos        POST   yes create a todo
-    [o] /todos/:id    PUT    yes update a todo
+    [||] /todos/:id    PUT    yes update a todo
     [x] /todos/:id    DELETE yes delete a todo

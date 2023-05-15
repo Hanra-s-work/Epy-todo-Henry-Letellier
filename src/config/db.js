@@ -60,12 +60,6 @@ async function update_record(connection, table_name = "user", fields = ["name", 
     return execute_query(connection, sql_query);
 }
 
-
-
-
-
-
-
 async function delete_record(connection, table_name, where_clause) {
     const is_where = await injection.check_if_symbol_and_command_injection(where_clause);
     const is_table_name = await injection.check_if_sql_injection(table_name);

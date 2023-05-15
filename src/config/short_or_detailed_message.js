@@ -228,6 +228,25 @@ function display_put_todos(res, title = "", msg = "", token = "") {
     }
 }
 
+
+function display_todo_id(res, title = "", msg = "", token = "") {
+    if (assets.isJSON(msg) === true) {
+        custom_or_bland_success(res, title, msg, token, custom_message);
+    } else if (msg === "No todo found") {
+        pre_coded.not_found(res);
+    } else if (msg === "Unknown input") {
+        pre_coded.bad_parameters(res);
+    } else if (msg === injection.injection_message) {
+        injection_message(res, title, token);
+    } else {
+        if (custom_message === false) {
+            pre_coded.internal_server_error(res);
+        } else {
+            status_output.internal_server_error(res, { 'title': title, 'msg': msg, 'token': token });
+        }
+    }
+}
+
 module.exports = {
     custom_or_bland_success,
     error_body_message,
@@ -244,5 +263,6 @@ module.exports = {
     users_id_messages,
     delete_users_id_messages,
     delete_todos_id_messages,
-    display_put_todos
+    display_put_todos,
+    display_todo_id
 }
