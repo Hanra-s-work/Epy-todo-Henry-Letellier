@@ -24,7 +24,6 @@ async function forget_user(connection, node_to_search = "-1") {
         return "No user found";
     }
     const user_todos = await todos.delete_all_user_todos(connection, user_node[0].id);
-    console.log(`user_todos = ${JSON.stringify(user_todos)}`);
     if ("fieldCount" in user_todos === false) {
         return "Error deleting todos";
     }
@@ -52,8 +51,8 @@ async function update_user(connection, body_content, node_to_search = '-1')
         return "No user found";
     }
     const { name, firstname, email, password } = body_content;
-    
-    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, password], `id="${node_to_search}"`);
+    const secured_password = await assets.secure_the_password(password);
+    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, secured_password], `id="${node_to_search}"`);
     if (update === injection.injection_message) {
         return injection.injection_message;
     }
@@ -61,6 +60,9 @@ async function update_user(connection, body_content, node_to_search = '-1')
         return "Update failed";
     }
     const table_content = await db.sql_get_user(connection, 'user', '', '', '', node_to_search);
+    if (table_content === injection.injection_message) {
+        return injection.injection_message;
+    }
     return table_content[0];
 }
 
