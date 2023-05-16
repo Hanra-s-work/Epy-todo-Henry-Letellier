@@ -50,7 +50,6 @@ async function update_record(connection, table_name = "user", fields = ["name", 
         items.push(`${fields[i]}="${values[i]}"`);
     }
     var update_query = `UPDATE ${table_name} SET ${items.join(', ')} WHERE ${where_clause}`;
-    console.log(update_query);
     return execute_query(connection, update_query, []);
 }
 
@@ -69,9 +68,9 @@ async function sql_exampleUsage(connection) {
     return result;
 }
 
-async function sql_get_user(connection, table_name = "user", user_name = "", user_firstname = "", user_email = "", user_id = '0') {
+async function sql_get_user(connection, table_name = "user", user_name = "", user_firstname = "", user_email = "", user_id = "0") {
     var sql_query_oder = "*";
-    const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email, user_id]);
+    const is_injection = await injection.check_if_injections_in_strings([table_name, user_name, user_firstname, user_email]);
     if (is_injection === true) {
         return injection.injection_message;
     }
