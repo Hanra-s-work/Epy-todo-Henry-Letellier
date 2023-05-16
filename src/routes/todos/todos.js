@@ -72,9 +72,6 @@ async function forget_todo(connect, node_to_search = "-1") {
 
 async function update_todo(connection, body_content, node_to_search = '-1')
 {
-    console.log('in update todo');
-    console.log(`body = ${body_content}`);
-    console.log(`node = ${node_to_search}`);
     const check_id = assets.check_if_input_is_id(node_to_search);
     if (check_id === false) {
         return "Unknown input";
@@ -95,6 +92,9 @@ async function update_todo(connection, body_content, node_to_search = '-1')
         return "Update failed";
     }
     const table_content = await db.sql_get_user(connection, 'todo', '', '', '', node_to_search);
+    if (table_content === injection.injection_message) {
+        return injection.injection_message;
+    }
     return table_content[0];
 }
 
