@@ -8,6 +8,7 @@
 const assets = require("../assets");
 const injection = require("./check_if_sql_injection.js");
 const pre_coded = require("../middleware/pre_coded_messages.js");
+const speak_on_correct_status = require("../config/speak_on_correct_status");
 const status_output = require("./speak_on_correct_status.js");
 
 var custom_message = false;
@@ -231,7 +232,11 @@ function display_put_todos(res, title = "", msg = "", token = "") {
 
 function display_todo_id(res, title = "", msg = "", token = "") {
     if (assets.isJSON(msg) === true) {
-        custom_or_bland_success(res, title, msg, token, custom_message);
+        if (custom_message === false) {
+            pre_coded.success(res, msg);
+        } else {
+            pre_coded.success(res, {"title":title,"msg":msg,"token":token});
+        }
     } else if (msg === "No todo found") {
         pre_coded.not_found(res);
     } else if (msg === "Unknown input") {
@@ -249,7 +254,11 @@ function display_todo_id(res, title = "", msg = "", token = "") {
 
 function put_user_id(res, title = "", msg = "", token = "") {
     if (assets.isJSON(msg) === true) {
-        custom_or_bland_success(res, title, msg, token, custom_message);
+        if (custom_message === false) {
+            speak_on_correct_status.success(res, msg);
+        } else {
+            speak_on_correct_status.success(res, {"title":title,"msg":msg,"token":token});
+        }
     } else if (msg === "No user found") {
         pre_coded.not_found(res);
     } else if (msg === "Unknown input") {
