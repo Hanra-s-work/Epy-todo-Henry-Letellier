@@ -52,9 +52,16 @@ async function update_user(connection, body_content, node_to_search = '-1')
         return "No user found";
     }
     const { name, firstname, email, password } = body_content;
-    console.log(${})
-    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, password], `id="${node_to_search}`);
-    return update;
+    
+    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, password], `id="${node_to_search}"`);
+    if (update === injection.injection_message) {
+        return injection.injection_message;
+    }
+    if ("fieldCount" in update === false) {
+        return "Update failed";
+    }
+    const table_content = await db.sql_get_user(connection, 'user', '', '', '', node_to_search);
+    return table_content[0];
 }
 
 module.exports = {
