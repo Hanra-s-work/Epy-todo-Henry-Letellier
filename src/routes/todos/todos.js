@@ -70,19 +70,32 @@ async function forget_todo(connect, node_to_search = "-1") {
     return deleted_todo;
 }
 
-async function update_todo(connection, body_content, node_to_search = '-1') {
-    const { title, description, due_time, user_id, status } = body_content;
-    var data = { 'title': title, 'description': description, 'due_time': due_time, 'user_id': user_id, "status": status };
-    const is_id = await assets.check_if_input_is_id(node_to_search);
-    if (is_id === false) {
+async function update_todo(connection, body_content, node_to_search = '-1')
+{
+    console.log('in update todo');
+    console.log(`body = ${body_content}`);
+    console.log(`node = ${node_to_search}`);
+    const check_id = assets.check_if_input_is_id(node_to_search);
+    if (check_id === false) {
         return "Unknown input";
     }
-    const todo_node = await db.sql_get_user(connection, 'todo', '', '', '', node_to_search);
-    if (todo_node.length === 0) {
-        return "No todo found";
+    const user_node = db.sql_get_user(connection, 'todo', "", "", "", node_to_search);
+    if (user_node === injection.injection_message) {
+        return injection.injection_message;
     }
-    raw_object = assets.fill_string_if_empty(raw_object, todo_node[0]);
-    const result = await db.update_record(connection, 'todo', data, `id="${node_to_search}"`);
+    if (user_node.length === 0) {
+        return "No user found";
+    }
+    const { title, description, due_time, user_id, status } = body_content;
+    const update = await db.update_record(connection, 'todo', ['title', 'description', 'due_time', 'user_id', 'status'], [title, description, due_time, user_id, status], `id="${node_to_search}"`);
+    if (update === injection.injection_message) {
+        return injection.injection_message;
+    }
+    if ("fieldCount" in update === false) {
+        return "Update failed";
+    }
+    const table_content = await db.sql_get_user(connection, 'todo', '', '', '', node_to_search);
+    return table_content[0];
 }
 
 module.exports = {

@@ -68,6 +68,7 @@ async function check_if_var_in_url(req, searched_var) {
     }
     return true;
 }
+
 async function secure_the_password(password) {
     const salt = await bcrypt.genSalt(10);
     const hashed_password = await bcrypt.hash(password, salt);
