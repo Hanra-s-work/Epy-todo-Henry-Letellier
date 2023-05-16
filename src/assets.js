@@ -30,7 +30,7 @@ async function sign_user_in(connection, email, password) {
     const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = email, user_id = 0);
     if (response.length > 0) {
         if (await bcrypt.compare(password, response[0].password) === true) {
-            const token = await jsonwebtoken.sign({ id: response[0].id, email: response[0].email }, process.env.SECRET);
+            const token = jsonwebtoken.sign({ id: response[0].id, email: response[0].email }, process.env.SECRET);
             return token;
         } else {
             return "wrong_password";
