@@ -37,22 +37,36 @@ async function forget_user(connection, node_to_search = "-1") {
     return deleted_user;
 }
 
-async function update_user(connection, body_content, node_to_search = '-1')
-{
+async function update_user(connection, body_content, node_to_search = '-1') {
     const check_id = assets.check_if_input_is_id(node_to_search);
     if (check_id === false) {
         return "Unknown input";
     }
-    const user_node = db.sql_get_user(connection, 'user', "", "", "", node_to_search);
+    const user_node = await db.sql_get_user(connection, 'user', "", "", "", node_to_search);
+    console.log(`user_node.length = ${user_node.length}`);
     if (user_node === injection.injection_message) {
         return injection.injection_message;
     }
-    if (user_node.length === 0) {
+    if (user_node.length === 0 || user_node.length === undefined) {
         return "No user found";
     }
+    console.log("in update_user");
+    console.log(`node_to_search = ${node_to_search}`);
+    console.log(`user_node = ${JSON.stringify(user_node)}`);
     const { name, firstname, email, password } = body_content;
-    const secured_password = await assets.secure_the_password(password);
-    const update = await db.update_record(connection, 'user', ["name", "firstname", "email", "password"], [name, firstname, email, secured_password], `id="${node_to_search}"`);
+    if (email != user_node[0]["email"]) {
+        const email_exits = await assets.check_if_email_already_exist(connection, email);
+        if (email_exits === true) {
+            return "Email already exits";
+        }
+    }
+    var data = [name, firstname, email, password];
+    const data_names = ["name", "firstname", "email", "password"];
+    console.log(`data = ${data}`);
+    data = assets.fill_array_if_empty(user_node, data, data_names);
+    console.log(`data = ${data}`);
+    data[data.length - 1] = await assets.secure_the_password(data[data.length - 1]);
+    const update = await db.update_record(connection, 'user', data_names, data, `id="${node_to_search}"`);
     if (update === injection.injection_message) {
         return injection.injection_message;
     }

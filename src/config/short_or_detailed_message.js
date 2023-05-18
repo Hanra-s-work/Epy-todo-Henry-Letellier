@@ -263,7 +263,7 @@ function put_user_id(res, title = "", msg = "", token = "") {
         }
     } else if (msg === "No user found") {
         pre_coded.not_found(res);
-    } else if (msg === "Unknown input") {
+    } else if (msg === "Unknown input" || msg === "Email already exits") {
         pre_coded.bad_parameters(res);
     } else if (msg === injection.injection_message) {
         injection_message(res, title, token);
@@ -295,6 +295,7 @@ function login_token_error_messages(res, title = "", msg = "", token = "") {
 }
 
 module.exports = {
+    custom_message,
     custom_or_bland_success,
     error_body_message,
     user_not_logged_in,

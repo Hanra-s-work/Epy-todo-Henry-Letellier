@@ -9,6 +9,28 @@ async function get_body_content(req) {
     return body_content;
 }
 
+async function check_if_email_already_exist(connection, email) {
+    const user_node = await db.sql_get_user(connection, 'user', '', '', email, '');
+    if (user_node.length > 0) {
+        return true;
+    }
+    return false;
+}
+
+function fill_array_if_empty(sql_node, array_to_check = [""], variable_names_in_array = [""]) {
+    if (array_to_check.length != variable_names_in_array.length) {
+        return array_to_check;
+    }
+    var i = 0;
+    console.log(`sql_node = ${JSON.stringify(sql_node)}`);
+    for (; i < array_to_check.length; i++) {
+        if (array_to_check[i] === "" || array_to_check[i] === undefined) {
+            array_to_check[i] = sql_node[0][variable_names_in_array[i]];
+        }
+    }
+    return array_to_check;
+}
+
 function check_if_token_in_header(req) {
     if ('headers' in req === true) {
         if ('authorization' in req.headers === true) {
@@ -115,6 +137,30 @@ function isJSON(str) {
     }
 }
 
+function check_if_password_is_hashed(password = "123456") {
+    try {
+        // Check if the provided password hash is bcrypt
+        const isBcryptHash = bcrypt.getRounds(password) > 0;
+
+        if (isBcryptHash === true) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+
+function secure_password_if_not_secured(password) {
+    const is_hashed = check_if_password_is_hashed(password);
+    if (is_hashed === true) {
+        return password;
+    }
+    return secure_the_password(password);
+}
+
 function fill_string_if_empty(raw_object, sql_node) {
     if (typeof raw_object != "object" || typeof sql_node != "object") {
         console.error("raw_object and sql_node have to be of type object.");
@@ -141,5 +187,9 @@ module.exports = {
     check_if_input_is_email,
     check_if_user_id_exists,
     check_if_token_in_header,
-    fill_string_if_empty
+    check_if_password_is_hashed,
+    check_if_email_already_exist,
+    fill_string_if_empty,
+    fill_array_if_empty,
+    secure_password_if_not_secured
 }
