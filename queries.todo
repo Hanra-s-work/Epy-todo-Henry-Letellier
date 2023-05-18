@@ -1,6 +1,6 @@
 # Routes:
     [x] /register     POST   no  register a new user
-    [!] /login        POST   no  connect a user
+    [x] /login        POST   no  connect a user
     [x] /user         GET    yes view all user information
     [x] /user/todos   GET    yes view all user tasks
     [x] /users/:id    GET    yes view user information

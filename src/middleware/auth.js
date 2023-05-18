@@ -5,23 +5,20 @@
 ** auth.js
 */
 
-const jsonwebtoken = require('jsonwebtoken');
+const assets = require('../assets');
 
-async function check_json_token(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-        jsonwebtoken.verify(token, process.env.SECRET, (err, user) => {
-            if (err) {
-                return res.status(498).json({ "msg": "Token is not valid" });
-            }
-            req.user = user["id"]
-            next();
-        });
-    } else {
-        res.status(498).json({ "msg": "No token , authorization denied" });
+function check_json_token(req, secret_token) {
+    if (assets.check_if_token_in_header(req) === false) {
+        return "No token found";
     }
-}
+    const authHeader = req.headers.authorization;
+    const token = authHeader.split(' ')[1];
+    const response = assets.check_if_token_is_valid(token, secret_token);
+    if (response === false) {
+        return "Invalid token";
+    }
+    return "Connection success";
+};
 
 module.exports = {
     check_json_token

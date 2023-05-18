@@ -9,6 +9,36 @@ async function get_body_content(req) {
     return body_content;
 }
 
+function check_if_token_in_header(req) {
+    if ('headers' in req === true) {
+        if ('authorization' in req.headers === true) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function check_if_token_is_valid(usr_token, secret_token) {
+    try {
+        const decoded = jsonwebtoken.verify(usr_token, secret_token);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+async function sign_user_in(connection, email, password) {
+    const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = email, user_id = 0);
+    if (response.length > 0) {
+        if (await bcrypt.compare(password, response[0].password) === true) {
+            const token = jsonwebtoken.sign({ id: response[0].id, email: response[0].email }, process.env.SECRET);
+            return token;
+        } else {
+            return "wrong_password";
+        }
+    }
+    return "unknown_user";
+}
 async function check_if_vars_in_body(body, vars) {
     var i = 0;
     if (Array.isArray(vars) === false || body.length === 0) {
@@ -26,18 +56,6 @@ async function check_if_vars_in_body(body, vars) {
     return true;
 }
 
-async function sign_user_in(connection, email, password) {
-    const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = email, user_id = 0);
-    if (response.length > 0) {
-        if (await bcrypt.compare(password, response[0].password) === true) {
-            const token = jsonwebtoken.sign({ id: response[0].id, email: response[0].email }, process.env.SECRET);
-            return token;
-        } else {
-            return "wrong_password";
-        }
-    }
-    return "unknown_user";
-}
 
 async function check_if_user_id_exists(connection, user_id = "1") {
     const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = '', user_id = user_id);
@@ -111,6 +129,7 @@ function fill_string_if_empty(raw_object, sql_node) {
 }
 
 module.exports = {
+    isJSON,
     sign_user_in,
     get_body_content,
     secure_the_password,
@@ -118,8 +137,9 @@ module.exports = {
     check_if_user_exists,
     check_if_input_is_id,
     check_if_vars_in_body,
+    check_if_token_is_valid,
     check_if_input_is_email,
     check_if_user_id_exists,
-    isJSON,
+    check_if_token_in_header,
     fill_string_if_empty
 }
