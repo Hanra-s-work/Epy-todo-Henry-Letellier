@@ -59,17 +59,21 @@ function user_not_logged_in(res, title = "") {
 }
 
 function login_error_messages(res, title = "", msg = "", token = "") {
-    if (custom_message === true) {
-        if (msg === "User not found") {
-            pre_coded.not_found(res);
-        } else {
-            status_output.unauthorized(res, { 'msg': msg });
-        }
-    } else if (injection.injection_message === msg) {
+    console.log(`msg = ${msg}`);
+    if (injection.injection_message === msg) {
         injection_message(res, title, token);
-    } else {
+    }
+    if (custom_message === false) {
         if (msg === "User not found" || msg === "Unknown user") {
             pre_coded.user_not_found(res);
+        } else if (msg === "Wrong password") {
+            status_output.unauthorized(res, { 'msg': 'Invalid Credentials' });
+        } else {
+            pre_coded.internal_server_error(res);
+        }
+    } else {
+        if (msg === "User not found" || msg === "Unknown user") {
+            pre_coded.not_found(res);
         } else if (msg === "Wrong password") {
             status_output.unauthorized(res, { 'title': title, 'msg': msg, 'token': token });
         } else {

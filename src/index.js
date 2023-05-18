@@ -69,7 +69,7 @@ app.post('/login', async (req, res) => {
         global_logged_in_token = response[2];
         console.log(`is_logged_in = ${is_logged_in}\nuser_email = ${user_email}\nlogged_in_user_key = ${global_logged_in_token}\nmessage = ${response[3]}`);
     }
-    if (is_logged_in === false) {
+    if (is_logged_in === false || response.length === 1) {
         return short_or_detailed.login_error_messages(res, title, response[0], global_logged_in_token)
     }
     short_or_detailed.success_connection_message(res, title, response[3], global_logged_in_token);
