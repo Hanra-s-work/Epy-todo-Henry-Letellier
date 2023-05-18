@@ -76,19 +76,6 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/user', async (req, res) => {
-    console.log(`header.params = '${JSON.stringify(req.params)}'`);
-    console.log(`header.body= '${JSON.stringify(req.body)}'`);
-    console.log(`header.headers = '${JSON.stringify(req.headers)}'`);
-    console.log(`header.headers.authorisation = '${JSON.stringify(req.headers.authorization)}'`);
-    console.log(`header.headers.user-agent = '${JSON.stringify(req.headers['user-agent'])}'`);
-    console.log(`header.headers.accept = '${JSON.stringify(req.headers.accept)}'`);
-    console.log(`header.headers.postman-token = '${JSON.stringify(req.headers['postman-token'])}'`);
-    console.log(`header.headers.host = '${JSON.stringify(req.headers.host)}'`);
-    console.log(`header.headers.accept-encoding = '${JSON.stringify(req.headers['accept-encoding'])}'`);
-    console.log(`header.headers.connection = '${JSON.stringify(req.headers.connection)}'`);
-    console.log(`header.ip = '${JSON.stringify(req.ip)}'`);
-    console.log(`header.query = '${JSON.stringify(req.query)}'`);
-    console.log(`header.url = '${JSON.stringify(req.url)}'`);
     var title = 'Welcome to user\n';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
@@ -168,13 +155,11 @@ app.put('/users/:id', async (req, res) => {
     }
     const is_id_in = assets.check_if_input_is_id(req.params.id);
     if (is_id_in === false) {
-        short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
-        return [""];
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
     }
     const in_body = assets.check_if_vars_in_body(req.body, ["email", "firstname", "name", "password"]);
     if (in_body === false) {
-        short_or_detailed.error_body_message(res, title, "You must provide: email, firstname, name, password", global_logged_in_token);
-        return [""];
+        return short_or_detailed.error_body_message(res, title, "You must provide: email, firstname, name, password", global_logged_in_token);
     }
     const update = await user.update_user(connection, req.body, req.params.id);
     short_or_detailed.put_user_id(res, title, update, global_logged_in_token);
