@@ -11,7 +11,7 @@ async function check_if_symbol_sql_injection(string) {
     const sqlKeywords = [';', '--', '/*', '*/'];
 
     for (let i = 0; i < sqlKeywords.length; i++) {
-        if (string.includes(sqlKeywords[i])) {
+        if (string.includes(sqlKeywords[i]) === true) {
             return true;
         }
     }
@@ -22,7 +22,7 @@ async function check_if_command_sql_injection(string) {
     const sqlKeywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'CREATE', 'ALTER', 'TABLE', 'UNION', 'JOIN', 'WHERE'];
 
     for (let i = 0; i < sqlKeywords.length; i++) {
-        if (string.includes(sqlKeywords[i])) {
+        if (string.includes(sqlKeywords[i]) === true) {
             return true;
         }
     }
@@ -33,7 +33,7 @@ async function check_if_logic_gate_sql_injection(string) {
     const sqlKeywords = ['OR', 'AND', 'NOT'];
 
     for (let i = 0; i < sqlKeywords.length; i++) {
-        if (string.includes(sqlKeywords[i])) {
+        if (string.includes(sqlKeywords[i]) === true) {
             return true;
         }
     }
@@ -67,7 +67,7 @@ async function check_if_command_and_logic_gate_injection(string) {
     return false;
 }
 
-async function check_if_sql_injection(string="") {
+async function check_if_sql_injection(string = "") {
     const sqlKeywords = [
         'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'CREATE', 'ALTER',
         'TABLE', 'WHERE', 'OR', 'AND', 'UNION', 'JOIN', ';', '--', '/*', '*/'

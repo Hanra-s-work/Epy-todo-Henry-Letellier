@@ -11,7 +11,6 @@ const injection = require('../../config/check_if_sql_injection');
 
 async function authenticate_user(connection, body_content) {
     const { email, password } = body_content;
-    console.log(`email = ${email}, password = ${password}`);
     const user_node = await db.sql_get_user_node(connection, email);
     if (user_node === injection.injection_message) {
         return injection.injection_message;

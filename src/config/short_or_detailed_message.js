@@ -13,7 +13,6 @@ const status_output = require("./speak_on_correct_status.js");
 
 var custom_message = false;
 
-
 function custom_or_bland_success(res, title = "", msg = "", token = "", custom = false) {
     if (custom === false) {
         status_output.success(res, { 'msg': msg });
@@ -229,13 +228,12 @@ function display_put_todos(res, title = "", msg = "", token = "") {
     }
 }
 
-
 function display_todo_id(res, title = "", msg = "", token = "") {
     if (assets.isJSON(msg) === true) {
         if (custom_message === false) {
             pre_coded.success(res, msg);
         } else {
-            pre_coded.success(res, {"title":title,"msg":msg,"token":token});
+            pre_coded.success(res, { "title": title, "msg": msg, "token": token });
         }
     } else if (msg === "No todo found") {
         pre_coded.not_found(res);
@@ -257,7 +255,7 @@ function put_user_id(res, title = "", msg = "", token = "") {
         if (custom_message === false) {
             speak_on_correct_status.success(res, msg);
         } else {
-            speak_on_correct_status.success(res, {"title":title,"msg":msg,"token":token});
+            speak_on_correct_status.success(res, { "title": title, "msg": msg, "token": token });
         }
     } else if (msg === "No user found") {
         pre_coded.not_found(res);
@@ -270,6 +268,24 @@ function put_user_id(res, title = "", msg = "", token = "") {
             pre_coded.internal_server_error(res);
         } else {
             status_output.internal_server_error(res, { 'title': title, 'msg': msg, 'token': token });
+        }
+    }
+}
+
+function login_token_error_messages(res, title = "", msg = "", token = "") {
+    if (custom_message === false) {
+        if (msg === "No token found") {
+            return pre_coded.no_token_provided(res);
+        }
+        if (msg === "Invalid token") {
+            return pre_coded.invalid_user_token(res);
+        }
+    } else {
+        if (msg === "No token found") {
+            return status_output.invalid_token(res, { 'title': title, 'msg': 'No token , authorization denied', 'token': token });
+        }
+        if (msg === "Invalid token") {
+            return status_output.invalid_token(res, { 'title': title, 'msg': 'Token is not valid', 'token': token });
         }
     }
 }
@@ -292,5 +308,6 @@ module.exports = {
     delete_todos_id_messages,
     display_put_todos,
     display_todo_id,
-    put_user_id
+    put_user_id,
+    login_token_error_messages
 }
