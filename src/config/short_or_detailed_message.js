@@ -59,7 +59,6 @@ function user_not_logged_in(res, title = "") {
 }
 
 function login_error_messages(res, title = "", msg = "", token = "") {
-    console.log(`msg = ${msg}`);
     if (injection.injection_message === msg) {
         injection_message(res, title, token);
     }

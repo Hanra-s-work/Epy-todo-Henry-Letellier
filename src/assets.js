@@ -1,7 +1,8 @@
-const db = require("./config/db");
+const db = require("./config/db.js");
 const bcrypt = require("bcryptjs");
 const injection = require("./config/check_if_sql_injection");
 const jsonwebtoken = require('jsonwebtoken');
+const { array_to_string, double_array_to_string } = require("./config/assets_transform.js");
 require('dotenv').config({ encoding: 'utf-8' });
 
 async function get_body_content(req) {
@@ -22,7 +23,6 @@ function fill_array_if_empty(sql_node, array_to_check = [""], variable_names_in_
         return array_to_check;
     }
     var i = 0;
-    // console.log(`sql_node = ${JSON.stringify(sql_node)}`);
     for (; i < array_to_check.length; i++) {
         if (array_to_check[i] === "" || array_to_check[i] === undefined) {
             array_to_check[i] = sql_node[0][variable_names_in_array[i]];
@@ -87,12 +87,12 @@ async function check_if_user_id_exists(connection, user_id = "1") {
     return false;
 }
 
-async function check_if_user_exists(connection, user_email) {
+async function check_if_user_exists(connection, user_email = "") {
     const is_user_email = injection.check_if_sql_injection(user_email);
     if (is_user_email === true) {
         return injection.injection_message;
     }
-    const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = user_email, user_id = 0);
+    const response = await db.sql_get_user(connection, 'user', '', '', user_email, 0);
     if (response.length > 0) {
         return true;
     }
@@ -177,8 +177,13 @@ function fill_string_if_empty(raw_object, sql_node) {
 module.exports = {
     isJSON,
     sign_user_in,
+    array_to_string,
     get_body_content,
     secure_the_password,
+    fill_array_if_empty,
+    fill_string_if_empty,
+    double_array_to_string,
+    secure_password_if_not_secured,
     check_if_var_in_url,
     check_if_user_exists,
     check_if_input_is_id,
@@ -189,7 +194,4 @@ module.exports = {
     check_if_token_in_header,
     check_if_password_is_hashed,
     check_if_email_already_exist,
-    fill_string_if_empty,
-    fill_array_if_empty,
-    secure_password_if_not_secured
 }

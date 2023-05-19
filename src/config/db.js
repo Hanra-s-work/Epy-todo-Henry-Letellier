@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
 const injection = require('./check_if_sql_injection.js');
+const assets_transform = require("./assets_transform.js");
 require('dotenv').config({ encoding: 'utf-8' })
 
 const DB_PORT = 3306;
@@ -28,16 +29,13 @@ async function insert_records(connection, table_name = "user", fields = ["name",
     if (!Array.isArray(values)) {
         return 'Error: values is not an array.';
     }
-    const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
+    const value_tuples = assets_transform.double_array_to_string(values, ", ", ", ", ["(", ")"]);
     const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
 
-    console.log(`[table_name, fields, values, value_tuples] = ${JSON.stringify([table_name, fields, values, value_tuples])}`);
-    const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
-    console.log(`has_injection = ${has_injection}`);
+    const has_injection = await injection.check_if_injections_in_strings([table_name, fields.join(" "), assets_transform.double_array_to_string(values, " ", " ", ["", ""])]);
     if (has_injection === true) {
         return injection.injection_message;
     }
-
     const flattened_values = values.flat(); // flatten the array of arrays
     return execute_query(connection, sql_query, flattened_values);
 }
@@ -50,6 +48,10 @@ async function update_record(connection, table_name = "user", fields = ["name", 
 
     for (var i = 0; i < fields.length; i++) {
         items.push(`${fields[i]}="${values[i]}"`);
+    }
+    const has_injection = await injection.check_if_injections_in_strings(items);
+    if (has_injection === true) {
+        return injection.injection_message;
     }
     var update_query = `UPDATE ${table_name} SET ${items.join(', ')} WHERE ${where_clause}`;
     return execute_query(connection, update_query, []);

@@ -31,21 +31,16 @@ async function authenticate_user(connection, body_content) {
 }
 
 async function register_user(connection, body_content) {
-    console.log(`in register user`);
     const { email, password, firstname, name } = body_content;
-    console.log(`email = "${email}", password = "${password}", firstname = "${firstname}", name = "${name}"`);
     const user_exists = await assets.check_if_user_exists(connection, email);
     if (user_exists === true) {
         return ["User exists", `User already exists`];
     }
-    console.log(`After check if user exists`);
     const secured_password = await assets.secure_the_password(password);
-    console.log(`secured_password = ${secured_password}`);
     const response = await db.insert_records(connection, 'user', ['email', 'password', 'firstname', 'name'], [[email, secured_password, firstname, name]]);
     if (response === injection.injection_message) {
         return [response];
     }
-    console.log(`After insert record`);
     const logged_in_user_key = await assets.sign_user_in(connection, email, password);
     const connected = true;
     return ["Creation success", "User created", logged_in_user_key, connected];
