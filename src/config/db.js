@@ -31,7 +31,9 @@ async function insert_records(connection, table_name = "user", fields = ["name",
     const value_tuples = values.map(value_array => `(${value_array.map(value => `"${value}"`).join(",")})`).join(",");
     const sql_query = `INSERT INTO ${table_name} (${fields.join(',')}) VALUES ${value_tuples}`;
 
+    console.log(`[table_name, fields, values, value_tuples] = ${JSON.stringify([table_name, fields, values, value_tuples])}`);
     const has_injection = await injection.check_if_injections_in_strings([table_name, fields, values, value_tuples]);
+    console.log(`has_injection = ${has_injection}`);
     if (has_injection === true) {
         return injection.injection_message;
     }

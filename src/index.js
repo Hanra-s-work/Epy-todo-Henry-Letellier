@@ -157,10 +157,6 @@ app.put('/users/:id', async (req, res) => {
     if (is_id_in === false) {
         return short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
     }
-    const in_body = assets.check_if_vars_in_body(req.body, ["email", "firstname", "name", "password"]);
-    if (in_body === false) {
-        return short_or_detailed.error_body_message(res, title, "You must provide: email, firstname, name, password", global_logged_in_token);
-    }
     const update = await user.update_user(connection, req.body, req.params.id);
     short_or_detailed.put_user_id(res, title, update, global_logged_in_token);
 });

@@ -22,7 +22,7 @@ function fill_array_if_empty(sql_node, array_to_check = [""], variable_names_in_
         return array_to_check;
     }
     var i = 0;
-    console.log(`sql_node = ${JSON.stringify(sql_node)}`);
+    // console.log(`sql_node = ${JSON.stringify(sql_node)}`);
     for (; i < array_to_check.length; i++) {
         if (array_to_check[i] === "" || array_to_check[i] === undefined) {
             array_to_check[i] = sql_node[0][variable_names_in_array[i]];
@@ -61,7 +61,7 @@ async function sign_user_in(connection, email, password) {
     }
     return "unknown_user";
 }
-async function check_if_vars_in_body(body, vars) {
+function check_if_vars_in_body(body, vars) {
     var i = 0;
     if (Array.isArray(vars) === false || body.length === 0) {
         console.error("body and vars have to be of type array.");
