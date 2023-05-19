@@ -32,7 +32,7 @@ app.get('/override', (req, res) => {
     user_email = "lumine@example.com";
     global_logged_in_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE";
     if (is_logged_in === true) {
-        status_output.success(res, { 'title': title, 'msg': `You are logged in as '${user_email}'` });
+        short_or_detailed.hello_world(res, title, `You are logged in as '${user_email}'`, global_logged_in_token);
     }
 })
 
@@ -297,7 +297,7 @@ app.get('/logout', (req, res) => {
     is_logged_in = false;
     user_email = null;
     global_logged_in_token = null;
-    res.send({ 'title': title, 'msg': `You are logged out` });
+    short_or_detailed.logout_success(res, title, 'You are logged out', global_logged_in_token);
 });
 
 app.get('/stop', async (req, res) => {
@@ -309,23 +309,18 @@ app.get('/stop', async (req, res) => {
     if (usr_logged_in != "Connection success") {
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global_logged_in_token);
     }
-    short_or_detailed.success_connection_message(res, title, 'Stopping server...', global_logged_in_token);
+    short_or_detailed.hello_world(res, title, 'Stopping server...', global_logged_in_token);
     await db.disconnect_from_database(connection);
     process.exit(0);
 });
 
 app.get('/', (req, res) => {
     var title = 'Welcome to /';
-    short_or_detailed.success_connection_message(res, title, 'Hello World', global_logged_in_token);
+    short_or_detailed.hello_world(res, title, 'Hello World', global_logged_in_token);
 });
-
-async function test_update(connection) {
-
-}
 
 app.listen(port, async () => {
     console.log(`Server running on port ${port} at http://localhost:${port}`);
     connection = await db.connect_to_database();
     db.display_connection_id(connection);
-    test_update(connection);
 });

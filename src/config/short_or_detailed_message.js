@@ -11,7 +11,7 @@ const pre_coded = require("../middleware/pre_coded_messages.js");
 const speak_on_correct_status = require("../config/speak_on_correct_status");
 const status_output = require("./speak_on_correct_status.js");
 
-var custom_message = true;
+var custom_message = false;
 
 function custom_or_bland_success(res, title = "", msg = "", token = "", custom = false) {
     if (custom === false) {
@@ -236,7 +236,7 @@ function display_todo_id(res, title = "", msg = "", token = "") {
         if (custom_message === false) {
             speak_on_correct_status.success(res, msg);
         } else {
-            pre_coded.success(res, { "title": title, "msg": msg, "token": token });
+            speak_on_correct_status.success(res, { "title": title, "msg": msg, "token": token });
         }
     } else if (msg === "No todo found") {
         pre_coded.not_found(res);
@@ -293,25 +293,43 @@ function login_token_error_messages(res, title = "", msg = "", token = "") {
     }
 }
 
+function logout_success(res, title = "", msg = "", token = "") {
+    if (custom_message === false) {
+        status_output.success(res, { "msg": msg });
+    } else {
+        status_output.success(res, { 'title': title, 'msg': msg, 'token': token });
+    }
+}
+
+function hello_world(res, title = "", msg = "", token = "") {
+    if (custom_message === false) {
+        status_output.success(res, { "msg": msg });
+    } else {
+        status_output.success(res, { 'title': title, 'msg': msg, 'token': token });
+    }
+}
+
 module.exports = {
     custom_message,
-    custom_or_bland_success,
+    hello_world,
+    put_user_id,
+    logout_success,
+    display_todo_id,
+    register_message,
+    display_put_todos,
+    error_url_message,
+    injection_message,
+    users_id_messages,
+    display_all_todos,
+    display_user_info,
     error_body_message,
     user_not_logged_in,
-    success_connection_message,
-    injection_message,
-    login_error_messages,
-    register_message,
-    display_user_info,
     display_user_todos,
-    display_all_todos,
+    login_error_messages,
+    custom_or_bland_success,
     display_post_todo_errors,
-    error_url_message,
-    users_id_messages,
     delete_users_id_messages,
     delete_todos_id_messages,
-    display_put_todos,
-    display_todo_id,
-    put_user_id,
-    login_token_error_messages
+    success_connection_message,
+    login_token_error_messages,
 }
