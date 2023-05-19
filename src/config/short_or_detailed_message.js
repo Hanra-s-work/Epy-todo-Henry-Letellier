@@ -234,7 +234,7 @@ function display_put_todos(res, title = "", msg = "", token = "") {
 function display_todo_id(res, title = "", msg = "", token = "") {
     if (assets.isJSON(msg) === true) {
         if (custom_message === false) {
-            pre_coded.success(res, msg);
+            speak_on_correct_status.success(res, msg);
         } else {
             pre_coded.success(res, { "title": title, "msg": msg, "token": token });
         }
