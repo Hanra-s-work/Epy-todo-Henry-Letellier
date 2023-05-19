@@ -27,18 +27,18 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/override', (req, res) => {
-    var title = 'Welcome to override\n';
+    var title = 'Welcome to override';
     is_logged_in = true;
     user_email = "lumine@example.com";
     global_logged_in_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE";
     if (is_logged_in === true) {
-        status_output.success(res, { 'title': title, 'msg': `You are logged in as '${user_email}'\n` });
+        status_output.success(res, { 'title': title, 'msg': `You are logged in as '${user_email}'` });
     }
 })
 
 app.post('/register', async (req, res) => {
-    var title = 'Welcome to register\n';
-    const error_message = "You must provide email, password, firstname and name\n";
+    var title = 'Welcome to register';
+    const error_message = "You must provide email, password, firstname and name";
     const body_content = req.body;
     const is_register_data_present = await assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
     if (typeof is_register_data_present === 'string' || is_register_data_present === false) {
@@ -55,8 +55,8 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const error_message = "You must provide an email and a password\n";
-    var title = 'Welcome to login\n';
+    const error_message = "You must provide an email and a password";
+    var title = 'Welcome to login';
     const check = await assets.check_if_vars_in_body(req.body, ["email", "password"]);
     if (typeof check === 'string' || check === false) {
         return short_or_detailed.error_body_message(res, title, error_message, global_logged_in_token);
@@ -74,7 +74,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/user', async (req, res) => {
-    var title = 'Welcome to user\n';
+    var title = 'Welcome to user';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -91,7 +91,7 @@ app.get('/user', async (req, res) => {
 });
 
 app.get('/user/todos', async (req, res) => {
-    var title = "Welcome to user/todos\n"; if (is_logged_in === false) {
+    var title = "Welcome to user/todos"; if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
@@ -107,7 +107,7 @@ app.get('/user/todos', async (req, res) => {
 });
 
 app.get('/users/:id', async (req, res) => {
-    var title = 'Welcome to users/:id\n';
+    var title = 'Welcome to users/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -117,7 +117,7 @@ app.get('/users/:id', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global_logged_in_token);
     }
     const response = await user_query.get_other_usr_info(connection, req.params.id);
     short_or_detailed.users_id_messages(res, title, response, global_logged_in_token);
@@ -125,7 +125,7 @@ app.get('/users/:id', async (req, res) => {
 });
 
 app.get('/users/:email', async (req, res) => {
-    var title = 'Welcome to users/:email\n';
+    var title = 'Welcome to users/:email';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -135,7 +135,7 @@ app.get('/users/:email', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global_logged_in_token);
     }
     const response = await user_query.get_other_usr_info(connection, req.params.email);
     short_or_detailed.users_id_messages(res, title, response, global_logged_in_token);
@@ -143,7 +143,7 @@ app.get('/users/:email', async (req, res) => {
 });
 
 app.put('/users/:id', async (req, res) => {
-    var title = 'Welcome to users/:id\n';
+    var title = 'Welcome to users/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -160,7 +160,7 @@ app.put('/users/:id', async (req, res) => {
 });
 
 app.delete('/users/:id', async (req, res) => {
-    var title = 'Welcome to users/:id\n';
+    var title = 'Welcome to users/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -170,7 +170,7 @@ app.delete('/users/:id', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global_logged_in_token);
     }
     const response = await user.forget_user(connection, req.params.id);
     short_or_detailed.delete_users_id_messages(res, title, response, global_logged_in_token);
@@ -178,7 +178,7 @@ app.delete('/users/:id', async (req, res) => {
 });
 
 app.get('/todos', async (req, res) => {
-    var title = "Welcome to todos\n";
+    var title = "Welcome to todos";
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -196,7 +196,7 @@ app.get('/todos', async (req, res) => {
 });
 
 app.get('/todos/:id', async (req, res) => {
-    var title = 'Welcome to todos/:id\n';
+    var title = 'Welcome to todos/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -206,7 +206,7 @@ app.get('/todos/:id', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global_logged_in_token);
     }
     const response = await todo_query.show_specific_todo(connection, req.params.id);
     short_or_detailed.display_todo_id(res, title, response, global_logged_in_token);
@@ -222,7 +222,7 @@ app.post('/todos', async (req, res) => {
     if (usr_logged_in != "Connection success") {
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global_logged_in_token);
     }
-    const is_input_correct = await assets.check_if_vars_in_body(req.body, ["title", "description", "due_time", "status"]);
+    const is_input_correct = assets.check_if_vars_in_body(req.body, ["title", "description", "due_time", "status"]);
     if (typeof is_input_correct === 'string' || is_input_correct === false) {
         short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a status and (optional) the user_id", global_logged_in_token);
         return [""];
@@ -237,7 +237,7 @@ app.post('/todos', async (req, res) => {
 });
 
 app.put('/todos/:id', async (req, res) => {
-    var title = 'Welcome to todos/:id\n';
+    var title = 'Welcome to todos/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -247,18 +247,18 @@ app.put('/todos/:id', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
     }
     const is_input_correct = await assets.check_if_vars_in_body(req.body, ['title', 'description', 'due_time', 'user_id', 'status']);
     if (is_input_correct === false) {
-        return short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a user_id and a status\n", global_logged_in_token);
+        return short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a user_id and a status", global_logged_in_token);
     }
     const response = await todo.update_todo(connection, req.body, req.params.id);
     short_or_detailed.display_put_todos(res, title, response, global_logged_in_token);
 });
 
 app.delete('/todos/:id', async (req, res) => {
-    var title = 'Welcome to todos/:id\n';
+    var title = 'Welcome to todos/:id';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -268,7 +268,7 @@ app.delete('/todos/:id', async (req, res) => {
     }
     const is_id_in = await assets.check_if_var_in_url(req, "id");
     if (is_id_in === false) {
-        return short_or_detailed.error_url_message(res, title, "You must provide an id\n", global_logged_in_token);
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
     }
     const response = await todo.forget_todo(connection, req.params.id);
     short_or_detailed.delete_todos_id_messages(res, title, response, global_logged_in_token);
@@ -276,7 +276,7 @@ app.delete('/todos/:id', async (req, res) => {
 
 // bonus
 app.get('/reflet-d-acide', async (req, res) => {
-    var title = 'Welcome to reflet-d-acide\n';
+    var title = 'Welcome to reflet-d-acide';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -290,7 +290,7 @@ app.get('/reflet-d-acide', async (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-    var title = 'Welcome to logout\n';
+    var title = 'Welcome to logout';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -301,11 +301,11 @@ app.get('/logout', (req, res) => {
     is_logged_in = false;
     user_email = null;
     global_logged_in_token = null;
-    res.send({ 'title': title, 'msg': `You are logged out\n` });
+    res.send({ 'title': title, 'msg': `You are logged out` });
 });
 
 app.get('/stop', async (req, res) => {
-    var title = 'Welcome to stop\n';
+    var title = 'Welcome to stop';
     if (is_logged_in === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -313,14 +313,14 @@ app.get('/stop', async (req, res) => {
     if (usr_logged_in != "Connection success") {
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global_logged_in_token);
     }
-    short_or_detailed.success_connection_message(res, title, 'Stopping server...\n', global_logged_in_token);
+    short_or_detailed.success_connection_message(res, title, 'Stopping server...', global_logged_in_token);
     await db.disconnect_from_database(connection);
     process.exit(0);
 });
 
 app.get('/', (req, res) => {
-    var title = 'Welcome to /\n';
-    short_or_detailed.success_connection_message(res, title, 'Hello World\n', global_logged_in_token);
+    var title = 'Welcome to /';
+    short_or_detailed.success_connection_message(res, title, 'Hello World', global_logged_in_token);
 });
 
 async function test_update(connection) {
