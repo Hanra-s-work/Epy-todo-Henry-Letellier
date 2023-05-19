@@ -249,11 +249,7 @@ app.put('/todos/:id', async (req, res) => {
     if (is_id_in === false) {
         return short_or_detailed.error_url_message(res, title, "You must provide an id", global_logged_in_token);
     }
-    const is_input_correct = await assets.check_if_vars_in_body(req.body, ['title', 'description', 'due_time', 'user_id', 'status']);
-    if (is_input_correct === false) {
-        return short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a user_id and a status", global_logged_in_token);
-    }
-    const response = await todo.update_todo(connection, req.body, req.params.id);
+    const response = await todo.update_todo(connection, req.body, req.params.id, user_email);
     short_or_detailed.display_put_todos(res, title, response, global_logged_in_token);
 });
 

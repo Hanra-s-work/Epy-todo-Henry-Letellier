@@ -18,6 +18,16 @@ async function check_if_email_already_exist(connection, email) {
     return false;
 }
 
+function date_to_string(date = new Date()) {
+    const normalizedDate = date.toISOString();
+    const make_acceptable = normalizedDate.split('.')[0];
+    return make_acceptable;
+}
+
+function isDate(input) {
+    return input instanceof Date;
+}
+
 function fill_array_if_empty(sql_node, array_to_check = [""], variable_names_in_array = [""]) {
     if (array_to_check.length != variable_names_in_array.length) {
         return array_to_check;
@@ -25,7 +35,11 @@ function fill_array_if_empty(sql_node, array_to_check = [""], variable_names_in_
     var i = 0;
     for (; i < array_to_check.length; i++) {
         if (array_to_check[i] === "" || array_to_check[i] === undefined) {
-            array_to_check[i] = sql_node[0][variable_names_in_array[i]];
+            if (isDate(sql_node[0][variable_names_in_array[i]]) === true) {
+                array_to_check[i] = date_to_string(sql_node[0][variable_names_in_array[i]]);
+            } else {
+                array_to_check[i] = sql_node[0][variable_names_in_array[i]];
+            }
         }
     }
     return array_to_check;
@@ -77,7 +91,6 @@ function check_if_vars_in_body(body, vars) {
     }
     return true;
 }
-
 
 async function check_if_user_id_exists(connection, user_id = "1") {
     const response = await db.sql_get_user(connection, 'user', user_name = '', user_firstname = '', user_email = '', user_id = user_id);
@@ -152,7 +165,6 @@ function check_if_password_is_hashed(password = "123456") {
     }
 }
 
-
 function secure_password_if_not_secured(password) {
     const is_hashed = check_if_password_is_hashed(password);
     if (is_hashed === true) {
@@ -174,9 +186,32 @@ function fill_string_if_empty(raw_object, sql_node) {
     return raw_object;
 }
 
+async function get_user_id(connection, body_content, email = "") {
+    if ('user_id' in body_content === false) {
+        const usr_node = await db.sql_get_user_node(connection, email);
+        if (usr_node === injection.injection_message) {
+            return usr_node;
+        }
+        if ("msg" in usr_node) {
+            return usr_node.msg;
+        }
+        return usr_node.id;
+    } else {
+        user_id = body_content.user_id;
+        var response = await check_if_user_id_exists(connection, user_id);
+        if (response === false) {
+            return "No user found";
+        }
+        return user_id;
+    }
+}
+
 module.exports = {
     isJSON,
+    isDate,
+    get_user_id,
     sign_user_in,
+    date_to_string,
     array_to_string,
     get_body_content,
     secure_the_password,

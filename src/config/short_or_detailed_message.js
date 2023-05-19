@@ -11,7 +11,7 @@ const pre_coded = require("../middleware/pre_coded_messages.js");
 const speak_on_correct_status = require("../config/speak_on_correct_status");
 const status_output = require("./speak_on_correct_status.js");
 
-var custom_message = false;
+var custom_message = true;
 
 function custom_or_bland_success(res, title = "", msg = "", token = "", custom = false) {
     if (custom === false) {

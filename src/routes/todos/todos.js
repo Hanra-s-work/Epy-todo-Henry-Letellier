@@ -10,23 +10,10 @@ const assets = require("../../assets");
 const injection = require("../../config/check_if_sql_injection");
 
 async function add_todo(connection, body_content, email) {
-    var user_id = '0';
     const { title, description, due_time, status } = body_content;
-    if ('user_id' in body_content === false) {
-        const usr_node = await db.sql_get_user_node(connection, email);
-        if (usr_node === injection.injection_message) {
-            return usr_node;
-        }
-        if ("msg" in usr_node) {
-            return usr_node.msg;
-        }
-        user_id = usr_node.id;
-    } else {
-        user_id = body_content.user_id;
-        var response = await assets.check_if_user_id_exists(connection, user_id);
-        if (response === false) {
-            return "No user found";
-        }
+    const user_id = await assets.get_user_id(connection, body_content, email);
+    if (typeof user_id != "number" && assets.check_if_input_is_id(user_id) === false) {
+        return user_id;
     }
     const result = await db.insert_records(connection, 'todo', ["title", "description", "due_time", "user_id", "status"], [[title, description, due_time, user_id, status]]);
     if (result === injection.injection_message) {
@@ -70,21 +57,27 @@ async function forget_todo(connect, node_to_search = "-1") {
     return deleted_todo;
 }
 
-async function update_todo(connection, body_content, node_to_search = '-1')
-{
+async function update_todo(connection, body_content, node_to_search = '-1', email = "") {
     const check_id = assets.check_if_input_is_id(node_to_search);
     if (check_id === false) {
         return "Unknown input";
     }
-    const user_node = db.sql_get_user(connection, 'todo', "", "", "", node_to_search);
-    if (user_node === injection.injection_message) {
+    const user_id = await assets.get_user_id(connection, body_content, email);
+    if (typeof user_id != "number" && assets.check_if_input_is_id(user_id) === false) {
+        return user_id;
+    }
+    const todo_node = await db.sql_get_user(connection, 'todo', "", "", "", node_to_search);
+    if (todo_node === injection.injection_message) {
         return injection.injection_message;
     }
-    if (user_node.length === 0) {
-        return "No user found";
+    if (todo_node.length === 0) {
+        return "No todo found";
     }
-    const { title, description, due_time, user_id, status } = body_content;
-    const update = await db.update_record(connection, 'todo', ['title', 'description', 'due_time', 'user_id', 'status'], [title, description, due_time, user_id, status], `id="${node_to_search}"`);
+    const { title, description, due_time, status } = body_content;
+    var data = [title, description, due_time, user_id, status];
+    const data_description = ['title', 'description', 'due_time', 'user_id', 'status'];
+    data = assets.fill_array_if_empty(todo_node, data, data_description);
+    const update = await db.update_record(connection, 'todo', data_description, data, `id="${node_to_search}"`);
     if (update === injection.injection_message) {
         return injection.injection_message;
     }
