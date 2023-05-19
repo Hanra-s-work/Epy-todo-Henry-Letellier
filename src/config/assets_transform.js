@@ -6,8 +6,19 @@
 */
 
 
-function array_to_string(array = [""], linker = ", ") {
-    return array.join(linker);
+function array_to_string(array = [""], linker = ", ", encapsulation = ['"', '"']) {
+    var result = "";
+    var i = 0;
+
+    for (; i < array.length; i++) {
+        result += encapsulation[0];
+        result += array[i];
+        result += encapsulation[1];
+        if (i + 1 < array.length) {
+            result += linker;
+        }
+    }
+    return result;
 }
 
 function double_array_to_string(double_array = [[""], [""]], linker_inner = ", ", linker_outer = ", ", encapsulation = ["(", ")"]) {
@@ -18,7 +29,9 @@ function double_array_to_string(double_array = [[""], [""]], linker_inner = ", "
         result += encapsulation[0];
         result += array_to_string(double_array[i], linker_inner);
         result += encapsulation[1];
-        result += linker_outer;
+        if (i + 1 < double_array.length) {
+            result += linker_outer;
+        }
     }
     return result
 }
