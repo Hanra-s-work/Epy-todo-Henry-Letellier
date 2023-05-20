@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  maria-db:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    image: epy-todo-mariadb
+    container_name: et-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: user
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/current_state:/var/lib/mysql
+
+  nodejs:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: epy-todo-nodejs
+    container_name: et-nodejs
+    restart: always
+    ports:
+      - "3000-3010:3000-3010"
+    volumes:
+      - ./app/your_app:/app
+    working_dir: /app
+    command: npm start
+    tty: true
+    depends_on:
+      - maria-db
+  nginx:
+    build:
+      context: ./html
+      dockerfile: Dockerfile
+    image: epy-todo-nginx
+    container_name: et-nginx
+    restart: always
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./html/your_html:/usr/share/nginx/html
+      - ./html/server_data/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./html/server_data/logs:/var/log/nginx/
+      - ./html/server_data/bin:/usr/local/nginx
+      - ./html/server_data/ssl:/etc/nginx/ssl
+      # - ./html/server_data/sites-available:/etc/nginx/sites-available/
+      # - ./html/server_data/sites-available:/etc/nginx/sites-enabled/
+      - ./html/server_data/404/index.html:/usr/share/nginx/html/404.html
+    working_dir: /usr/share/nginx/html
+    depends_on:
+      - nodejs
+    # post-up:
+    #   command: |
+    #     echo "All dockers [ mariadb, nodejs, nginx ] are up at:"
+    #     echo "mariadb: http://localhost:3306"
+    #     echo "nodejs: http://localhost:3000"
+    #     echo "nginx: http://localhost:80"
