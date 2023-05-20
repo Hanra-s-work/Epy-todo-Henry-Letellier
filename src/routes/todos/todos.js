@@ -6,94 +6,115 @@
 */
 
 const db = require("../../config/db");
+const rauth = require("../auth/auth");
 const assets = require("../../assets");
+const mauth = require("../../middleware/auth");
 const injection = require("../../config/check_if_sql_injection");
+const user_query = require("../user/user.query");
+const todo_query = require("../todos/todos.query");
+const short_or_detailed = require("../../config/short_or_detailed_message");
+require("dotenv").config({ encoding: 'utf-8' });
 
-async function add_todo(connection, body_content, email) {
-    const { title, description, due_time, status } = body_content;
-    const user_id = await assets.get_user_id(connection, body_content, email);
-    if (typeof user_id != "number" && assets.check_if_input_is_id(user_id) === false) {
-        return user_id;
+async function app_get_todos(req, res) {
+    var title = "Welcome to todos";
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
     }
-    const result = await db.insert_records(connection, 'todo', ["title", "description", "due_time", "user_id", "status"], [[title, description, due_time, user_id, status]]);
-    if (result === injection.injection_message) {
-        return injection.injection_message;
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    return "Creation success";
-}
+    const response = await todo_query.show_all_todos(global.connection);
+    if (response === injection.injection_message) {
+        short_or_detailed.injection_message(res, title, global.global_logged_in_token);
+    } else {
+        short_or_detailed.display_all_todos(res, title, response, global.global_logged_in_token);
+    }
 
-async function delete_all_user_todos(connection, node_to_search = "-1") {
-    try {
-        const response = await db.delete_record(connection, 'todo', `user_id="${node_to_search}"`);
-        if (response === injection.injection_message) {
-            return injection.injection_message;
-        }
-        return response;
-    } catch (err) {
-        return { "err": err };
-    }
-}
+};
 
-async function forget_todo(connect, node_to_search = "-1") {
-    const is_id = assets.check_if_input_is_id(node_to_search);
-    if (is_id === false) {
-        return "Unknown input";
+async function get_todos_by_id(req, res) {
+    var title = 'Welcome to todos/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
     }
-    const is_injection = injection.check_if_sql_injection(node_to_search);
-    if (is_injection === true) {
-        return injection.injection_message;
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    const todo_node = await db.sql_get_user(connect, 'todo', '', '', '', node_to_search);
-    if (todo_node.length === 0) {
-        return "No todo found";
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global.global_logged_in_token);
     }
-    const deleted_todo = await db.delete_record(connect, 'todo', `id="${node_to_search}"`)
-    if ("fieldCount" in deleted_todo) {
-        return { "id": node_to_search, "msg": "success" };
-    }
-    if (deleted_todo === injection.injection_message) {
-        return injection.injection_message;
-    }
-    return deleted_todo;
-}
+    const response = await todo_query.show_specific_todo(global.connection, req.params.id);
+    short_or_detailed.display_todo_id(res, title, response, global.global_logged_in_token);
+};
 
-async function update_todo(connection, body_content, node_to_search = '-1', email = "") {
-    const check_id = assets.check_if_input_is_id(node_to_search);
-    if (check_id === false) {
-        return "Unknown input";
+async function app_post_todos(req, res) {
+    var title = 'Welcome to todos';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
     }
-    const user_id = await assets.get_user_id(connection, body_content, email);
-    if (typeof user_id != "number" && assets.check_if_input_is_id(user_id) === false) {
-        return user_id;
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    const todo_node = await db.sql_get_user(connection, 'todo', "", "", "", node_to_search);
-    if (todo_node === injection.injection_message) {
-        return injection.injection_message;
+    const is_input_correct = assets.check_if_vars_in_body(req.body, ["title", "description", "due_time", "status"]);
+    if (typeof is_input_correct === 'string' || is_input_correct === false) {
+        short_or_detailed.error_body_message(res, title, "You must provide a title, a description, a due_time, a status and (optional) the user_id", global.global_logged_in_token);
+        return [""];
     }
-    if (todo_node.length === 0) {
-        return "No todo found";
+    const response = await todo_query.add_todo(global.connection, req.body, global.user_email);
+    if (response === "Creation success") {
+        const todo = await todo_query.show_all_todos(global.connection);
+        short_or_detailed.display_all_todos(res, title, todo, global.global_logged_in_token);
+    } else {
+        short_or_detailed.display_post_todo_errors(res, title, response, global.global_logged_in_token);
     }
-    const { title, description, due_time, status } = body_content;
-    var data = [title, description, due_time, user_id, status];
-    const data_description = ['title', 'description', 'due_time', 'user_id', 'status'];
-    data = assets.fill_array_if_empty(todo_node, data, data_description);
-    const update = await db.update_record(connection, 'todo', data_description, data, `id="${node_to_search}"`);
-    if (update === injection.injection_message) {
-        return injection.injection_message;
+};
+
+async function app_put_todos_by_id(req, res) {
+    var title = 'Welcome to todos/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
     }
-    if ("fieldCount" in update === false) {
-        return "Update failed";
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    const table_content = await db.sql_get_user(connection, 'todo', '', '', '', node_to_search);
-    if (table_content === injection.injection_message) {
-        return injection.injection_message;
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global.global_logged_in_token);
     }
-    return table_content[0];
+    const response = await todo_query.update_todo(global.connection, req.body, req.params.id, global.user_email);
+    short_or_detailed.display_put_todos(res, title, response, global.global_logged_in_token);
+};
+
+async function app_delete_todos_by_id(req, res) {
+    var title = 'Welcome to todos/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global.global_logged_in_token);
+    }
+    const response = await todo_query.forget_todo(global.connection, req.params.id);
+    short_or_detailed.delete_todos_id_messages(res, title, response, global.global_logged_in_token);
+};
+
+async function container(app) {
+    app.get('/todos', async (req, res) => { await app_get_todos(req, res) });
+    app.get('/todos/:id', async (req, res) => { await get_todos_by_id(req, res) });
+    app.post('/todos', async (req, res) => { await app_post_todos(req, res) });
+    app.put('/todos/:id', async (req, res) => { await app_put_todos_by_id(req, res) });
+    app.delete('/todos/:id', async (req, res) => { await app_delete_todos_by_id(req, res) });
 }
 
 module.exports = {
-    add_todo,
-    delete_all_user_todos,
-    forget_todo,
-    update_todo
+    container: container
 }

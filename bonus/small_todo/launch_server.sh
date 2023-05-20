@@ -6,7 +6,7 @@ if [ $# -eq 0 ]; then
     done
 elif [ $# -eq 1 ]; then
     while [ 1 -eq 1 ]; do
-        npm test
+        npm my_debug
         sleep 1
     done
 else

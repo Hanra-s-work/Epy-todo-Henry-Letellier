@@ -5,7 +5,8 @@
   "main": "node ./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "node --trace-warnings ./src/index.js"
+    "test": "node --trace-warnings ./src/index.js",
+    "my_debug": "node --trace-warnings --inspect ./src/index.js"
   },
   "repository": {
     "type": "git",

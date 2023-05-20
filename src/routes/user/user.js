@@ -6,80 +6,129 @@
 */
 
 const db = require("../../config/db");
-const todos = require("../todos/todos");
+const rauth = require("../auth/auth");
+const mauth = require("../../middleware/auth");
 const assets = require("../../assets");
 const injection = require("../../config/check_if_sql_injection");
+const user_query = require("../user/user.query");
+const todo_query = require("../todos/todos.query");
+const short_or_detailed = require("../../config/short_or_detailed_message");
+require("dotenv").config({ encoding: 'utf-8' });
 
-async function forget_user(connection, node_to_search = "-1") {
-    const is_id = assets.check_if_input_is_id(node_to_search);
-    if (is_id === false) {
-        return "Unknown input";
+async function app_get_user(req, res) {
+    var title = 'Welcome to user';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
     }
-    const is_injection = injection.check_if_sql_injection(node_to_search);
-    if (is_injection === true) {
-        return injection.injection_message;
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    const user_node = await db.sql_get_user(connection, 'user', '', '', '', node_to_search);
-    if (user_node.length === 0) {
-        return "No user found";
-    }
-    const user_todos = await todos.delete_all_user_todos(connection, user_node[0].id);
-    if ("fieldCount" in user_todos === false) {
-        return "Error deleting todos";
-    }
-    const deleted_user = await db.delete_record(connection, 'user', `id="${node_to_search}"`)
-    if ("fieldCount" in deleted_user) {
-        return { "id": node_to_search, "msg": "success" };
-    }
-    if (deleted_user === injection.injection_message) {
-        return injection.injection_message;
-    }
-    return deleted_user;
-}
-
-async function update_user(connection, body_content, node_to_search = '-1') {
-    var secured_password = "";
-    const check_id = assets.check_if_input_is_id(node_to_search);
-    if (check_id === false) {
-        return "Unknown input";
-    }
-    const user_node = await db.sql_get_user(connection, 'user', "", "", "", node_to_search);
+    const user_node = await db.sql_get_user_node(global.connection, global.user_email);
     if (user_node === injection.injection_message) {
-        return injection.injection_message;
-    }
-    if (user_node.length === 0 || user_node.length === undefined) {
-        return "No user found";
-    }
-    const { name, firstname, email, password } = body_content;
-    if (email != user_node[0]["email"]) {
-        const email_exits = await assets.check_if_email_already_exist(connection, email);
-        if (email_exits === true) {
-            return "Email already exits";
-        }
-    }
-    if ("password" in body_content && password.length > 0 && assets.check_if_password_is_hashed(password) === false) {
-        secured_password = await assets.secure_the_password(password);
+        short_or_detailed.injection_message(res, title, global.global_logged_in_token);
     } else {
-        secured_password = password;
+        short_or_detailed.display_user_info(res, title, user_node, global.global_logged_in_token);
     }
-    var data = [name, firstname, email, secured_password];
-    const data_names = ["name", "firstname", "email", "password"];
-    data = assets.fill_array_if_empty(user_node, data, data_names);
-    const update = await db.update_record(connection, 'user', data_names, data, `id="${node_to_search}"`);
-    if (update === injection.injection_message) {
-        return injection.injection_message;
-    }
-    if ("fieldCount" in update === false) {
-        return "Update failed";
-    }
-    const table_content = await db.sql_get_user(connection, 'user', '', '', '', node_to_search);
-    if (table_content === injection.injection_message) {
-        return injection.injection_message;
-    }
-    return table_content[0];
-}
+};
 
+async function app_get_user_todos(req, res) {
+    var title = "Welcome to user/todos";
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const response = await todo_query.show_all_user_todos(global.connection, global.user_email);
+    if (response === injection.injection_message) {
+        short_or_detailed.injection_message(res, title, global.global_logged_in_token);
+    } else {
+        short_or_detailed.display_user_todos(res, title, response, global.global_logged_in_token);
+    }
+};
+
+async function app_get_user_by_id(req, res) {
+    var title = 'Welcome to users/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global.global_logged_in_token);
+    }
+    const response = await user_query.get_other_usr_info(global.connection, req.params.id);
+    short_or_detailed.users_id_messages(res, title, response, global.global_logged_in_token);
+
+};
+
+async function app_get_user_by_email(req, res) {
+    var title = 'Welcome to users/:email';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global.global_logged_in_token);
+    }
+    const response = await user_query.get_other_usr_info(global.connection, req.params.email);
+    short_or_detailed.users_id_messages(res, title, response, global.global_logged_in_token);
+
+};
+
+
+async function app_put_users_id(req, res) {
+    var title = 'Welcome to users/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const is_id_in = assets.check_if_input_is_id(req.params.id);
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id", global.global_logged_in_token);
+    }
+    const update = await user_query.update_user(global.connection, req.body, req.params.id);
+    short_or_detailed.put_user_id(res, title, update, global.global_logged_in_token);
+};
+
+async function app_delete_user_by_id(req, res) {
+    var title = 'Welcome to users/:id';
+    if (global.is_logged_in === false) {
+        return short_or_detailed.user_not_logged_in(res, title);
+    }
+    const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
+    if (usr_logged_in != "Connection success") {
+        return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
+    }
+    const is_id_in = await assets.check_if_var_in_url(req, "id");
+    if (is_id_in === false) {
+        return short_or_detailed.error_url_message(res, title, "You must provide an id or an email", global.global_logged_in_token);
+    }
+    const response = await user_query.forget_user(global.connection, req.params.id);
+    short_or_detailed.delete_users_id_messages(res, title, response, global.global_logged_in_token);
+
+};
+
+async function container(app) {
+    app.get('/user', async (req, res) => { await app_get_user(req, res) });
+    app.get('/user/todos', async (req, res) => { await app_get_user_todos(req, res) });
+    app.get('/users/:id', async (req, res) => { await app_get_user_by_id(req, res) });
+    app.get('/users/:email', async (req, res) => { await app_get_user_by_email(req, res) });
+    app.put('/users/:id', (req, res) => { app_put_users_id(req, res) });
+    app.delete('/users/:id', (req, res) => { app_delete_user_by_id(req, res) });
+}
 module.exports = {
-    forget_user,
-    update_user
+    container: container
 }
