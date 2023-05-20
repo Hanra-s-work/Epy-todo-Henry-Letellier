@@ -667,7 +667,7 @@ VALUES (
     ),
     (
         "Lumine",
-        "<unkown>",
+        "<unknown>",
         "lumine@example.com",
         "$2a$10$7Rcw2li.I2DsiPVLf5XzvOcTuqCMh59pD01E9ByoeC0FPiwheRdie" -- 123456
     );
