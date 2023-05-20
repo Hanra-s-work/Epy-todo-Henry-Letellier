@@ -17,7 +17,10 @@ function check_json_token(req, secret_token) {
     if (response === false) {
         return "Invalid token";
     }
-    return "Connection success";
+    if (token === global.global_logged_in_token) {
+        return "Connection success";
+    }
+    return "Invalid token";
 };
 
 module.exports = {

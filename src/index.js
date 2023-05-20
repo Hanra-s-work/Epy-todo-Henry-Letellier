@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const db = require("./config/db.js");
-const bonus = require("./routes/bonus");
 const user = require("./routes/user/user");
 const todo = require("./routes/todos/todos");
 const rauth = require("./routes/auth/auth.js");
@@ -22,7 +21,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-bonus.container(app);
 todo.container(app);
 user.container(app);
 
