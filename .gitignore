@@ -1,5 +1,6 @@
 .env
 !./bonus/deploy/app/your_app/.env
+!./bonus/files/app/your_app/.env
 my_probe.sql
 # package-lock.json
 .vscode/**
@@ -7,6 +8,8 @@ my_probe.sql
 node_modules/**
 **/node_modules/**
 **/**/node_modules/**
+**/**/**/node_modules/**
+**/**/**/**/node_modules/**
 bonus/files/data/current_state/**
 bonus/files/data/current_state/sys/**
 bonus/files/data/current_state/aria_log.*
