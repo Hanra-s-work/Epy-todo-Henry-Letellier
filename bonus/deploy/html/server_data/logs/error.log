@@ -1258,3 +1258,244 @@
 2023/05/21 15:00:12 [notice] 1#1: start worker process 22
 2023/05/21 15:00:12 [notice] 1#1: start worker process 23
 2023/05/21 15:00:12 [notice] 1#1: start worker process 24
+2023/05/21 15:04:10 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:04:10 [notice] 21#21: gracefully shutting down
+2023/05/21 15:04:10 [notice] 21#21: exiting
+2023/05/21 15:04:10 [notice] 22#22: gracefully shutting down
+2023/05/21 15:04:10 [notice] 22#22: exiting
+2023/05/21 15:04:10 [notice] 23#23: gracefully shutting down
+2023/05/21 15:04:10 [notice] 23#23: exiting
+2023/05/21 15:04:10 [notice] 24#24: gracefully shutting down
+2023/05/21 15:04:10 [notice] 24#24: exiting
+2023/05/21 15:04:10 [notice] 24#24: exit
+2023/05/21 15:04:10 [notice] 22#22: exit
+2023/05/21 15:04:10 [notice] 23#23: exit
+2023/05/21 15:04:10 [notice] 21#21: exit
+2023/05/21 15:04:10 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:04:10 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:04:10 [notice] 1#1: worker process 24 exited with code 0
+2023/05/21 15:04:10 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:04:10 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2023/05/21 15:04:10 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:04:10 [notice] 1#1: signal 17 (SIGCHLD) received from 21
+2023/05/21 15:04:10 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:04:10 [notice] 1#1: exit
+2023/05/21 15:04:57 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:04:57 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:04:57 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:04:57 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:04:57 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:04:57 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:04:57 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:04:57 [notice] 1#1: start worker processes
+2023/05/21 15:04:57 [notice] 1#1: start worker process 22
+2023/05/21 15:04:57 [notice] 1#1: start worker process 23
+2023/05/21 15:04:57 [notice] 1#1: start worker process 24
+2023/05/21 15:04:57 [notice] 1#1: start worker process 25
+2023/05/21 15:06:36 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:06:36 [notice] 22#22: gracefully shutting down
+2023/05/21 15:06:36 [notice] 24#24: gracefully shutting down
+2023/05/21 15:06:36 [notice] 22#22: exiting
+2023/05/21 15:06:36 [notice] 24#24: exiting
+2023/05/21 15:06:36 [notice] 22#22: exit
+2023/05/21 15:06:36 [notice] 24#24: exit
+2023/05/21 15:06:36 [notice] 25#25: gracefully shutting down
+2023/05/21 15:06:36 [notice] 25#25: exiting
+2023/05/21 15:06:36 [notice] 25#25: exit
+2023/05/21 15:06:36 [notice] 23#23: gracefully shutting down
+2023/05/21 15:06:36 [notice] 23#23: exiting
+2023/05/21 15:06:36 [notice] 23#23: exit
+2023/05/21 15:06:36 [notice] 1#1: signal 17 (SIGCHLD) received from 25
+2023/05/21 15:06:36 [notice] 1#1: worker process 25 exited with code 0
+2023/05/21 15:06:36 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:06:36 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:06:36 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:06:36 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:06:36 [notice] 1#1: signal 17 (SIGCHLD) received from 24
+2023/05/21 15:06:36 [notice] 1#1: worker process 24 exited with code 0
+2023/05/21 15:06:36 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:06:36 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2023/05/21 15:06:36 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:06:36 [notice] 1#1: exit
+2023/05/21 15:07:38 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:07:38 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:07:38 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:07:38 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:07:38 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:07:38 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:07:38 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:07:38 [notice] 1#1: start worker processes
+2023/05/21 15:07:38 [notice] 1#1: start worker process 21
+2023/05/21 15:07:38 [notice] 1#1: start worker process 22
+2023/05/21 15:07:38 [notice] 1#1: start worker process 23
+2023/05/21 15:07:38 [notice] 1#1: start worker process 24
+2023/05/21 15:08:10 [error] 21#21: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2023/05/21 15:15:10 [error] 22#22: *2 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2023/05/21 15:15:58 [error] 23#23: *3 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2023/05/21 15:16:15 [error] 23#23: *3 open() "/usr/share/nginx/html/api/login" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "POST /api/login HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:17:16 [error] 24#24: *4 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:17:32 [error] 24#24: *4 open() "/usr/share/nginx/html/api/login" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "POST /api/login HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:26:21 [error] 21#21: *5 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:26:33 [error] 21#21: *5 open() "/usr/share/nginx/html/api/login" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "POST /api/login HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:31:10 [error] 21#21: *6 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:31:19 [error] 21#21: *6 open() "/usr/share/nginx/html/login" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "POST /login HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:35:22 [error] 21#21: *7 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.144.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:37:20 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:37:20 [notice] 21#21: gracefully shutting down
+2023/05/21 15:37:20 [notice] 22#22: gracefully shutting down
+2023/05/21 15:37:20 [notice] 22#22: exiting
+2023/05/21 15:37:20 [notice] 21#21: exiting
+2023/05/21 15:37:20 [notice] 23#23: gracefully shutting down
+2023/05/21 15:37:20 [notice] 23#23: exiting
+2023/05/21 15:37:20 [notice] 24#24: gracefully shutting down
+2023/05/21 15:37:20 [notice] 24#24: exiting
+2023/05/21 15:37:20 [notice] 21#21: exit
+2023/05/21 15:37:20 [notice] 24#24: exit
+2023/05/21 15:37:20 [notice] 23#23: exit
+2023/05/21 15:37:20 [notice] 22#22: exit
+2023/05/21 15:37:20 [notice] 1#1: signal 17 (SIGCHLD) received from 24
+2023/05/21 15:37:20 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:37:20 [notice] 1#1: worker process 24 exited with code 0
+2023/05/21 15:37:20 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:37:20 [notice] 1#1: signal 17 (SIGCHLD) received from 21
+2023/05/21 15:37:20 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:37:20 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:37:20 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:37:20 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:37:20 [notice] 1#1: exit
+2023/05/21 15:37:38 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:37:38 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:37:38 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:37:38 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:37:38 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:37:38 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:37:38 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:37:38 [notice] 1#1: start worker processes
+2023/05/21 15:37:38 [notice] 1#1: start worker process 20
+2023/05/21 15:37:38 [notice] 1#1: start worker process 21
+2023/05/21 15:37:38 [notice] 1#1: start worker process 22
+2023/05/21 15:37:38 [notice] 1#1: start worker process 23
+2023/05/21 15:37:53 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:37:53 [notice] 23#23: gracefully shutting down
+2023/05/21 15:37:53 [notice] 23#23: exiting
+2023/05/21 15:37:53 [notice] 23#23: exit
+2023/05/21 15:37:53 [notice] 21#21: gracefully shutting down
+2023/05/21 15:37:53 [notice] 21#21: exiting
+2023/05/21 15:37:53 [notice] 22#22: gracefully shutting down
+2023/05/21 15:37:53 [notice] 22#22: exiting
+2023/05/21 15:37:53 [notice] 22#22: exit
+2023/05/21 15:37:53 [notice] 21#21: exit
+2023/05/21 15:37:53 [notice] 20#20: gracefully shutting down
+2023/05/21 15:37:53 [notice] 20#20: exiting
+2023/05/21 15:37:53 [notice] 20#20: exit
+2023/05/21 15:37:53 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:37:53 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:37:53 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:37:53 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:37:53 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:37:53 [notice] 1#1: signal 17 (SIGCHLD) received from 20
+2023/05/21 15:37:53 [notice] 1#1: worker process 20 exited with code 0
+2023/05/21 15:37:53 [notice] 1#1: exit
+2023/05/21 15:39:16 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:39:16 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:39:16 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:39:16 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:39:16 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:39:16 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:39:16 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:39:16 [notice] 1#1: start worker processes
+2023/05/21 15:39:16 [notice] 1#1: start worker process 20
+2023/05/21 15:39:16 [notice] 1#1: start worker process 21
+2023/05/21 15:39:16 [notice] 1#1: start worker process 22
+2023/05/21 15:39:16 [notice] 1#1: start worker process 23
+2023/05/21 15:39:25 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:39:25 [notice] 20#20: gracefully shutting down
+2023/05/21 15:39:25 [notice] 20#20: exiting
+2023/05/21 15:39:25 [notice] 23#23: gracefully shutting down
+2023/05/21 15:39:25 [notice] 23#23: exiting
+2023/05/21 15:39:25 [notice] 20#20: exit
+2023/05/21 15:39:25 [notice] 23#23: exit
+2023/05/21 15:39:25 [notice] 21#21: gracefully shutting down
+2023/05/21 15:39:25 [notice] 21#21: exiting
+2023/05/21 15:39:25 [notice] 21#21: exit
+2023/05/21 15:39:25 [notice] 22#22: gracefully shutting down
+2023/05/21 15:39:25 [notice] 22#22: exiting
+2023/05/21 15:39:25 [notice] 22#22: exit
+2023/05/21 15:39:26 [notice] 1#1: signal 17 (SIGCHLD) received from 20
+2023/05/21 15:39:26 [notice] 1#1: worker process 20 exited with code 0
+2023/05/21 15:39:26 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:39:26 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:39:26 [notice] 1#1: signal 17 (SIGCHLD) received from 21
+2023/05/21 15:39:26 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:39:26 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:39:26 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:39:26 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2023/05/21 15:39:26 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:39:26 [notice] 1#1: exit
+2023/05/21 15:41:06 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:41:06 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:41:06 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:41:06 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:41:06 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:41:06 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:41:06 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:41:06 [notice] 1#1: start worker processes
+2023/05/21 15:41:06 [notice] 1#1: start worker process 21
+2023/05/21 15:41:06 [notice] 1#1: start worker process 22
+2023/05/21 15:41:06 [notice] 1#1: start worker process 23
+2023/05/21 15:41:06 [notice] 1#1: start worker process 24
+2023/05/21 15:41:09 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:41:09 [notice] 22#22: gracefully shutting down
+2023/05/21 15:41:09 [notice] 21#21: gracefully shutting down
+2023/05/21 15:41:09 [notice] 22#22: exiting
+2023/05/21 15:41:09 [notice] 21#21: exiting
+2023/05/21 15:41:09 [notice] 22#22: exit
+2023/05/21 15:41:09 [notice] 21#21: exit
+2023/05/21 15:41:09 [notice] 24#24: gracefully shutting down
+2023/05/21 15:41:09 [notice] 24#24: exiting
+2023/05/21 15:41:09 [notice] 24#24: exit
+2023/05/21 15:41:09 [notice] 23#23: gracefully shutting down
+2023/05/21 15:41:09 [notice] 23#23: exiting
+2023/05/21 15:41:09 [notice] 23#23: exit
+2023/05/21 15:41:09 [notice] 1#1: signal 17 (SIGCHLD) received from 21
+2023/05/21 15:41:09 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:41:09 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:41:09 [notice] 1#1: worker process 24 exited with code 0
+2023/05/21 15:41:09 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:41:09 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2023/05/21 15:41:09 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:41:09 [notice] 1#1: exit
+2023/05/21 15:45:05 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2023/05/21 15:45:05 [warn] 1#1: conflicting server name "localhost" on [::]:80, ignored
+2023/05/21 15:45:05 [notice] 1#1: using the "epoll" event method
+2023/05/21 15:45:05 [notice] 1#1: nginx/1.23.4
+2023/05/21 15:45:05 [notice] 1#1: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2023/05/21 15:45:05 [notice] 1#1: OS: Linux 5.17.12-100.fc34.x86_64
+2023/05/21 15:45:05 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2023/05/21 15:45:05 [notice] 1#1: start worker processes
+2023/05/21 15:45:05 [notice] 1#1: start worker process 21
+2023/05/21 15:45:05 [notice] 1#1: start worker process 22
+2023/05/21 15:45:05 [notice] 1#1: start worker process 23
+2023/05/21 15:45:05 [notice] 1#1: start worker process 24
+2023/05/21 15:45:16 [error] 21#21: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.29.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/files/sub_pages/home/"
+2023/05/21 15:51:35 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2023/05/21 15:51:35 [notice] 21#21: gracefully shutting down
+2023/05/21 15:51:35 [notice] 22#22: gracefully shutting down
+2023/05/21 15:51:35 [notice] 21#21: exiting
+2023/05/21 15:51:35 [notice] 22#22: exiting
+2023/05/21 15:51:35 [notice] 24#24: gracefully shutting down
+2023/05/21 15:51:35 [notice] 24#24: exiting
+2023/05/21 15:51:35 [notice] 21#21: exit
+2023/05/21 15:51:35 [notice] 22#22: exit
+2023/05/21 15:51:35 [notice] 24#24: exit
+2023/05/21 15:51:35 [notice] 23#23: gracefully shutting down
+2023/05/21 15:51:35 [notice] 23#23: exiting
+2023/05/21 15:51:35 [notice] 23#23: exit
+2023/05/21 15:51:35 [notice] 1#1: signal 17 (SIGCHLD) received from 24
+2023/05/21 15:51:35 [notice] 1#1: worker process 22 exited with code 0
+2023/05/21 15:51:35 [notice] 1#1: worker process 23 exited with code 0
+2023/05/21 15:51:35 [notice] 1#1: worker process 24 exited with code 0
+2023/05/21 15:51:35 [notice] 1#1: signal 29 (SIGIO) received
+2023/05/21 15:51:35 [notice] 1#1: signal 17 (SIGCHLD) received from 22
+2023/05/21 15:51:35 [notice] 1#1: worker process 21 exited with code 0
+2023/05/21 15:51:35 [notice] 1#1: exit

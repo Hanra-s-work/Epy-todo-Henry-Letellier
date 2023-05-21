@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const db = require("./config/db.js");
@@ -17,6 +18,7 @@ global.user_email = null;
 global.is_logged_in = false;
 global.global_logged_in_token = null;
 
+app.use(cors());
 app.use(express.raw());
 app.use(express.json());
 app.use(bodyParser.json());
