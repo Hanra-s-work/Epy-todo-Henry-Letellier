@@ -11,8 +11,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: my_database
-      MYSQL_USER: my_user
-      MYSQL_PASSWORD: user
+      MYSQL_USER: lumine
+      MYSQL_PASSWORD: lumine
     ports:
       - "3307:3306"
     volumes:
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./app/your_app:/app/your_app
     working_dir: /app
-    command: npm start
+    # command: npm start
     tty: true
     depends_on:
       - maria-db
