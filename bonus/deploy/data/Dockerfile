@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Deploy databases from .sql files
-COPY ./default_sql/*.sql /docker-entrypoint-initdb.d/
+COPY ./default_sql/ /docker-entrypoint-initdb.d/
 
 # Listing the content of the app and docker-entrypoint-initdb.d folders
 RUN echo "Content of /app:" && ls -a /app && \

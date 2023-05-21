@@ -28,7 +28,7 @@ services:
     ports:
       - "3000-3010:3000-3010"
     volumes:
-      - ./app/your_app:/app
+      - ./app/your_app:/app/your_app
     working_dir: /app
     command: npm start
     tty: true
