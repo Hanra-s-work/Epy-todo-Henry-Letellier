@@ -1,7 +1,7 @@
 FROM node:latest
-RUN mkdir -p /app/your_app
-WORKDIR /app/your_app
-COPY package*.json /app
-RUN cd /app && npm install
+WORKDIR /app
+RUN mkdir -p /your_app
+COPY package*.json ./
+RUN npm install
 EXPOSE 3000-3100
 # CMD ["npm", "start"]
