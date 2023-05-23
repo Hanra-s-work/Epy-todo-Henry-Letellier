@@ -18,7 +18,8 @@ function add_login_page(HOME) {
 }
 function which_auth_button(HOME, token) {
     if (token === "") {
-        return `        <button class="connect" onclick="window.open('${HOME}files/sub_pages/connect', 'Login', 'width=394,height=504');">Connect</button>\n`;
+        return `        <a href="${HOME}files/sub_pages/connect" class="link"><button class="connect">Connect</button></a>\n`;
+        // return `        <button class="connect" onclick="window.open('${HOME}files/sub_pages/connect', 'Login', 'width=394,height=504');">Connect</button>\n`;
         // return `        <button class="connect" onclick="openLoginPopup()">Connect</button>\n`;
     } else {
         return `        <a href="${HOME}files/sub_pages/logout" class="link"><button class="connect">Log out</button></a>\n`;
@@ -30,7 +31,7 @@ function writeBodyHeader(ID, HOME = "/", token = "") {
     // writeBodyHeader += add_login_page(HOME);
     writeBodyHeader += '    <HeaderContainer>\n';
     writeBodyHeader += '    <HeaderLeft>\n';
-    writeBodyHeader += `        <button class="table_button" onclick = "animate_menu(\'table_of_contents\')"><img src="${HOME}files/img/assets/menu_button_black.png"/></button>\n`;
+    writeBodyHeader += `        <button class="table_button" onclick = "animate_menu(\'table_of_contents\')"><img src="${HOME}files/img/assets/menu_button/menu_button_black.png"/></button>\n`;
     writeBodyHeader += `        <a class="link" href="${HOME}"><img class="homeIcon" src="${HOME}files/img/logo/favicon_256x256.png"/></a>\n`;
     writeBodyHeader += '    </HeaderLeft>\n';
     writeBodyHeader += '    <center class="HeaderCenter">\n';

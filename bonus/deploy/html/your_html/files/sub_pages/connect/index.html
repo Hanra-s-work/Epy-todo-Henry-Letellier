@@ -10,8 +10,9 @@
     </head>
 
     <body>
-        <menu id="table_of_content"></menu>
-        <header id="header"></header>
+        <aside class="back_one">
+            <button onclick="goBack()" class="back_one_button"><img class="back_one_img" src="/files/img/assets/close/close_grey.png" alt="Go back to previous page" title="Go back to previous page" aria-label="Go back to previous page" /></button>
+        </aside>
         <div class="form">
             <div class="form-box">
                 <div class="fobtn-box">
@@ -22,7 +23,7 @@
                 <form id="login" class="input-group" onsubmit="event.preventDefault(); log_user_in();">
                     <p class="error_message"><span class="error_message" id="login_error_message"></span></p>
                     <p style="color:transparent">.</p>
-                    <p>Fields with a * must be filled</p>
+                    <p class="form_p">Fields with a * must be filled</p>
                     <input id="lemail" type="email" class="datainput" placeholder="* E-mail" required>
                     <input id="lpassword" type="password" class="datainput" placeholder="* Password" required>
                     <p style="color:transparent">.</p>
@@ -31,7 +32,7 @@
                 <form id="register" class="input-group" onsubmit="event.preventDefault(); register_user();">
                     <p class="error_message"><span class="error_message" id="registration_error_message"></span></p>
                     <p style="color:transparent">.</p>
-                    <p>Fields with a * must be filled</p>
+                    <p class="form_p">Fields with a * must be filled</p>
                     <div class="one-liner">
                         <input id="rfirstname" type="text" class="datainput" placeholder="* Firstname" required>
                         <input id="rname" type="text" class="datainput" placeholder="* Name" required>

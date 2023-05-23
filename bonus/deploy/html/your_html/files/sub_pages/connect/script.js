@@ -40,7 +40,24 @@ async function register_user() {
     }
 }
 
+function goBack() {
+    window.history.back();
+}
+
+function previous_is_logout() {
+    var previous = document.referrer;
+    if (previous.includes("logout")) {
+        return true;
+    }
+    return false;
+}
+
 function redirect_user() {
-    console.log("Redirecting user");
-    window.location.href = "/";
+    go_home = previous_is_logout();
+    if (go_home === true) {
+        console.log("Redirecting user");
+        window.location.href = "/";
+    } else {
+        goBack();
+    }
 }

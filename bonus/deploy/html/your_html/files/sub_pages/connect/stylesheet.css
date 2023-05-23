@@ -23,8 +23,8 @@
     padding: 5px;
     border: 2.25px solid #2DBDE8;
     overflow: hidden;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    /* margin-top: 0px;
+    margin-bottom: 0px; */
 }
 
 .fobtn-box {
@@ -131,4 +131,32 @@
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 10px;
+}
+
+.back_one {
+    z-index: 1;
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 50px;
+    padding-left: 564px;
+    padding-right: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.back_one_button {
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+.back_one_img {
+    width: 50px;
+    height: 50px;
+}
+
+.back_one_img:hover {
+    transform: rotate(360deg);
+    transition-duration: 1s;
 }

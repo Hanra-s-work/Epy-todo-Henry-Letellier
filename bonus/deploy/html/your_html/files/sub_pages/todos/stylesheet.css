@@ -1,0 +1,84 @@
+/*
+** EPITECH PROJECT, 2022
+** B-MAT-200-PAR-2-1-110borwein-henry.letellier
+** File description:
+** stylesheet.css
+*/
+
+.enable_flexbox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+}
+
+.enable_flexbox p {
+    margin-right: 10px;
+}
+
+.one_liner {
+    flex-wrap: nowrap;
+}
+
+.spinbox-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.spinbox-wrapper button {
+    margin: 0 5px;
+}
+
+.enable_flexbox {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.enable_flexbox p {
+    margin-right: 10px;
+}
+
+/* table {
+    border: 1px black groove;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    font-size: 20px;
+    border: 1px black groove;
+}
+
+td {
+    border: 1px black groove;
+} */
+
+.button {
+    color: white;
+    background-color: blue;
+    border-width: 2px;
+    border-color: black;
+    border-style: outset;
+}
+
+.button:hover {
+    border-style: inset;
+}
+
+.input {
+    border-width: 2px;
+    border-color: black;
+    border-style: outset;
+    background-color: black;
+    color: aliceblue;
+}
+
+.chart-container {
+    width: 800px;
+    height: 300px;
+}

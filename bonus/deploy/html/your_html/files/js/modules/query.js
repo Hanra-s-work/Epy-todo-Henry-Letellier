@@ -285,11 +285,7 @@ async function getHome(DEST_ID) {
         }
     });
     const data = await response.json();
-    if ("msg" in data && data.msg === "User not logged in") {
-        document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
-        return data.msg;
-    }
-    createTable.createHTMLTableFromJSON(DEST_ID, data);
+    document.getElementById(DEST_ID).innerHTML = `<b>${data.msg}</b>`;
     return data.msg;
 }
 
