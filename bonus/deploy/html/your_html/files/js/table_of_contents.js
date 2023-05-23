@@ -29,9 +29,11 @@ function table_of_contents(ID, CURRENT = "Home") {
         "About": "/files/sub_pages/about",
         "My Info": "/files/sub_pages/user",
         "My Todos": "/files/sub_pages/user/todos",
-        "Find A User": "/files/sub_pages/users",
+        "Manage Users": "/files/sub_pages/users",
+        "Manage Todos": "/files/sub_pages/todos",
         "Connect": "/files/sub_pages/connect",
-        "Log out": "/files/sub_pages/logout"
+        "Log out": "/files/sub_pages/logout",
+        "Terms of use": "/files/sub_pages/terms_of_use"
     };
 
     compile_all += '<side id="table_of_contents">';

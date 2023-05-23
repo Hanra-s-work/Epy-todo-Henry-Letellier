@@ -6,7 +6,6 @@
 */
 
 async function log_user_out(ID) {
-    console.log("In log_user_out");
     var message = await query.logout();
     if (message === "success") {
         message = "You are successfully logged out !"

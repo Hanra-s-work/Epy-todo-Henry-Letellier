@@ -17,7 +17,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="/files/img/logo/favicon_16x16.ico" /> <!--//IE-->
         <link rel="icon" type="image/png" href="/files/img/logo/favicon_32x32.png" /> <!--//all-->
         <link rel="alternate icon" sizes="16x16" href="/files/img/logo/favicon_16x16.ico" />
-        <title>Epytodo - Logout</title>
+        <title>Epytodo - Backdoor</title>
         <meta id="theme">
         <link rel="stylesheet" href="/files/css/assets/toggle.css">
         <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
@@ -29,7 +29,7 @@
         <main>
             <br>
             <h1 class="center">Epytodo</h1>
-            <h1 class="center"><span id="logout_message"></span></h1>
+            <h1 class="center"><span id="login_message"></span></h1>
         </main>
         <footer>
             <inform id="inform_cookie"></inform>
@@ -49,7 +49,7 @@
         <script src="./script.js" type="text/JavaScript"></script>
         <script type="text/JavaScript">
             async function page_main() {
-                await log_user_out("logout_message");
+                await log_user_in("login_message");
                 var token = cookie.readCookie(window.query.token_cookie_name);
                 table_of_contents('table_of_content','Home');
                 animate_menu('table_of_contents');
