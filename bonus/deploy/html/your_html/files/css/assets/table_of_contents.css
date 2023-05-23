@@ -1,0 +1,135 @@
+/*
+** EPITECH PROJECT, 2022
+** space-track-home (Workspace)
+** File description:
+** table_of_contents.css
+*/
+
+#table_of_contents {
+    display: block;
+    position: fixed;
+    top: 128px;
+    left: -52%;
+    /* left: 0%; */
+    width: 30%;
+    height: 100%;
+    padding-left: 12px;
+    background-color: rgb(108, 108, 108);
+    z-index: 2;
+}
+
+#table_of_contents:hover,
+.table_title:hover,
+/* .table_list:hover, */
+/* .table_list_bullet:hover, */
+.table_list_link:hover {
+    box-shadow: 0 0 10px black;
+    color: white;
+
+}
+
+/* #table_of_contents:active {}
+
+#table_of_contents:clicked {}
+
+#table_of_contents:visited {} */
+
+.table_title {
+    color: white;
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+
+/* .table_title:active {}
+
+.table_title:clicked {}
+
+.table_title:visited {} */
+
+.table_list {
+    color: white;
+    font-weight: bolder;
+}
+
+/* 
+.table_list:active {}
+
+.table_list:clicked {}
+
+.table_list:visited {} */
+
+.table_list_block {
+    display: initial;
+    position: inherit;
+    top: 0px;
+    left: 2;
+    width: 100%;
+    height: 100%;
+}
+
+/* .table_list_block:hover {}
+
+.table_list_block:active {}
+
+.table_list_block:clicked {}
+
+.table_list_block:visited {} */
+
+.table_list_bullet,
+.table_list_bullet:visited {
+    list-style: none;
+    padding-top: 20px;
+}
+
+.table_list_bullet:active,
+.table_list_bullet:clicked {
+    color: red;
+}
+
+.table_list_link {
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+.table_list_link:hover {
+    text-decoration: underline;
+}
+
+/* .table_list_link:active {} */
+
+.table_list_link:clicked {
+    color: red;
+}
+
+.table_list_link:visited {
+    color: white;
+}
+
+.table_button {
+    background-color: #6fd9d9;
+    color: white;
+    font-weight: bolder;
+    border-style: outset;
+    border-color: black;
+    border-width: 2px;
+    border-style: double;
+    cursor: pointer;
+}
+
+.table_close_button {
+    position: absolute;
+    right: 5%;
+    top: 1%;
+}
+
+.table_button:hover {
+    background-color: red;
+    border-width: 2px;
+}
+
+.table_button:active {
+    background-color: green;
+    border-width: 2px;
+}

@@ -1,0 +1,28 @@
+/*
+** EPITECH PROJECT, 2022
+** space-track-home (Workspace)
+** File description:
+** emojy_font.css
+*/
+
+@font-face {
+    font-family: 'emoji_general_use';
+    src: url('../../../files/fonts/emojy/general_use/emojione-svg.eot');
+    src: url('../../../files/fonts/emojy/general_use/emojione-svg.eot?#iefix') format('embedded-opentype'),
+        url('../../../files/fonts/emojy/general_use/emojione-svg.woff2') format('woff2'),
+        url('../../../files/fonts/emojy/general_use/emojione-svg.woff') format('woff'),
+        url('../../../files/fonts/emojy/general_use/emojione-svg.ttf') format('truetype'),
+        url('../../../files/fonts/emojy/general_use/emojione-svg.svg#emoji_general_use') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.emoji_g_u {
+    font-family: 'emoji_general_use';
+}
+
+.emoji_g_u:hover {
+    background-color: rgba(255, 217, 0, 0.39);
+    text-decoration: underline;
+    font-style: italic;
+}

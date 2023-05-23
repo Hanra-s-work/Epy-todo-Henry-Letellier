@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- Reference : https://codepen.io/Hamza_Elkotp/pen/OJNXZaM -->
+<html>
+
+    <head>
+        <title class="links">Connect</title>
+        <link rel="stylesheet" type="text/css" href="./stylesheet.css">
+        <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
+        <script src="/files/js/write_body_header.js" type="text/JavaScript"></script>
+    </head>
+
+    <body>
+        <menu id="table_of_content"></menu>
+        <header id="header"></header>
+        <div class="form">
+            <div class="form-box">
+                <div class="fobtn-box">
+                    <div id="btn"></div>
+                    <button type="button" class="toggle-btn" onclick="login()">Log in</button>
+                    <button type="button" class="toggle-btn" onclick="register()">Register</button>
+                </div>
+                <form id="login" class="input-group" onsubmit="event.preventDefault(); log_user_in();">
+                    <p class="error_message"><span class="error_message" id="login_error_message"></span></p>
+                    <p style="color:transparent">.</p>
+                    <p>Fields with a * must be filled</p>
+                    <input id="lemail" type="email" class="datainput" placeholder="* E-mail" required>
+                    <input id="lpassword" type="password" class="datainput" placeholder="* Password" required>
+                    <p style="color:transparent">.</p>
+                    <button type="submit" class="submit">Log in</button>
+                </form>
+                <form id="register" class="input-group" onsubmit="event.preventDefault(); register_user();">
+                    <p class="error_message"><span class="error_message" id="registration_error_message"></span></p>
+                    <p style="color:transparent">.</p>
+                    <p>Fields with a * must be filled</p>
+                    <div class="one-liner">
+                        <input id="rfirstname" type="text" class="datainput" placeholder="* Firstname" required>
+                        <input id="rname" type="text" class="datainput" placeholder="* Name" required>
+                    </div>
+                    <input id="remail" type="email" class="datainput" placeholder="* Email" required>
+                    <input id="rpassword" type="password" class="datainput" placeholder="* Password" required>
+                    <span>By registering you are accepting our <a href="../terms_of_use" class="link">Terms of Use</a></span>
+                    <p style="color:transparent">.</p>
+                    <button type="submit" class="submit">Register</button>
+                </form>
+            </div>
+        </div>
+        <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
+        <script src="/files/js/modules/query.js" type="module"></script>
+        <script src="./script.js"></script>
+
+    </body>
+
+</html>

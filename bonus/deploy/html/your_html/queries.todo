@@ -1,0 +1,14 @@
+# Routes:
+    [x] /register     POST   no  register a new user
+    [x] /login        POST   no  connect a user
+    [ ] /user         GET    yes view all user information
+    [ ] /user/todos   GET    yes view all user tasks
+    [ ] /users/:id    GET    yes view user information
+    [ ] /users/:email GET    yes view user information
+    [ ] /users/:id    PUT    yes update user information
+    [ ] /users/:id    DELETE yes delete user
+    [ ] /todos        GET    yes view all the todos
+    [ ] /todos/:id    GET    yes view the todo
+    [ ] /todos        POST   yes create a todo
+    [ ] /todos/:id    PUT    yes update a todo
+    [ ] /todos/:id    DELETE yes delete a todo

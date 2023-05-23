@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Todo App</title>
+    </head>
+
+    <body>
+        <h1>Todo App</h1>
+
+        <div id="login-form">
+            <h2>Login</h2>
+            <p id="login-message" class="login-message"></p>
+            <input type="text" id="email" placeholder="email">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="query.login('todo-list')">Login</button>
+        </div>
+
+        <div id="todos" style="display: none;">
+            <h2>Todos</h2>
+            <ul id="todo-list"></ul>
+            <button onclick="query.logout('todo-list')">Logout</button>
+        </div>
+
+        <script src="../../../js/constants.js"></script>
+        <script src="../../../js/functionnal/createHTMLTable.js"></script>
+        <script src="../../../js/modules/cookie_dealing.js" type="module"></script>
+        <script src="../../../js/modules/query.js" type="module"></script>
+        <script src="script.js"></script>
+    </body>
+
+</html>

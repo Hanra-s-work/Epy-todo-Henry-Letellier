@@ -19,10 +19,22 @@
         <link rel="alternate icon" sizes="16x16" href="/files/img/logo/favicon_16x16.ico" />
         <title>Epytodo - Home</title>
         <meta id="theme">
-        <link rel="stylesheet" href="./files/css/assets/toggle.css">
-        <link rel="stylesheet" href="./files/css/assets/table_of_contents.css">
-        <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
-        <script src="/files/js/modules/query.js" type="module"></script>
+        <link rel="stylesheet" href="/files/css/assets/toggle.css">
+        <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
+    </head>
+
+    <body>
+        <menu id="table_of_content"></menu>
+        <header id="header"></header>
+        <main>
+            <br>
+            <h1 class="center">Epytodo</h1>
+            <h1 class="center"><span id="logout_message"></span></h1>
+        </main>
+        <footer>
+            <inform id="inform_cookie"></inform>
+            <copyright id="copyright_zone"></copyright>
+        </footer>
         <script src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
         <script src="/files/js/copyright.js" type="text/JavaScript"></script>
         <script src="/files/js/write_body_header.js" type="text/JavaScript"></script>
@@ -32,20 +44,12 @@
         <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
-    </head>
-
-    <body>
-        <menu id="table_of_content"></menu>
-        <header id="header"></header>
-        <main>
-            <h1 class="center">Epytodo</h1>
-        </main>
-        <footer>
-            <inform id="inform_cookie"></inform>
-            <copyright id="copyright_zone"></copyright>
-        </footer>
+        <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
+        <script src="/files/js/modules/query.js" type="module"></script>
+        <script src="./script.js" type="text/JavaScript"></script>
         <script type="text/JavaScript">
-            function page_main() {
+            async function page_main() {
+                await log_user_out("logout_message");
                 var token = cookie.readCookie(window.query.token_cookie_name);
                 table_of_contents('table_of_content','Home');
                 animate_menu('table_of_contents');
