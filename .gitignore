@@ -19,3 +19,4 @@ bonus/**/data/current_state/my_epy_todo/**
 bonus/**/data/current_state/mariadb_location/**
 bonus/**/data/current_state/performance_schema/**
 bonus/**/html/server_data/logs/**
+bonus/deploy/html/server_data/logs/**
