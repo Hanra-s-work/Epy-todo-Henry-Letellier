@@ -18,16 +18,13 @@ require("dotenv").config({ encoding: 'utf-8' });
 async function app_get_user(req, res) {
     var title = 'Welcome to user';
     if (global.is_logged_in === false) {
-        console.log(`title = ${title}, msg = not logged in, token = ${global.global_logged_in_token}`);
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
     if (usr_logged_in != "Connection success") {
-        console.log(`title = ${title}, msg = ${usr_logged_in}, token = ${global.global_logged_in_token}`);
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
     const user_node = await db.sql_get_user_node(global.connection, global.user_email);
-    console.log(`title = ${title}, msg = ${user_node}, token = ${global.global_logged_in_token}`);
     if (user_node === injection.injection_message) {
         short_or_detailed.injection_message(res, title, global.global_logged_in_token);
     } else {
@@ -38,16 +35,13 @@ async function app_get_user(req, res) {
 async function app_get_user_todos(req, res) {
     var title = "Welcome to user/todos";
     if (global.is_logged_in === false) {
-        console.log(`title = ${title}, msg = not logged in, token = ${global.global_logged_in_token}`);
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
     if (usr_logged_in != "Connection success") {
-        console.log(`title = ${title}, msg = ${usr_logged_in}, token = ${global.global_logged_in_token}`);
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
     const response = await todo_query.show_all_user_todos(global.connection, global.user_email);
-    console.log(`title = ${title}, msg = ${response}, token = ${global.global_logged_in_token}`);
     if (response === injection.injection_message) {
         short_or_detailed.injection_message(res, title, global.global_logged_in_token);
     } else {

@@ -34,7 +34,6 @@ app.post('/register', async (req, res) => {
     const body_content = req.body;
     const is_register_data_present = assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
     if (typeof is_register_data_present === 'string' || is_register_data_present === false) {
-        console.log(`title = ${title}, msg = ${is_register_data_present}, token = ${global.global_logged_in_token}`);
         short_or_detailed.error_body_message(res, title, error_message, '');
         return [""];
     }
@@ -44,7 +43,6 @@ app.post('/register', async (req, res) => {
         global.user_email = body_content.email;
         global.global_logged_in_token = check[2];
     }
-    console.log(`title = ${title}, msg = ${check[1]}, token = ${global.global_logged_in_token}`);
     short_or_detailed.register_message(res, title, check[1], global.global_logged_in_token);
 });
 
@@ -53,7 +51,6 @@ app.post('/login', async (req, res) => {
     var title = 'Welcome to login';
     const check = assets.check_if_vars_in_body(req.body, ["email", "password"]);
     if (typeof check === 'string' || check === false) {
-        console.log(`title = ${title}, msg = vars in body: ${check}, token = ${global.global_logged_in_token}`);
         return short_or_detailed.error_body_message(res, title, error_message, global.global_logged_in_token);
     }
     const response = await rauth.authenticate_user(global.connection, req.body);
@@ -62,7 +59,6 @@ app.post('/login', async (req, res) => {
         global.user_email = response[1];
         global.global_logged_in_token = response[2];
     }
-    console.log(`title = ${title}, msg = response = ${response[3]}, token = ${global.global_logged_in_token}`);
     if (global.is_logged_in === false || response.length === 1) {
         return short_or_detailed.login_error_messages(res, title, response[0], global.global_logged_in_token)
     }

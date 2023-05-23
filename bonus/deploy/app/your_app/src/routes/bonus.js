@@ -70,7 +70,6 @@ async function stop_server(req, res) {
 
 function welcome(req, res) {
     var title = 'Welcome to /';
-    console.log(`title = ${title}, msg = Hello World, token = ${global.global_logged_in_token}`);
     short_or_detailed.hello_world(res, title, 'Hello World', global.global_logged_in_token);
 };
 
