@@ -67,6 +67,21 @@ function clear_all_cookies() {
     console.log("Cookies cleared");
     alert("Cookies Cleared");
 }
+
+function count_all_cookies() {
+    var cookies = document.cookie;
+    var cookies_array = cookies.split(";");
+    var cookie_count = 0;
+    for (var i = 0; i < cookies_array.length; i++) {
+        var cookie = cookies_array[i];
+        var cookie_name = cookie.split("=")[0];
+        if (cookie_name != "") {
+            cookie_count++;
+        }
+    }
+    return cookie_count;
+}
+
 console.log("js/cookie_dealing initialised");
 
 export {
@@ -78,7 +93,8 @@ export {
     createCookie,
     readCookie,
     removeCookie,
-    clear_all_cookies
+    clear_all_cookies,
+    count_all_cookies
 }
 
 window.cookie = {
@@ -90,5 +106,6 @@ window.cookie = {
     createCookie,
     readCookie,
     removeCookie,
-    clear_all_cookies
+    clear_all_cookies,
+    count_all_cookies
 }
