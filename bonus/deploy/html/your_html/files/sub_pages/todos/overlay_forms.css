@@ -1,0 +1,19 @@
+/* Form styles */
+.todo-form-field {
+    margin-bottom: 10px;
+}
+
+.todo-form-field-label {
+    display: block;
+    font-weight: bold;
+}
+
+.todo-form-field-input,
+.todo-form-field-textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+.todo-form-field .submit-btn {
+    margin-top: 10px;
+}

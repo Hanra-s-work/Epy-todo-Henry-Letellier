@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="/files/css/assets/toggle.css">
         <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
         <link rel="stylesheet" href="./stylesheet.css">
+        <link rel="stylesheet" href="./overlay_forms.css">
         <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
         <script src="/files/js/modules/create_tables.js" type="module"></script>
         <script src="/files/js/modules/query.js" type="module"></script>
@@ -44,6 +45,88 @@
     <body>
         <menu id="table_of_content"></menu>
         <header id="header"></header>
+        <article>
+            <side id="createTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Create Todo</h2>
+                    <form id="createTodoForm" onsubmit="event.preventDefault(); createTodo('createTodoOverlay')">
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="title">Title:</label>
+                            <input class="todo-form-field-input" type="text" id="title" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="description">Description:</label>
+                            <textarea class="todo-form-field-textarea" id="description" required></textarea>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="due_time">Due Time:</label>
+                            <input class="todo-form-field-input" type="text" id="due_time" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="status">Status:</label>
+                            <select id="statusDropdown" required>
+                                <option value="not-started">Not Started</option>
+                                <option value="todo">Todo</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+
+                        </div>
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn">Create</button>
+                            <button onclick="hideTodoForm('createTodoOverlay')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+            <side id="updateTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Update Todo</h2>
+                    <form id="createTodoForm" onsubmit="event.preventDefault(); createTodo()">
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="title">Title:</label>
+                            <input class="todo-form-field-input" type="text" id="title" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="description">Description:</label>
+                            <textarea class="todo-form-field-textarea" id="description" required></textarea>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="due_time">Due Time:</label>
+                            <input class="todo-form-field-input" type="text" id="due_time" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="status">Status:</label>
+                            <select id="statusDropdown" required>
+                                <option value="not-started">Not Started</option>
+                                <option value="todo">Todo</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+
+                        </div>
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn">Create</button>
+                            <button onclick="hideCreateTodoForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+            <side id="deleteTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Delete Todo</h2>
+                    <p>
+                        <center>Are you sure you wish to permanently delete todo n°<span id="delete_todo_nb">...</span>?</center>
+                    </p>
+                    <form id="createTodoForm" onsubmit="event.preventDefault(); deleteTodo('delete_todo_nb')">
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn">Delete</button>
+                            <button onclick="hideTodoForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+        </article>
         <main>
             <h1 class="center">Epytodo</h1>
             <side class="action_message">
@@ -56,9 +139,9 @@
                     <input class="input" type="number" id="todo_search" name="spinbox" value="1" min="1" step="1" aria-label="Select a value" onchange="get_todo('todo_search', 'data')">
                     <button class="button" type="button" onclick="increase_spinbox('todo_search');check_if_possible()" aria-label="Increase value">+</button>
                 </section>
-                <button class="option_button" onclick="create_a_todo()">Create a Todo</button>
-                <button class="option_button" onclick="update_a_todo()">Update the Todo</button>
-                <button class="option_button" onclick="delete_a_todo()">Delete the Todo</button>
+                <button class="option_button" onclick="display_create_a_todo()">Create a Todo</button>
+                <button class="option_button" onclick="display_update_a_todo()">Update the Todo</button>
+                <button class="option_button" onclick="display_delete_a_todo()">Delete the Todo</button>
                 <button class="option_button" onclick="refresh_all_todos('data')">Refresh List</button>
             </article>
             <article class="table_content"><span id="data"></span></article>
@@ -68,7 +151,7 @@
             <copyright id="copyright_zone"></copyright>
         </footer>
         <script type="text/JavaScript">
-            table_of_contents('table_of_content','Home');
+            table_of_contents('table_of_content',"Manage Todos");
             animate_menu('table_of_contents');
             copyright("copyright_zone");
             function page_main() {

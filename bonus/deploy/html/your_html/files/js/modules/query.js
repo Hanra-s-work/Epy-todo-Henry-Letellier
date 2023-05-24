@@ -111,9 +111,9 @@ async function getTodosViaID(DEST_ID, TODO_ID) {
 
 
 // Function post todos via id
-async function postTodosViaID(DEST_ID, title = "", description = "", due_time = "", status = "") {
+async function postTodos(DEST_ID, title = "", description = "", due_time = "", status = "") {
     var login_token = cookie.readCookie(token_cookie_name);
-    const response = await fetch(`${node_url}/user`, {
+    const response = await fetch(`${node_url}/todos`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${login_token}`,
@@ -197,6 +197,10 @@ async function getUserTodos(DEST_ID) {
         }
     });
     const data = await response.json();
+    if ("msg" in data && data.msg === "User not logged in") {
+        document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
+        return data.msg;
+    }
     createTable.createHTMLTable(DEST_ID, data);
     return data.msg;
 }
@@ -375,7 +379,7 @@ export {
     login,
     getTodos,
     getTodosViaID,
-    postTodosViaID,
+    postTodos,
     putTodosViaID,
     deleteTodosViaID,
     getUser,
@@ -403,7 +407,7 @@ window.query = {
     login,
     getTodos,
     getTodosViaID,
-    postTodosViaID,
+    postTodos,
     putTodosViaID,
     deleteTodosViaID,
     getUser,

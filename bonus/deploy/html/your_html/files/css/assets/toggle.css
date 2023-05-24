@@ -16,7 +16,7 @@
     display: none;
 }
 
-label {
+.toggle_label {
     display: block;
     position: absolute;
     top: 6%;

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Create Todo</title>
+        <style>
+            /* Overlay styles */
+            .todo-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            /* Form styles */
+            .todo-form-container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+            }
+
+            .todo-form-field {
+                margin-bottom: 10px;
+            }
+
+            .todo-form-field label {
+                display: block;
+                font-weight: bold;
+            }
+
+            .todo-form-field input,
+            .todo-form-field textarea {
+                width: 100%;
+                padding: 5px;
+            }
+
+            .todo-form-field .submit-btn {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <button onclick="showCreateTodoForm()">Create Todo</button>
+
+        <side id="createTodoOverlay" class="todo-overlay" style="display: none;">
+            <div class="todo-form-container">
+                <h2 class="overlay-title">Create Todo</h2>
+                <form id="createTodoForm" onsubmit="event.preventDefault(); createTodo()">
+                    <div class="todo-form-field">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="todo-form-field">
+                        <label for="description">Description:</label>
+                        <textarea id="description" required></textarea>
+                    </div>
+                    <div class="todo-form-field">
+                        <label for="due_time">Due Time:</label>
+                        <input type="text" id="due_time" required>
+                    </div>
+                    <div class="todo-form-field">
+                        <label for="status">Status:</label>
+                        <input type="text" id="status" required>
+                    </div>
+                    <div class="todo-form-field">
+                        <button type="submit" class="submit-btn">Create</button>
+                        <button onclick="hideCreateTodoForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </side>
+
+        <script>
+            // Show the create todo form
+            function showCreateTodoForm() {
+                var overlay = document.getElementById('createTodoOverlay');
+                overlay.style.display = 'flex';
+            }
+
+            // Hide the create todo form
+            function hideCreateTodoForm() {
+                var overlay = document.getElementById('createTodoOverlay');
+                overlay.style.display = 'none';
+            }
+
+            // Handle form submission
+            function createTodo() {
+                var title = document.getElementById('title').value;
+                var description = document.getElementById('description').value;
+                var dueTime = document.getElementById('due_time').value;
+                var status = document.getElementById('status').value;
+
+                // Perform any necessary actions with the form data
+                // For example, you can send the data to the server using AJAX or perform client-side validation
+
+                console.log('Todo created:', { title, description, dueTime, status });
+
+                // Reset the form fields
+                document.getElementById('createTodoForm').reset();
+
+                // Hide the create todo form
+                hideCreateTodoForm();
+            }
+        </script>
+    </body>
+
+</html>
