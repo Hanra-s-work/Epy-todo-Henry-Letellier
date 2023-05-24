@@ -6,7 +6,7 @@
     [x] /terms_of_use GET no Display the terms of use of the program
     [!] /about        GET no About the website
     [!] /user         GET    yes view all user information
-    [!] /user/todos   GET    yes view all user tasks
+    [x] /user/todos   GET    yes view all user tasks
     [!] /users/
         [ ] /users/:email GET    yes view user information
         [ ] /users/:id    GET    yes view user information

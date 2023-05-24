@@ -197,7 +197,7 @@ async function getUserTodos(DEST_ID) {
         }
     });
     const data = await response.json();
-    createHTMLTable(DEST_ID, data);
+    createTable.createHTMLTable(DEST_ID, data);
     return data.msg;
 }
 

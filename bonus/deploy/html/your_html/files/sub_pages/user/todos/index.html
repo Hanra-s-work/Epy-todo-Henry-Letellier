@@ -21,6 +21,7 @@
         <meta id="theme">
         <link rel="stylesheet" href="/files/css/assets/toggle.css">
         <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
+        <link rel="stylesheet" href="./stylesheet.css">
         <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
         <script src="/files/js/modules/create_tables.js" type="module"></script>
         <script src="/files/js/modules/query.js" type="module"></script>
@@ -33,6 +34,7 @@
         <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
+        <script src="./script.js" type="text/JavaScript"></script>
     </head>
 
     <body>
@@ -41,19 +43,25 @@
         <main>
             <h1 class="center">Epytodo</h1>
         </main>
+        <article class="editor_container">
+            <button class="option_button" onclick="refresh_all_todos('data')">Refresh List</button>
+        </article>
+        <br>
+        <article class="table_content"><span id="data"></span></article>
         <footer>
             <inform id="inform_cookie"></inform>
             <copyright id="copyright_zone"></copyright>
         </footer>
         <script type="text/JavaScript">
+            table_of_contents('table_of_content',"My Todos");
+            animate_menu('table_of_contents');
+            copyright("copyright_zone");
             function page_main() {
                 var token = cookie.readCookie(window.query.token_cookie_name);
-                table_of_contents('table_of_content','Home');
-                animate_menu('table_of_contents');
                 writeBodyHeader("header", "/", token);
                 initialiseTheme("theme","darkOrLight",'/','files/css/boostrap/boostrap_dark.css','files/css/boostrap/bootstrap.css');
                 add_inform("inform_cookie");
-                copyright("copyright_zone");
+                query.getUserTodos("data");
             }
             document.addEventListener('DOMContentLoaded', page_main);
         </script>
