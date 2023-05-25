@@ -17,10 +17,12 @@
         <link rel="shortcut icon" type="image/x-icon" href="/files/img/logo/favicon_16x16.ico" /> <!--//IE-->
         <link rel="icon" type="image/png" href="/files/img/logo/favicon_32x32.png" /> <!--//all-->
         <link rel="alternate icon" sizes="16x16" href="/files/img/logo/favicon_16x16.ico" />
-        <title>Epytodo - Home</title>
+        <title>Epytodo - Users</title>
         <meta id="theme">
         <link rel="stylesheet" href="/files/css/assets/toggle.css">
         <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
+        <link rel="stylesheet" href="./stylesheet.css">
+        <link rel="stylesheet" href="./overlay_forms.css">
         <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
         <script src="/files/js/modules/create_tables.js" type="module"></script>
         <script src="/files/js/modules/query.js" type="module"></script>
@@ -33,27 +35,145 @@
         <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
         <script src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
+        <script src="/files/js/spinbox/decreasse_spinbox.js" type="text/JavaScript"></script>
+        <script src="/files/js/spinbox/increase_spinbox.js" type="text/JavaScript"></script>
+        <script src="./script.js" type="text/JavaScript"></script>
     </head>
 
     <body>
         <menu id="table_of_content"></menu>
         <header id="header"></header>
+        <article>
+            <side id="createTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Create User</h2>
+                    <p id="create-todo-error-message" class="error-channel"></p>
+                    <form id="createTodoForm" onsubmit="event.preventDefault();">
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="title">Title:</label>
+                            <input class="todo-form-field-input" type="text" id="create-title" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="description">Description:</label>
+                            <textarea class="todo-form-field-textarea" id="create-description" required></textarea>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="due_time">Due Time:</label>
+                            <input class="todo-form-field-input" type="datetime-local" id="create-dueTime" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="status">Status:</label>
+                            <select id="create-statusDropdown" required>
+                                <option value="Not fetchable" selected disabled>--- Select a state ---</option>
+                                <option value="not-started">Not Started</option>
+                                <option value="todo">User</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+
+                        </div>
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn" onclick="createTodo(DEST_ID='data', FORM_ID='createTodoOverlay', CONFIRMATION_ID='message', ERROR_CHANNEL_ID='create-todo-error-message', todo_title='create-title', todo_description='create-description', todo_due_time='create-dueTime', todo_status='create-statusDropdown')">Create</button>
+                            <button onclick="hideTodoForm('createTodoOverlay');reset_data_forms('create-title', 'create-description', 'create-dueTime', 'create-statusDropdown');">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+            <side id="updateTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Update User: <br><span id="todo-info"></span></h2>
+                    <p id="update-todo-error-message" class="error-channel"></p>
+                    <form id="createTodoForm" onsubmit="event.preventDefault();">
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="title">Title:</label>
+                            <input class="todo-form-field-input" type="text" id="update-title" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="description">Description:</label>
+                            <textarea class="todo-form-field-textarea" id="update-description" required></textarea>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="due_time">Due Time:</label>
+                            <input class="todo-form-field-input" type="datetime-local" id="update-dueTime" required>
+                        </div>
+                        <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="status">Status:</label>
+                            <select id="update-statusDropdown" required>
+                                <option value="Not fetchable" selected disabled>--- Select a state ---</option>
+                                <option value="not-started">Not Started</option>
+                                <option value="todo">User</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div>
+                        <!-- <div class="todo-form-field">
+                            <label class="todo-form-field-label" for="status">User ID:</label>
+                            <select id="update-statusDropdown" required>
+                                <option value="Not fetchable" selected disabled>--- Select a state ---</option>
+                                <option value="not-started">Not Started</option>
+                                <option value="todo">User</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div> -->
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn" onclick="updateTodo(DEST_ID='data',FORM_ID='updateTodoOverlay', CONFIRMATION_ID='message', TODO_ID='todo_search', ERROR_CHANNEL_ID='update-todo-error-message', todo_title='update-title', todo_description='update-description', todo_due_time='update-dueTime', todo_status='update-statusDropdown')">Update</button>
+                            <button onclick="hideTodoForm('updateTodoOverlay');reset_data_forms('update-title', 'update-description', 'update-dueTime', 'update-statusDropdown');">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+            <side id="deleteTodoOverlay" class="todo-overlay" style="display: none;">
+                <div class="todo-form-container">
+                    <h2 class="overlay-title">Delete User</h2>
+                    <p>
+                        <center>Are you sure you wish to permanently delete todo n°<span id="delete_todo_nb">...</span>?<br><span id="todo_description">...</span></center>
+                    </p>
+                    <form id="createTodoForm" onsubmit="event.preventDefault();">
+                        <div class="todo-form-field">
+                            <button type="submit" class="submit-btn" onclick="deleteTodo(FORM_ID ='deleteTodoOverlay', TODO_ID ='todo_search', CONFIRMATION_ID ='message', DEST_ID ='data')">Delete</button>
+                            <button onclick="hideTodoForm('deleteTodoOverlay')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </side>
+        </article>
         <main>
             <h1 class="center">Epytodo</h1>
+            <side class="action_message">
+                <p id="message"></p>
+            </side>
+            <article class="editor_container">
+                <section class="enable_flexbox one_liner" aria-details="The id of the todo to display, default: 0">
+                    <p style="margin-right: 10px;">Search User: </p>
+                    <button type="button" onclick="decrease_spinbox('todo_search');get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Decrease value">-</button>
+                    <input class="input" type="number" id="todo_search" name="spinbox" value="1" min="1" step="1" aria-label="Select a value" onchange="get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');">
+                    <button type="button" onclick="increase_spinbox('todo_search');get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Increase value">+</button>
+                </section>
+                <button onclick="reset_data_forms('create-title', 'create-description', 'create-dueTime', 'create-statusDropdown');display_create_a_todo('createTodoOverlay')">Create a User</button>
+                <button onclick="reset_data_forms('update-title', 'update-description', 'update-dueTime', 'update-statusDropdown');display_update_a_todo(FORM_ID='updateTodoOverlay', INPUT_ID='todo_search', TODO_INFO_DEST='todo-info', todo_title='update-title', todo_description='update-description', todo_due_time='update-dueTime', todo_status='update-statusDropdown')">Update the User</button>
+                <button onclick="display_delete_a_todo('deleteTodoOverlay')">Delete the User</button>
+                <button onclick="refresh_all_todos('data', 'message')">Refresh List</button>
+            </article>
+            <article class="table_content"><span id="data"></span></article>
         </main>
         <footer>
             <inform id="inform_cookie"></inform>
             <copyright id="copyright_zone"></copyright>
         </footer>
         <script type="text/JavaScript">
-            table_of_contents('table_of_content',"Manage Todos");
+            table_of_contents('table_of_content',"Manage Users");
             animate_menu('table_of_contents');
             copyright("copyright_zone");
+            reset_data_forms('create-title', 'create-description', 'create-dueTime', 'create-statusDropdown');
+            reset_data_forms('update-title', 'update-description', 'update-dueTime', 'update-statusDropdown');
             function page_main() {
                 var token = cookie.readCookie(window.query.token_cookie_name);
                 writeBodyHeader("header", "/", token);
                 initialiseTheme("theme","darkOrLight",'/','files/css/boostrap/boostrap_dark.css','files/css/boostrap/bootstrap.css');
                 add_inform("inform_cookie");
+                update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');
+                query.getTodos("data");
             }
             document.addEventListener('DOMContentLoaded', page_main);
         </script>

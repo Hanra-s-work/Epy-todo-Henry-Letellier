@@ -1,6 +1,5 @@
 // constants
-var node_url = "http://localhost:3000"
-let token = '';
+var node_url = "http://localhost:3000";
 let token_cookie_name = "login_token"
 let username_cookie_name = "username";
 let user_firstname_cookie_name = "user_firstname";
@@ -84,15 +83,12 @@ async function getTodos(DEST_ID) {
         return data.msg;
     }
     createTable.createHTMLTable(DEST_ID, data);
-    return data.msg;
+    return "Todos sucessfully fetched !";
 }
 
 // Function get todos via id
 async function getTodosViaID(DEST_ID, TODO_ID) {
     var login_token = cookie.readCookie(token_cookie_name);
-    console.log(`login token = ${login_token}`);
-    console.log(`DEST_ID = ${DEST_ID}`);
-    console.log(`TODO_ID = ${TODO_ID}`);
     const response = await fetch(`${node_url}/todos/${TODO_ID}`, {
         method: 'GET',
         headers: {
@@ -100,13 +96,25 @@ async function getTodosViaID(DEST_ID, TODO_ID) {
         }
     });
     const data = await response.json();
-    console.log(`data = ${JSON.stringify(data)}`);
     if ("msg" in data && data.msg === "User not logged in") {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            return "<h1>You are not logged in !</h1>";
+        }
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
-    createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    try {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            createTable.createHTMLTableFromJSON(DEST_ID, data);
+        }
+    } catch (err) {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            debugger;
+            document.getElementById(DEST_ID).innerHTML += data.msg;
+        }
+        return data.msg;
+    }
+    return data;
 }
 
 
@@ -127,7 +135,7 @@ async function postTodos(DEST_ID, title = "", description = "", due_time = "", s
         return data.msg;
     }
     createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    return `Successfully created: ${data[data.length - 1].id} - ${data[data.length - 1].title}`;
 }
 
 // Function put todos via id
@@ -139,7 +147,13 @@ async function putTodosViaID(DEST_ID, todo_id = "", title = "", description = ""
             'Authorization': `Bearer ${login_token}`,
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({ "title": title, "description": description, "due_time": due_time, "status": status, "user_id": user_id })
+        body: JSON.stringify({
+            "title": title,
+            "description": description,
+            "due_time": due_time,
+            "status": status,
+            "user_id": user_id
+        })
     });
     const data = await response.json();
     if ("msg" in data && data.msg === "User not logged in") {
@@ -147,7 +161,7 @@ async function putTodosViaID(DEST_ID, todo_id = "", title = "", description = ""
         return data.msg;
     }
     createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    return `Successfully updated: ${title}`;
 }
 
 // Function delete todos via id

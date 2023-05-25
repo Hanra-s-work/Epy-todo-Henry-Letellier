@@ -216,6 +216,7 @@ button {
     border: 0.5px black groove;
     padding: 5px;
     margin: 5px;
+    cursor: pointer;
 }
 
 button:hover,
