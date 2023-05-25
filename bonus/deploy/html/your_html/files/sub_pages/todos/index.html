@@ -146,9 +146,9 @@
             <article class="editor_container">
                 <section class="enable_flexbox one_liner" aria-details="The id of the todo to display, default: 0">
                     <p style="margin-right: 10px;">Search Todo: </p>
-                    <button type="button" onclick="decrease_spinbox('todo_search');get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Decrease value">-</button>
-                    <input class="input" type="number" id="todo_search" name="spinbox" value="1" min="1" step="1" aria-label="Select a value" onchange="get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');">
-                    <button type="button" onclick="increase_spinbox('todo_search');get_todo('todo_search', 'data');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Increase value">+</button>
+                    <button type="button" onclick="decrease_spinbox('todo_search');get_todo('todo_search', 'data', 'message');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Decrease value">-</button>
+                    <input class="input" type="number" id="todo_search" name="spinbox" value="1" min="1" step="1" aria-label="Select a value" onchange="get_todo('todo_search', 'data', 'message');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');">
+                    <button type="button" onclick="increase_spinbox('todo_search');get_todo('todo_search', 'data', 'message');update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');" aria-label="Increase value">+</button>
                 </section>
                 <button onclick="reset_data_forms('create-title', 'create-description', 'create-dueTime', 'create-statusDropdown');display_create_a_todo('createTodoOverlay')">Create a Todo</button>
                 <button onclick="reset_data_forms('update-title', 'update-description', 'update-dueTime', 'update-statusDropdown');display_update_a_todo(FORM_ID='updateTodoOverlay', INPUT_ID='todo_search', TODO_INFO_DEST='todo-info', todo_title='update-title', todo_description='update-description', todo_due_time='update-dueTime', todo_status='update-statusDropdown')">Update the Todo</button>

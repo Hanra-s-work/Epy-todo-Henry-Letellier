@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Index" content="This is tip of the server home." />
+        <meta name="Language" CONTENT="en,fr" />
+        <meta name="robots" content="index,follow,max-image-preview:standard" />
+        <meta name="copyright" content="&copy; Henry Letellier 2023" />
+        <meta name="publisher" content="Henry Letellier" />
+        <meta name="googlebot" content="index,follow,snippet" />
+        <meta name="google" content="translate,sitelinkssearchbox" />
+        <meta name="google-site-verification" content="" />
+        <meta http-equiv=" pragma" content="cache" />
+        <meta http-equiv="Cache-control" content="public" />
+        <link rel="shortcut icon" type="image/x-icon" href="/files/img/logo/favicon_16x16.ico" /> <!--//IE-->
+        <link rel="icon" type="image/png" href="/files/img/logo/favicon_32x32.png" /> <!--//all-->
+        <link rel="alternate icon" sizes="16x16" href="/files/img/logo/favicon_16x16.ico" />
+        <title>Epytodo - Stop</title>
+        <meta id="theme">
+        <link rel="stylesheet" href="/files/css/assets/toggle.css">
+        <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
+    </head>
+
+    <body>
+        <menu id="table_of_content"></menu>
+        <header id="header"></header>
+        <main>
+            <br>
+            <h1 class="center">Epytodo</h1>
+            <h1 class="center"><span id="logout_message"></span></h1>
+        </main>
+        <footer>
+            <inform id="inform_cookie"></inform>
+            <copyright id="copyright_zone"></copyright>
+        </footer>
+        <script src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
+        <script src="/files/js/copyright.js" type="text/JavaScript"></script>
+        <script src="/files/js/write_body_header.js" type="text/JavaScript"></script>
+        <script src="/files/js/assets/sleep.js" type="text/JavaScript"></script>
+        <script src="/files/js/assets/dark_light.js" type="text/JavaScript"></script>
+        <script src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
+        <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
+        <script src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
+        <script src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
+        <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
+        <script src="/files/js/modules/query.js" type="module"></script>
+        <script src="./script.js" type="text/JavaScript"></script>
+        <script type="text/JavaScript">
+            table_of_contents('table_of_content',"Log out");
+            animate_menu('table_of_contents');
+            copyright("copyright_zone");
+            async function page_main() {
+                await stop_server("logout_message");
+                var token = cookie.readCookie(window.query.token_cookie_name);
+                writeBodyHeader("header", "/", token);
+                initialiseTheme("theme","darkOrLight",'/','files/css/boostrap/boostrap_dark.css','files/css/boostrap/bootstrap.css');
+                add_inform("inform_cookie");
+            }
+            document.addEventListener('DOMContentLoaded', page_main);
+        </script>
+        <script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+    </body>
+
+</html>

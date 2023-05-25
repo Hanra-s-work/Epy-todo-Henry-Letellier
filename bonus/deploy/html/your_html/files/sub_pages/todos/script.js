@@ -21,10 +21,11 @@ async function refresh_all_todos(DEST_ID, CONFIRMATION_ID = "") {
     put_confirmation(CONFIRMATION_ID, response);
 }
 
-async function get_todo(TODO_ID, DEST_ID) {
+async function get_todo(TODO_ID, DEST_ID, CONFIRMATION_ID) {
     document.getElementById(DEST_ID).innerHTML = `<span id="${DEST_ID}"></span>`;
     var id = document.getElementById(TODO_ID).value;
     const response = await query.getTodosViaID(DEST_ID, id);
+    put_confirmation(CONFIRMATION_ID, `Todo ${id} searched !`);
 }
 
 async function update_delete_message(ID_SPINBOX, ID_SPAN, ID_SPAN_DESC) {
@@ -32,7 +33,7 @@ async function update_delete_message(ID_SPINBOX, ID_SPAN, ID_SPAN_DESC) {
     var span = document.getElementById(ID_SPAN);
     var user_info = document.getElementById(ID_SPAN_DESC);
     var user_node = await query.getTodosViaID("", id);
-    span.innerHTML = `<span id="delete_todo_nb">${id}</span>`;
+    span.innerHTML = `<span id="${ID_SPAN}">${id}</span>`;
     if (isJSON(user_node) === true && ('msg' in user_node) === false) {
         user_info.innerHTML = `<span id="${ID_SPAN_DESC}"><u>${user_node.title}</u><br>${user_node.description}</span>`;
     } else if ('msg' in user_node === true) {

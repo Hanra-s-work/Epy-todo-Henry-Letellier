@@ -4,16 +4,17 @@
     [x] /logout       GET    yes disconnect a user
     [x] /             GET no The home page of the website
     [x] /terms_of_use GET no Display the terms of use of the program
-    [!] /about        GET no About the website
-    [!] /user         GET    yes view all user information
-    [x] /user/todos   GET    yes view all user tasks
-    [!] /users/
-        [ ] /users/:email GET    yes view user information
-        [ ] /users/:id    GET    yes view user information
-        [ ] /users/:id    PUT    yes update user information
-        [ ] /users/:id    DELETE yes delete user
-    [!] /todos        GET    yes view all the todos
-        [ ] /todos/:id    GET    yes view the todo
-        [ ] /todos        POST   yes create a todo
-        [ ] /todos/:id    PUT    yes update a todo
-        [ ] /todos/:id    DELETE yes delete a todo
+    [x] /about        GET no About the website
+    [x] /user         GET    yes view all user information
+    [!] /user/todos   GET    yes view all user tasks
+    [x] /users/
+        [x] /users/:email GET    yes view user information
+        [x] /users/:id    GET    yes view user information
+        [x] /users/:id    PUT    yes update user information
+        [x] /users/:id    DELETE yes delete user
+    [x] /todos        GET    yes view all the todos
+        [x] /todos/:id    GET    yes view the todo
+        [x] /todos        POST   yes create a todo
+        [x] /todos/:id    PUT    yes update a todo
+        [x] /todos/:id    DELETE yes delete a todo
+    [x] /stop         GET   yes     stop the nodejs server (usefull if breaking)

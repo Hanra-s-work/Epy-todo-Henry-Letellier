@@ -197,6 +197,7 @@ async function getUser(DEST_ID) {
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
+    console.log(`data = ${JSON.stringify(data)}`);
     createTable.createHTMLTableFromJSON(DEST_ID, data);
     return data.msg;
 }
@@ -230,29 +231,64 @@ async function getUsersByID(DEST_ID, user_id) {
     });
     const data = await response.json();
     if ("msg" in data && data.msg === "User not logged in") {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            return "<h1>You are not logged in !</h1>";
+        }
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
-    createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    try {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            createTable.createHTMLTableFromJSON(DEST_ID, data);
+        }
+    } catch (err) {
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            debugger;
+            document.getElementById(DEST_ID).innerHTML += data.msg;
+        }
+        return data.msg;
+    }
+    return data;
 }
 
 // Function get users by email
 async function getUsersByEmail(DEST_ID, user_email) {
+    console.log(`In getUserByEmail`);
     var login_token = cookie.readCookie(token_cookie_name);
+    console.log(`login token = ${login_token}`);
     const response = await fetch(`${node_url}/users/${user_email}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${login_token}`
         }
     });
+    console.log(`Response sent`);
     const data = await response.json();
-    if ("msg" in data && data.msg === "User not logged in") {
+    console.log(`response = ${JSON.stringify(data)}`);
+    if (("msg" in data) === true && data.msg === "User not logged in") {
+        console.log(`In if 1`);
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            console.log(`In if 2`);
+            return "<h1>You are not logged in !</h1>";
+        }
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
-    createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    try {
+        console.log(`In try`);
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            console.log(`In if 1`);
+            createTable.createHTMLTableFromJSON(DEST_ID, data);
+        }
+    } catch (err) {
+        console.log(`In catch`);
+        if (DEST_ID != undefined && DEST_ID.length > 0) {
+            console.log(`In if 1`);
+            document.getElementById(DEST_ID).innerHTML += data.msg;
+        }
+        return data.msg;
+    }
+    return data.id;
 }
 
 // Function put users via id
@@ -272,25 +308,26 @@ async function putUsersViaID(DEST_ID, user_id = "", email = "", password = "", n
         return data.msg;
     }
     createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    return `Successfully updated user: ${user_id} - ${email}`;
 }
 
 // Function delete users via id
 async function deleteUsersViaID(DEST_ID, user_id) {
     var login_token = cookie.readCookie(token_cookie_name);
     const response = await fetch(`${node_url}/users/${user_id}`, {
-        method: 'GET',
+        method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${login_token}`
         }
     });
     const data = await response.json();
+    console.log(`data = ${data}`);
     if ("msg" in data && data.msg === "User not logged in") {
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
     createTable.createHTMLTableFromJSON(DEST_ID, data);
-    return data.msg;
+    return data;
 }
 
 // Function get home
@@ -378,7 +415,7 @@ async function getRefletDAcide(DEST_ID) {
         document.getElementById(DEST_ID).innerHTML = "<h1>You are not logged in !</h1>";
         return data.msg;
     }
-    createTable.createHTMLTableFromJSON(DEST_ID, data);
+    createTable.createHTMLTable(DEST_ID, data.msg);
     return data.msg;
 }
 

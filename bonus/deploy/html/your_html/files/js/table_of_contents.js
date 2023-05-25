@@ -33,7 +33,8 @@ function table_of_contents(ID, CURRENT = "Home") {
         "Manage Todos": "/files/sub_pages/todos",
         "Connect": "/files/sub_pages/connect",
         "Log out": "/files/sub_pages/logout",
-        "Terms of use": "/files/sub_pages/terms_of_use"
+        "Terms of use": "/files/sub_pages/terms_of_use",
+        "Stop server": "/files/sub_pages/stop"
     };
 
     compile_all += '<side id="table_of_contents">';

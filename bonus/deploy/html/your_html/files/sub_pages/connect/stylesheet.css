@@ -28,6 +28,7 @@
 }
 
 .fobtn-box {
+    z-index: 2;
     width: 220px;
     margin: 35px auto;
     position: relative;
