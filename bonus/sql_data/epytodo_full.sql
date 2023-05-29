@@ -31,15 +31,15 @@ CREATE USER IF NOT EXISTS 'tails' @'localhost' IDENTIFIED BY 'tails';
 GRANT ALL PRIVILEGES ON *.* TO `tails` @'localhost';
 SELECT "" "Created user 'tails' on 'localhost'.";
 -- Creating database
-DROP DATABASE IF EXISTS epytodo_mini;
-CREATE DATABASE epytodo_mini;
-SELECT "" "Created database epytodo_mini";
-USE epytodo_mini;
+DROP DATABASE IF EXISTS epytodo;
+CREATE DATABASE epytodo;
+SELECT "" "Created database epytodo";
+USE epytodo;
 --  Creating tables
 ALTER TABLE IF EXISTS todo DROP FOREIGN KEY IF EXISTS other_key_id;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS todo;
-SELECT "" "Removed tables user and todo if they existed in epytodo_mini";
+SELECT "" "Removed tables user and todo if they existed in epytodo";
 CREATE TABLE IF NOT EXISTS user (
     id INT NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS user (
     created_at DATETIME DEFAULT NOW(),
     PRIMARY KEY (id)
 );
-SELECT "" "Created table user in epytodo_mini";
+SELECT "" "Created table user in epytodo";
 CREATE TABLE IF NOT EXISTS todo (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS todo (
     CONSTRAINT other_key_id FOREIGN KEY (user_id) REFERENCES user(id),
     PRIMARY KEY (id)
 );
-SELECT "" "Created table todo in epytodo_mini";
+SELECT "" "Created table todo in epytodo";
 ALTER TABLE user ENGINE = InnoDB;
 ALTER TABLE todo ENGINE = InnoDB;
 SELECT "" "Changed the table engines to InnoDB";
