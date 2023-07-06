@@ -1,0 +1,6 @@
+#  enforce lf on all files
+*.js text eol=lf
+*.css text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.html text eol=lf
