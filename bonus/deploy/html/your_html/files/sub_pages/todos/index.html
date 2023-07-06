@@ -23,21 +23,6 @@
         <link rel="stylesheet" href="/files/css/assets/table_of_contents.css">
         <link rel="stylesheet" href="./stylesheet.css">
         <link rel="stylesheet" href="./overlay_forms.css">
-        <script src="/files/js/modules/cookie_dealing.js" type="module"></script>
-        <script src="/files/js/modules/create_tables.js" type="module"></script>
-        <script src="/files/js/modules/query.js" type="module"></script>
-        <script src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
-        <script src="/files/js/copyright.js" type="text/JavaScript"></script>
-        <script src="/files/js/write_body_header.js" type="text/JavaScript"></script>
-        <script src="/files/js/assets/sleep.js" type="text/JavaScript"></script>
-        <script src="/files/js/assets/dark_light.js" type="text/JavaScript"></script>
-        <script src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
-        <script src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
-        <script src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
-        <script src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
-        <script src="/files/js/spinbox/decreasse_spinbox.js" type="text/JavaScript"></script>
-        <script src="/files/js/spinbox/increase_spinbox.js" type="text/JavaScript"></script>
-        <script src="./script.js" type="text/JavaScript"></script>
     </head>
 
     <body>
@@ -161,22 +146,22 @@
             <inform id="inform_cookie"></inform>
             <copyright id="copyright_zone"></copyright>
         </footer>
-        <script type="text/JavaScript">
-            table_of_contents('table_of_content',"Manage Todos");
-            animate_menu('table_of_contents');
-            copyright("copyright_zone");
-            reset_data_forms('create-title', 'create-description', 'create-dueTime', 'create-statusDropdown');
-            reset_data_forms('update-title', 'update-description', 'update-dueTime', 'update-statusDropdown');
-            function page_main() {
-                var token = cookie.readCookie(window.query.token_cookie_name);
-                writeBodyHeader("header", "/", token);
-                initialiseTheme("theme","darkOrLight",'/','files/css/boostrap/boostrap_dark.css','files/css/boostrap/bootstrap.css');
-                add_inform("inform_cookie");
-                update_delete_message('todo_search', 'delete_todo_nb', 'todo_description');
-                query.getTodos("data");
-            }
-            document.addEventListener('DOMContentLoaded', page_main);
-        </script>
+        <script defer src="/files/js/modules/cookie_dealing.js" type="module"></script>
+        <script defer src="/files/js/modules/create_tables.js" type="module"></script>
+        <script defer src="/files/js/modules/query.js" type="module"></script>
+        <script defer src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/copyright.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/write_body_header.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/assets/sleep.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/assets/dark_light.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/assets/add_inform.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/table_of_contents.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/assets/add_a_joke.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/assets/animate_menu.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/spinbox/decreasse_spinbox.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/spinbox/increase_spinbox.js" type="text/JavaScript"></script>
+        <script defer src="./script.js" type="text/JavaScript"></script>
+        <script defer src="/files/js/loaders/load_todos.js" type="text/JavaScript"></script>
         <script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
     </body>
 
