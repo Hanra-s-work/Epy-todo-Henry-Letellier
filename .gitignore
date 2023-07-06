@@ -3,7 +3,7 @@
 !./bonus/files/app/your_app/.env
 my_probe.sql
 # package-lock.json
-.vscode/**
+**/.vscode/**
 *.session.*
 node_modules/**
 **/node_modules/**
