@@ -537,23 +537,54 @@ Once in the container (you should see the prompt change to )
 
 ###### "ER_BAD_DB_ERROR" (or Unknown database 'epytodo')
 
-zezeze
+Try manually importing the epy_todo_full.sql into the sql/mysql/mariadb database.
+Make sure the name of the database is 'epytodo'
 
 ###### "ER_ACCESS_DENIED_ERROR"
 
-jjpojopjj
+Try checking the userthe program is trying to use to access the database exists in the database and that the password for the user account is the same as the one the program is using.
+All the connection information used by the program can be found in the .env file at the root of the project.
 
 ###### "ER_NO_SUCH_TABLE"
 
-kdfosdfdsf
+Try making sure the table exitst in the database and that the name of the database does not contain any mistakes.
 
 ###### "ECONNREFUSED"
 
-azeazeaze
+Make sure the program is trying to access the correct url and port for the database, generally localhost is the url and 3306 is the port.
+
+###### Default .env file
+```dotenv
+MYSQL_DATABASE = epytodo
+MYSQL_HOST = localhost
+MYSQL_USER = lumine
+MYSQL_ROOT_PASSWORD = lumine
+SECRET = "5b9a6b7cb238eecbbd192c7285bf488525c7e0f7a3c4e54dac8a9ca68c374003" #used for the JSON Web Token (JWT)
+```
+breaking it down:
+A dotenv file (.env) is a file composed of term=definition lines.
+This type of file is generaly used to store sensitive data such as software credentials of credit card information.
+However, the names of the variables in the dotenv file have to be identicl to the ones called within the program, otherwise, your program miht crash or at be behave unexpectedly.
+This is a breakdown of the meaning of variables from this dotenv file:
+```dotenv
+# The database name
+MYSQL_DATABASE = epytodo
+# database url/Host
+MYSQL_HOST = localhost
+# database user name
+MYSQL_USER = lumine
+# database user password
+MYSQL_ROOT_PASSWORD = lumine
+# The json secret used to create the login token
+SECRET = "5b9a6b7cb238eecbbd192c7285bf488525c7e0f7a3c4e54dac8a9ca68c374003" #used for the JSON Web Token (JWT)
+```
 
 #### **Is it the docker nginx sever**
+If the nginx server fails to launch (i.e. 404, 503, 504 type of response [basically page not found]), check the logs of the nginx server, it is most likely the configuration you set-up.
 
 ## License
 
 This program is provided as if and without any warranty.
 This program is under the `UNLICENSE` license
+
+<!-- https://intra.epitech.eu/module/2022/B-WEB-200/PAR-2-1/acti-592708/project/file/B-WEB-200_Epytodo.pdf -->
