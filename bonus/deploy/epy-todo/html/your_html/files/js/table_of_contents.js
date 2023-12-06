@@ -37,7 +37,7 @@ function table_of_contents(ID, CURRENT = "Home") {
         "Stop server": "/files/sub_pages/stop"
     };
 
-    compile_all += '<side id="table_of_contents">';
+    compile_all += '<side id="table_of_contents" style="left: -52%">';
     // compile_all += '    <button class="table_button table_close_button" onclick = "animate_menu(\'table_of_contents\')">Close</button>';
     // compile_all += '    <h1 class="table_title">Table of contents:</h1>';
     compile_all += '    <nav class="table_list">';

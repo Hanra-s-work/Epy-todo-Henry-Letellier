@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  maria-db:
+    image: hanralatalliard/et-mariadb:latest
+    container_name: et-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: lumine
+      MYSQL_PASSWORD: lumine
+    ports:
+      - "3307:3306"
+
+  nodejs:
+    image: hanralatalliard/et-nodejs:latest
+    container_name: et-nodejs
+    restart: always
+    ports:
+      - "3000-3010:3000-3010"
+    working_dir: /app/your_app
+    command: npm start
+    tty: true
+    depends_on:
+      - maria-db
+
+  nginx:
+    image: hanralatalliard/et-nginx:latest
+    container_name: et-nginx
+    restart: always
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    working_dir: /usr/share/nginx/html
+    depends_on:
+      - nodejs
+    
