@@ -43,7 +43,7 @@ services:
     restart: always
     tty: true
     ports:
-      - "80:80"
+      - "8080:80"
       - "443:443"
     volumes:
       - ./html/your_html:/usr/share/nginx/html
@@ -63,3 +63,6 @@ services:
     #     echo "mariadb: http://localhost:3306"
     #     echo "nodejs: http://localhost:3000"
     #     echo "nginx: http://localhost:80"
+networks:
+  et-network:
+    driver: bridge

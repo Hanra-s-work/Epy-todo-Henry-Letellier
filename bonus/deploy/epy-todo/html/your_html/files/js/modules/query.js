@@ -1,5 +1,5 @@
 // constants
-var node_url = "http://localhost:3000";
+var node_url = "https://backend-epy-todo.pingpal.news";
 let token_cookie_name = "login_token"
 let username_cookie_name = "username";
 let user_firstname_cookie_name = "user_firstname";

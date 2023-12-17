@@ -17,7 +17,7 @@ function check_json_token(req, secret_token) {
     if (response === false) {
         return "Invalid token";
     }
-    if (token === global.global_logged_in_token) {
+    if (token in global.sessions && global.sessions[token].loggedIn) {
         return "Connection success";
     }
     return "Invalid token";

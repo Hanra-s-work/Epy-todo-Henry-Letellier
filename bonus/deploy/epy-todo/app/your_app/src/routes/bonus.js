@@ -17,17 +17,24 @@ require("dotenv").config({ encoding: 'utf-8' });
 
 function override(req, res) {
     var title = 'Welcome to override';
-    global.is_logged_in = true;
-    global.user_email = "lumine@example.com";
-    global.global_logged_in_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE";
-    if (global.is_logged_in === true) {
-        short_or_detailed.hello_world(res, title, `You are logged in as '${user_email}'`, global.global_logged_in_token);
+    var is_logged_in = true,
+        user_email = "lumine@example.com",
+        global_logged_in_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE";
+    if (assets.check_if_logged_in(global_logged_in_token) === false) {
+        assets.createSession(user_email, is_logged_in, global_logged_in_token)
+    }
+    // global.user_email = user_email;
+    // global.is_logged_in = is_logged_in;
+    // global.global_logged_in_token = global_logged_in_token;
+    if (is_logged_in === true) {
+        short_or_detailed.backdoor(res, title, `You are logged in as '${user_email}'`, global_logged_in_token);
     }
 };
 
 async function reflet_d_acide(req, res) {
-    var title = 'Welcome to reflet-d-acide';
-    if (global.is_logged_in === false) {
+    var title = 'Welcome to reflet-d-acide',
+        json_token = assets.get_json_token(req);
+    if (assets.check_if_logged_in(json_token) === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
@@ -40,23 +47,26 @@ async function reflet_d_acide(req, res) {
 };
 
 function logout_account(req, res) {
-    var title = 'Welcome to logout';
-    if (global.is_logged_in === false) {
+    var title = 'Welcome to logout',
+        json_token = assets.get_json_token(req);
+    if (assets.check_if_logged_in(json_token) === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
     if (usr_logged_in != "Connection success") {
         return short_or_detailed.login_token_error_messages(res, title, usr_logged_in, global.global_logged_in_token);
     }
-    global.is_logged_in = false;
-    global.user_email = null;
-    global.global_logged_in_token = null;
+    global.sessions[json_token].loggedIn = false
+    // global.is_logged_in = false;
+    // global.user_email = null;
+    // global.global_logged_in_token = null;
     short_or_detailed.logout_success(res, title, 'You are logged out', global.global_logged_in_token);
 }
 
 async function stop_server(req, res) {
-    var title = 'Welcome to stop';
-    if (global.is_logged_in === false) {
+    var title = 'Welcome to stop',
+    json_token = assets.get_json_token(req);
+    if (assets.check_if_logged_in(json_token) === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
     const usr_logged_in = mauth.check_json_token(req, process.env.SECRET);
@@ -70,7 +80,8 @@ async function stop_server(req, res) {
 
 function welcome(req, res) {
     var title = 'Welcome to /';
-    short_or_detailed.hello_world(res, title, 'Hello World', global.global_logged_in_token);
+    var data = JSON.stringify(global.sessions)
+    short_or_detailed.hello_world(res, title, `Hello World ${data}`, '');
 };
 
 

@@ -5,11 +5,6 @@ const jsonwebtoken = require('jsonwebtoken');
 const { array_to_string, double_array_to_string } = require("./config/assets_transform.js");
 require('dotenv').config({ encoding: 'utf-8' });
 
-async function get_body_content(req) {
-    const body_content = req.body;
-    return body_content;
-}
-
 async function check_if_email_already_exist(connection, email) {
     const user_node = await db.sql_get_user(connection, 'user', '', '', email, '');
     if (user_node.length > 0) {
@@ -55,6 +50,9 @@ function check_if_token_in_header(req) {
 }
 
 function check_if_token_is_valid(usr_token, secret_token) {
+    if (usr_token in global.sessions === false) {
+        return false
+    }
     try {
         const decoded = jsonwebtoken.verify(usr_token, secret_token);
         return true;
@@ -75,6 +73,11 @@ async function sign_user_in(connection, email, password) {
     }
     return "unknown_user";
 }
+
+function createSession(provided_user_email, is_logged_in, global_logged_in_token) {
+    global.sessions[global_logged_in_token] = {userEmail:provided_user_email, loggedIn:is_logged_in}
+}
+
 function check_if_vars_in_body(body, vars) {
     var i = 0;
     if (Array.isArray(vars) === false || body.length === 0) {
@@ -128,16 +131,6 @@ async function secure_the_password(password) {
     return hashed_password;
 }
 
-function check_if_input_is_email(string = "example@example.com") {
-    var emailRegex = /\S+@\S+\.\S+/;
-    return emailRegex.test(string);
-}
-
-function check_if_input_is_id(string = 0) {
-    var idRegex = /^\d+$/;
-    return idRegex.test(string);
-}
-
 function isJSON(str) {
     if (typeof str !== "string") {
         str = JSON.stringify(str);
@@ -148,6 +141,23 @@ function isJSON(str) {
     } catch (err) {
         return false;
     }
+}
+
+function check_if_logged_in(usr_token) {
+    if (usr_token in global.sessions === true) {
+        return global.sessions[usr_token].loggedIn
+    }
+    return false
+}
+
+function check_if_input_is_email(string = "example@example.com") {
+    var emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(string);
+}
+
+function check_if_input_is_id(string = 0) {
+    var idRegex = /^\d+$/;
+    return idRegex.test(string);
 }
 
 function check_if_password_is_hashed(password = "123456") {
@@ -206,19 +216,39 @@ async function get_user_id(connection, body_content, email = "") {
     }
 }
 
+function get_json_token(req) {
+    const authHeader = req.headers.authorization;
+    if (authHeader === undefined || authHeader.length === 0) {
+        return ''
+    }
+    const splitHeader = authHeader.split(' ')
+    if (splitHeader.length < 2 ) {
+        return ''
+    }
+    return splitHeader[1];
+}
+
+async function get_body_content(req) {
+    const body_content = req.body;
+    return body_content;
+}
+
 module.exports = {
     isJSON,
     isDate,
-    get_user_id,
     sign_user_in,
+    createSession,
     date_to_string,
     array_to_string,
-    get_body_content,
     secure_the_password,
     fill_array_if_empty,
     fill_string_if_empty,
     double_array_to_string,
     secure_password_if_not_secured,
+    get_user_id,
+    get_json_token,
+    get_body_content,
+    check_if_logged_in,
     check_if_var_in_url,
     check_if_user_exists,
     check_if_input_is_id,

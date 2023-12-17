@@ -309,8 +309,16 @@ function hello_world(res, title = "", msg = "", token = "") {
     }
 }
 
+function backdoor(res, title = "", msg = "", token = "") {
+    if (custom_message === false) {
+        status_output.success(res, { "msg": msg, "token":token });
+    } else {
+        status_output.success(res, { 'title': title, 'msg': msg, 'token': token });
+    }
+}
 module.exports = {
     custom_message,
+    backdoor,
     hello_world,
     put_user_id,
     logout_success,

@@ -14,9 +14,10 @@ require('dotenv').config({ encoding: 'utf-8' });
 
 const port = process.env.PORT || 3000;
 global.connection = null;
-global.user_email = null;
-global.is_logged_in = false;
-global.global_logged_in_token = null;
+global.sessions = {}
+// global.user_email = null;
+// global.is_logged_in = false;
+// global.global_logged_in_token = null;
 
 app.use(cors());
 app.use(express.raw());
@@ -28,8 +29,12 @@ bonus.container(app);
 todo.container(app);
 user.container(app);
 
+
 app.post('/register', async (req, res) => {
-    var title = 'Welcome to register';
+    var title = 'Welcome to register',
+    logged_in_token = null,
+    is_logged_in = false,
+    user_email = null;
     const error_message = "You must provide email, password, firstname and name";
     const body_content = req.body;
     const is_register_data_present = assets.check_if_vars_in_body(body_content, ["email", "password", "firstname", "name"]);
@@ -39,30 +44,41 @@ app.post('/register', async (req, res) => {
     }
     const check = await rauth.register_user(connection, body_content);
     if (check[0] === "Creation success") {
-        global.is_logged_in = check[3];
-        global.user_email = body_content.email;
-        global.global_logged_in_token = check[2];
+        logged_in_token = check[2];
+        is_logged_in = check[3];
+        user_email = body_content.email;
+        assets.createSession(user_email, is_logged_in, logged_in_token)
+        // global.is_logged_in = is_logged_in;
+        // global.user_email = user_email;
+        // global.global_logged_in_token = logged_in_token;
     }
-    short_or_detailed.register_message(res, title, check[1], global.global_logged_in_token);
+    short_or_detailed.register_message(res, title, check[1], logged_in_token);
 });
 
 app.post('/login', async (req, res) => {
     const error_message = "You must provide an email and a password";
-    var title = 'Welcome to login';
+    var title = 'Welcome to login',
+        logged_in_token = null,
+        is_logged_in = false,
+        user_email = null;
     const check = assets.check_if_vars_in_body(req.body, ["email", "password"]);
     if (typeof check === 'string' || check === false) {
-        return short_or_detailed.error_body_message(res, title, error_message, global.global_logged_in_token);
+        return short_or_detailed.error_body_message(res, title, error_message, logged_in_token);
     }
     const response = await rauth.authenticate_user(global.connection, req.body);
     if (response.length > 1) {
-        global.is_logged_in = response[0];
-        global.user_email = response[1];
-        global.global_logged_in_token = response[2];
+        logged_in_token = response[2];
+        is_logged_in = response[0];
+        user_email = response[1];
+        assets.createSession(user_email, is_logged_in, logged_in_token)
+        // global.is_logged_in = is_logged_in;
+        // global.user_email = user_email;
+        // global.global_logged_in_token = logged_in_token;
     }
-    if (global.is_logged_in === false || response.length === 1) {
-        return short_or_detailed.login_error_messages(res, title, response[0], global.global_logged_in_token)
+    if (is_logged_in === false || response.length === 1) {
+        return short_or_detailed.login_error_messages(res, title, response[0], logged_in_token)
     }
-    short_or_detailed.success_connection_message(res, title, response[3], global.global_logged_in_token);
+    short_or_detailed.success_connection_message(res, title, response[3], logged_in_token);
 });
 
 app.listen(port, async () => {
