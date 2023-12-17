@@ -12,6 +12,8 @@ services:
       MYSQL_PASSWORD: lumine
     ports:
       - "3307:3306"
+    volumes:
+      - ./data/current_state:/var/lib/mysql
 
   nodejs:
     image: hanralatalliard/et-nodejs:latest
@@ -36,4 +38,7 @@ services:
     working_dir: /usr/share/nginx/html
     depends_on:
       - nodejs
-    
+
+networks:
+  et-network:
+    driver: bridge

@@ -65,7 +65,7 @@ function logout_account(req, res) {
 
 async function stop_server(req, res) {
     var title = 'Welcome to stop',
-    json_token = assets.get_json_token(req);
+        json_token = assets.get_json_token(req);
     if (assets.check_if_logged_in(json_token) === false) {
         return short_or_detailed.user_not_logged_in(res, title);
     }
@@ -80,8 +80,7 @@ async function stop_server(req, res) {
 
 function welcome(req, res) {
     var title = 'Welcome to /';
-    var data = JSON.stringify(global.sessions)
-    short_or_detailed.hello_world(res, title, `Hello World ${data}`, '');
+    short_or_detailed.hello_world(res, title, 'Hello World !', '');
 };
 
 

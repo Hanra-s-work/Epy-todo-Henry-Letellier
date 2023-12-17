@@ -34,6 +34,7 @@ services:
     tty: true
     depends_on:
       - maria-db
+
   nginx:
     build:
       context: ./html
@@ -43,7 +44,7 @@ services:
     restart: always
     tty: true
     ports:
-      - "8080:80"
+      - "80:80"
       - "443:443"
     volumes:
       - ./html/your_html:/usr/share/nginx/html
