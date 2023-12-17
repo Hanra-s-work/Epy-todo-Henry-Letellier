@@ -222,13 +222,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/users/1",
+									"raw": "{{url}}/users/{{default_user_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"1"
+										"{{default_user_id}}"
 									]
 								}
 							},
@@ -249,13 +249,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/users/1",
+									"raw": "{{url}}/users/{{default_user_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"1"
+										"{{default_user_id}}"
 									]
 								}
 							},
@@ -276,13 +276,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/users/1",
+									"raw": "{{url}}/users/{{default_user_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"1"
+										"{{default_user_id}}"
 									]
 								}
 							},
@@ -294,13 +294,13 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/users/1",
+									"raw": "{{url}}/users/{{default_user_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"1"
+										"{{default_user_id}}"
 									]
 								}
 							},
@@ -334,13 +334,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/users/5",
+									"raw": "{{url}}/users/{{get_user_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"5"
+										"{{get_user_id}}"
 									]
 								}
 							},
@@ -352,13 +352,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/users/test@example.com",
+									"raw": "{{url}}/users/{{get_user_email}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"users",
-										"test@example.com"
+										"{{get_user_email}}"
 									]
 								}
 							},
@@ -390,13 +390,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users/112",
+							"raw": "{{url}}/users/{{delete_user_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users",
-								"112"
+								"{{delete_user_id}}"
 							]
 						}
 					},
@@ -502,13 +502,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/todos/83",
+									"raw": "{{url}}/todos/{{test_todo_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"todos",
-										"83"
+										"{{test_todo_id}}"
 									]
 								}
 							},
@@ -529,13 +529,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/todos/82",
+									"raw": "{{url}}/todos/{{test_todo_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"todos",
-										"82"
+										"{{test_todo_id}}"
 									]
 								}
 							},
@@ -547,13 +547,13 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/todos/82",
+									"raw": "{{url}}/todos/{{test_todo_id}}",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"todos",
-										"82"
+										"{{test_todo_id}}"
 									]
 								}
 							},
@@ -584,13 +584,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/todos/1",
+							"raw": "{{url}}/todos/{{test_todo_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"todos",
-								"1"
+								"{{test_todo_id}}"
 							]
 						}
 					},
@@ -602,13 +602,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/todos/78",
+							"raw": "{{url}}/todos/{{test_todo_id}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"todos",
-								"78"
+								"{{test_todo_id}}"
 							]
 						}
 					},
@@ -749,7 +749,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTExLCJlbWFpbCI6Imx1bWluZUBleGFtcGxlLmNvbSIsImlhdCI6MTY4NDQwMjA0MH0.f_-M-CD9vqywkMkcadbs4QzcAdFmgzgETJU2Ct9A9tc",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE5LCJlbWFpbCI6Imx1bWluZTlAZXhhbXBsZS5jb20iLCJpYXQiOjE2ODQwMDQyMDZ9.1lXgYd4o9xim5zVlxXjnMd_qEvSfv6QuZtf8_9wapFE",
 				"type": "string"
 			}
 		]
@@ -778,6 +778,31 @@
 		{
 			"key": "url",
 			"value": "http://backend-epy-todo.pingpal.news",
+			"type": "string"
+		},
+		{
+			"key": "test_todo_id",
+			"value": "79",
+			"type": "string"
+		},
+		{
+			"key": "default_user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "get_user_id",
+			"value": "5",
+			"type": "string"
+		},
+		{
+			"key": "get_user_email",
+			"value": "test@example.com",
+			"type": "string"
+		},
+		{
+			"key": "delete_user_id",
+			"value": "112",
 			"type": "string"
 		}
 	]
