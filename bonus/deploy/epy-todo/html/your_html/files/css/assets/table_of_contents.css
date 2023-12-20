@@ -11,7 +11,7 @@
     top: 128px;
     left: -52%;
     /* left: 0%; */
-    width: 30%;
+    width: 20%;
     height: 100%;
     padding-left: 12px;
     background-color: rgb(108, 108, 108);
@@ -108,13 +108,14 @@
 }
 
 .table_button {
-    background-color: #6fd9d9;
+    background-color: transparent;
     color: white;
     font-weight: bolder;
-    border-style: outset;
-    border-color: black;
-    border-width: 2px;
-    border-style: double;
+    border-style: none;
+    /* border-style: outset; */
+    /* border-color: black; */
+    /* border-width: 2px; */
+    /* border-style: double; */
     cursor: pointer;
 }
 
@@ -125,11 +126,13 @@
 }
 
 .table_button:hover {
-    background-color: red;
-    border-width: 2px;
+    background-color: #6fd9d9;
+    /* border-width: 2px; */
+    border-style: none;
 }
 
 .table_button:active {
     background-color: green;
-    border-width: 2px;
+    /* border-width: 2px; */
+    border-style: none;
 }

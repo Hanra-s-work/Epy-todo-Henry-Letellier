@@ -18,7 +18,7 @@
 
 .toggle_label {
     display: block;
-    position: absolute;
+    /* position: absolute; */
     top: 6%;
     right: 1%;
     /*     left: 2%; */
